@@ -61,6 +61,12 @@
   background-color: #ffffff;
 }
 
+/* Widen the table area so the four competency columns have more room
+   to breathe and text wraps less. */
+.ce-section > .container {
+  max-width: 1440px;
+}
+
 /* Toolbar */
 .cc-wrapper {
   display: flex;
@@ -111,7 +117,7 @@
 .cc-table th,
 .cc-table td {
   vertical-align: top;
-  padding: 1rem 1.1rem;
+  padding: 0.95rem 0.9rem;
   border-bottom: 1px solid var(--color-border);
   border-right: 1px solid var(--color-border);
   text-align: left;
@@ -158,13 +164,13 @@
 .cc-rowhead {
   background-color: color-mix(in srgb, var(--ehs-light-blue) 50%, #ffffff);
   font-family: var(--font-serif);
-  width: 200px;
+  width: 150px;
 }
 
 /* Empty spacer cell in the top-left; blends with row-header column. */
 .cc-corner {
   background-color: color-mix(in srgb, var(--ehs-light-blue) 50%, #ffffff);
-  width: 200px;
+  width: 150px;
 }
 
 .cc-rowhead__label {
