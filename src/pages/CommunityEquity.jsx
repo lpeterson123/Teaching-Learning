@@ -495,14 +495,41 @@ const ALIGNMENTS = [
   },
 ];
 
-const ALIGNMENT_ACCORDION_ITEMS = ALIGNMENTS.map((comp) => ({
-  id: comp.id,
-  eyebrow: `Competency ${comp.eyebrow}`,
-  title: comp.title,
+const DISCIPLINES = [
+  { id: 'humanities', name: 'Humanities' },
+  { id: 'math', name: 'Math' },
+  { id: 'science', name: 'Science' },
+  { id: 'languages', name: 'Languages' },
+  { id: 'arts', name: 'The Arts' },
+];
+
+// Transpose ALIGNMENTS (grouped by competency) into rows grouped by
+// discipline. Each discipline accordion then holds a table with 4
+// competency rows — preserving any subtitles from the source images.
+const ALIGNMENTS_BY_DISCIPLINE = DISCIPLINES.map(({ id, name }) => {
+  const rows = ALIGNMENTS.map((comp) => {
+    const disc = comp.disciplines.find((d) => d.id === id);
+    return {
+      id: comp.id,
+      name: comp.title,
+      subtitle: disc.subtitle,
+      items: disc.items,
+    };
+  });
+  return { id, name, rows };
+});
+
+const ALIGNMENT_ACCORDION_ITEMS = ALIGNMENTS_BY_DISCIPLINE.map((d) => ({
+  id: d.id,
+  eyebrow: 'Discipline',
+  title: d.name,
   body: (
     <AlignmentTable
-      disciplines={comp.disciplines}
-      ariaLabel={`${comp.title} — discipline alignment`}
+      rows={d.rows}
+      firstColumnLabel="Competency"
+      rowNoun="competency"
+      rowNounPlural="competencies"
+      ariaLabel={`${d.name} — competency alignment`}
     />
   ),
 }));
@@ -545,8 +572,9 @@ export default function CommunityEquity() {
               Cultural Competency Across the Curriculum
             </h2>
             <p className="ce-section__subtitle">
-              Expand a competency to view how it aligns to each discipline, then
-              expand a discipline to see concrete teaching moves.
+              Expand a discipline to see how each of the four cultural
+              competencies aligns to its teaching, then expand a competency to
+              reveal concrete teaching moves.
             </p>
           </header>
 

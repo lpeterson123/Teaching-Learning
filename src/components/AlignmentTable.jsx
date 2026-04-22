@@ -1,7 +1,13 @@
 import { useId, useState } from 'react';
 import './AlignmentTable.css';
 
-export default function AlignmentTable({ disciplines, ariaLabel }) {
+export default function AlignmentTable({
+  rows,
+  firstColumnLabel = 'Discipline',
+  rowNoun = 'row',
+  rowNounPlural = 'rows',
+  ariaLabel,
+}) {
   const [openRows, setOpenRows] = useState(() => new Set());
   const tableId = useId();
 
@@ -13,10 +19,9 @@ export default function AlignmentTable({ disciplines, ariaLabel }) {
       return next;
     });
 
-  const expandAll = () =>
-    setOpenRows(new Set(disciplines.map((d) => d.id)));
+  const expandAll = () => setOpenRows(new Set(rows.map((r) => r.id)));
   const collapseAll = () => setOpenRows(new Set());
-  const allOpen = openRows.size === disciplines.length;
+  const allOpen = openRows.size === rows.length;
 
   return (
     <div className="al-wrapper">
@@ -26,7 +31,9 @@ export default function AlignmentTable({ disciplines, ariaLabel }) {
           className="al-btn"
           onClick={allOpen ? collapseAll : expandAll}
         >
-          {allOpen ? 'Collapse all disciplines' : 'Expand all disciplines'}
+          {allOpen
+            ? `Collapse all ${rowNounPlural}`
+            : `Expand all ${rowNounPlural}`}
         </button>
       </div>
 
@@ -34,7 +41,7 @@ export default function AlignmentTable({ disciplines, ariaLabel }) {
         <thead>
           <tr>
             <th scope="col" className="al-colhead al-colhead--disc">
-              Discipline
+              {firstColumnLabel}
             </th>
             <th scope="col" className="al-colhead">
               Alignment
@@ -42,7 +49,7 @@ export default function AlignmentTable({ disciplines, ariaLabel }) {
           </tr>
         </thead>
         <tbody>
-          {disciplines.map((d) => {
+          {rows.map((d) => {
             const isOpen = openRows.has(d.id);
             const buttonId = `${tableId}-btn-${d.id}`;
             const panelId = `${tableId}-panel-${d.id}`;

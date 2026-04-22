@@ -159,7 +159,6 @@ export default function Home() {
       <section className="framework" aria-label="Framework">
         <div className="container framework__grid">
           <article className="framework__column framework__column--mission" aria-labelledby="col-1-title">
-            <p className="framework__eyebrow">Column I</p>
             <h2 id="col-1-title" className="framework__heading">
               Mission Statement
             </h2>
@@ -167,7 +166,6 @@ export default function Home() {
           </article>
 
           <article className="framework__column" aria-labelledby="col-2-title">
-            <p className="framework__eyebrow">Column II</p>
             <h2 id="col-2-title" className="framework__heading">
               Key Domains of Teaching Excellence
             </h2>
@@ -179,7 +177,6 @@ export default function Home() {
           </article>
 
           <article className="framework__column" aria-labelledby="col-3-title">
-            <p className="framework__eyebrow">Column III</p>
             <h2 id="col-3-title" className="framework__heading">
               Our Students&rsquo; Experience
             </h2>
