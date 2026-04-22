@@ -61,6 +61,45 @@
   background-color: #ffffff;
 }
 
+.ce-section--alignment {
+  padding-top: 1rem;
+  background-color: var(--slate-50);
+}
+
+.ce-section__header {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 2rem;
+}
+
+.ce-section__eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ehs-maroon);
+}
+
+.ce-section__title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: var(--slate-900);
+  letter-spacing: -0.01em;
+}
+
+.ce-section__subtitle {
+  margin: 0 auto;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--slate-600);
+  line-height: 1.55;
+}
+
 /* Widen the table area so the four competency columns have more room
    to breathe and text wraps less. */
 .ce-section > .container {

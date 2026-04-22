@@ -1,0 +1,236 @@
+.al-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.al-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.al-btn {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ehs-maroon);
+  background-color: #ffffff;
+  border: 1px solid var(--ehs-maroon);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.al-btn:hover,
+.al-btn:focus-visible {
+  background-color: var(--ehs-maroon);
+  color: #ffffff;
+}
+
+.al-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: #ffffff;
+  table-layout: fixed;
+}
+
+.al-table th,
+.al-table td {
+  vertical-align: top;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.al-table th:last-child,
+.al-table td:last-child {
+  border-right: 0;
+}
+
+.al-table tr:last-child th,
+.al-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.al-colhead {
+  background-color: var(--slate-100);
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--slate-800);
+  text-transform: uppercase;
+}
+
+.al-colhead--disc {
+  width: 200px;
+}
+
+.al-rowhead {
+  background-color: color-mix(in srgb, var(--ehs-light-blue) 40%, #ffffff);
+  font-family: var(--font-serif);
+}
+
+.al-rowhead__name {
+  display: block;
+  font-weight: 700;
+  color: var(--slate-900);
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.al-rowhead__sub {
+  display: block;
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--slate-600);
+  margin-top: 0.2rem;
+}
+
+.al-cell {
+  background-color: #ffffff;
+  transition: background-color var(--transition-fast);
+}
+
+.al-row--open .al-cell,
+.al-row--open .al-rowhead {
+  background-color: var(--slate-50);
+}
+
+.al-disclosure {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+  width: auto;
+  min-width: 220px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ehs-maroon);
+  background-color: #ffffff;
+  border: 1px solid var(--ehs-maroon);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.al-disclosure:hover,
+.al-disclosure:focus-visible {
+  background-color: var(--slate-50);
+}
+
+.al-disclosure--open {
+  background-color: var(--ehs-maroon);
+  color: #ffffff;
+  border-color: var(--ehs-maroon);
+}
+
+.al-disclosure--open:hover,
+.al-disclosure--open:focus-visible {
+  background-color: var(--ehs-maroon-dark);
+  border-color: var(--ehs-maroon-dark);
+  color: #ffffff;
+}
+
+.al-disclosure__count {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.al-disclosure__icon {
+  flex-shrink: 0;
+  transition: transform var(--transition-med);
+}
+
+.al-disclosure--open .al-disclosure__icon {
+  transform: rotate(-180deg);
+}
+
+.al-panel {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--color-border);
+}
+
+.al-panel[hidden] {
+  display: none;
+}
+
+.al-panel__list {
+  margin: 0;
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--slate-700);
+}
+
+.al-panel__list li::marker {
+  color: var(--ehs-maroon);
+  font-weight: 700;
+}
+
+/* Responsive: stack to cards on narrow screens */
+@media (max-width: 720px) {
+  .al-table,
+  .al-table thead,
+  .al-table tbody,
+  .al-table tr,
+  .al-table th,
+  .al-table td {
+    display: block;
+    width: 100% !important;
+    border-right: 0;
+  }
+
+  .al-table thead {
+    display: none;
+  }
+
+  .al-table {
+    border: 0;
+    background-color: transparent;
+    overflow: visible;
+  }
+
+  .al-row {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    background-color: #ffffff;
+  }
+
+  .al-rowhead {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .al-cell {
+    border-top: 0;
+  }
+
+  .al-disclosure {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .al-disclosure,
+  .al-disclosure__icon,
+  .al-cell,
+  .al-btn {
+    transition: none;
+  }
+}

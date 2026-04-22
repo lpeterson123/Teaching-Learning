@@ -1,4 +1,6 @@
 import { useEffect, useId, useState } from 'react';
+import Accordion from '../components/Accordion.jsx';
+import AlignmentTable from '../components/AlignmentTable.jsx';
 import './CommunityEquity.css';
 
 const COMPETENCIES = [
@@ -263,6 +265,248 @@ function CulturalCompetencyTable({ competencies }) {
   );
 }
 
+const ALIGNMENTS = [
+  {
+    id: 'knowledge',
+    eyebrow: '1',
+    title: 'Knowledge of Other Cultures',
+    disciplines: [
+      {
+        id: 'humanities',
+        name: 'Humanities',
+        items: [
+          'Teach historical events from multiple cultural perspectives (e.g., colonization from Indigenous viewpoints, the Cold War from Global South perspectives)',
+          'Include literature by authors from diverse backgrounds as central texts, not supplements',
+          'Examine how power structures have shaped whose stories get told and preserved',
+          'Analyze primary sources from non-Western archives and oral traditions',
+        ],
+      },
+      {
+        id: 'math',
+        name: 'Math',
+        items: [
+          'Explore the global history of mathematics: contributions from Babylonian, Indian, Chinese, Islamic, and African mathematical traditions',
+          'Research mathematicians from underrepresented backgrounds and their contexts',
+          'Understand how cultural contexts shape mathematical notation, problem-solving approaches, and applications',
+        ],
+      },
+      {
+        id: 'science',
+        name: 'Science',
+        items: [
+          'Highlight scientists from diverse backgrounds and the barriers they overcame',
+          'Incorporate Indigenous ecological knowledge and traditional scientific practices',
+          'Examine how scientific "objectivity" has historically been shaped by cultural assumptions',
+          'Discuss how access to science education varies globally and why',
+        ],
+      },
+      {
+        id: 'languages',
+        name: 'Languages',
+        items: [
+          'Teach target cultures as living, evolving entities—not frozen in textbook stereotypes',
+          'Explore dialectical and regional variations within a language community',
+          'Address the colonial histories that shaped language spread',
+          "Value heritage speakers' cultural knowledge as classroom resources",
+        ],
+      },
+      {
+        id: 'arts',
+        name: 'The Arts',
+        items: [
+          'Study artistic traditions from multiple cultures with attention to their original contexts and meanings',
+          'Examine how Western art history has marginalized or appropriated other traditions',
+          'Invite students to explore their own cultural artistic heritage',
+          'Discuss the ethics of cultural borrowing vs. cultural exchange in creative work',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'engagement',
+    eyebrow: '2',
+    title: 'Intentional Intercultural Engagement',
+    disciplines: [
+      {
+        id: 'humanities',
+        name: 'Humanities',
+        items: [
+          'Structure Socratic seminars or Harkness discussions that explicitly invite multiple cultural interpretations of texts',
+          'Assign perspective-taking writing (e.g., "Write from the viewpoint of…")',
+          'Create deliberation exercises on contested historical or ethical questions where cultural values inform positions',
+          'Partner with classes at schools in different regions or countries for collaborative projects',
+        ],
+      },
+      {
+        id: 'math',
+        name: 'Math',
+        items: [
+          'Use group problem-solving structures that value different approaches, not just speed to a single answer',
+          'Have students share and compare multiple solution methods—some of which may reflect different cultural mathematical traditions',
+          'Design projects where students interview family or community members about how they use math in their lives',
+        ],
+      },
+      {
+        id: 'science',
+        name: 'Science',
+        items: [
+          'Facilitate lab groups with attention to equitable participation and rotating leadership',
+          'Design projects that require students to research how scientific issues (climate, health, technology) affect different communities differently',
+          'Create space for students to connect scientific concepts to their family or cultural knowledge',
+          'Use case studies that require weighing scientific evidence alongside community values',
+        ],
+      },
+      {
+        id: 'languages',
+        name: 'Languages',
+        items: [
+          'Build conversation partnerships that pair students with different strengths',
+          'Create cultural exchange projects with schools in target-language countries',
+          'Design role-plays that require navigating cultural differences in communication (formal/informal registers, directness, hospitality norms)',
+          'Have heritage speakers share their cultural expertise as co-teachers',
+        ],
+      },
+      {
+        id: 'arts',
+        name: 'The Arts',
+        items: [
+          "Facilitate collaborative creative projects that blend influences from students' different backgrounds",
+          'Structure critique sessions that welcome diverse aesthetic standards',
+          'Create ensemble work where students must listen and respond to each other across difference',
+          'Design projects where students teach peers an art form from their cultural background',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'growth',
+    eyebrow: '3',
+    title: 'Focus on Intercultural Growth',
+    disciplines: [
+      {
+        id: 'humanities',
+        name: 'Humanities',
+        items: [
+          'Incorporate reflective writing where students examine how their own backgrounds shape their interpretations',
+          "Teach students to notice when they're making assumptions based on their own cultural lens",
+          'Use "cultural autobiography" assignments that help students examine their own identities',
+          'Model intellectual humility when you discover your own blind spots in interpreting texts or history',
+        ],
+      },
+      {
+        id: 'math',
+        name: 'Math',
+        items: [
+          'Examine and question assumptions about who is "good at math" and where those assumptions come from',
+          'Reflect on how you form expectations of students and whether cultural biases influence those expectations',
+          'Create space for students to reflect on their own math identity and experiences',
+          'Challenge fixed mindset language that may correlate with cultural stereotypes',
+        ],
+      },
+      {
+        id: 'science',
+        name: 'Science',
+        items: [
+          'Critically examine case studies where scientific "objectivity" was compromised by cultural bias (e.g., historical medical racism)',
+          'Have students research how their own communities have been impacted by scientific research—positively or negatively',
+          'Reflect on representation in science and what messages students receive about who belongs',
+          'Create science autobiography assignments where students trace their relationship to science',
+        ],
+      },
+      {
+        id: 'languages',
+        name: 'Languages',
+        items: [
+          'Encourage students to reflect on their own cultural communication styles and how they differ from target-culture norms',
+          'Examine language hierarchies: why some accents or dialects are valued over others',
+          "Create assignments where students explore their family's language history",
+          'Model for students when you learn something new about the target culture that surprises you',
+        ],
+      },
+      {
+        id: 'arts',
+        name: 'The Arts',
+        items: [
+          'Build in regular self-reflection on artistic choices and their cultural influences',
+          'Examine how standards of "good art" or "good technique" are culturally constructed',
+          'Have students create artist statements that address their cultural identities and influences',
+          'Create critique protocols that ask "What cultural perspective might I be missing in my response to this work?"',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'responsiveness',
+    eyebrow: '4',
+    title: 'Intercultural Responsiveness',
+    disciplines: [
+      {
+        id: 'humanities',
+        name: 'Humanities',
+        subtitle: 'History, English, Social Studies',
+        items: [
+          'Design essential questions that probe cultural complexity: "Whose justice?" "Freedom for whom?" "What counts as progress?"',
+          'Teach students to ask "Who benefits from this narrative? Whose perspective is centered or marginalized?"',
+          'Create space for students to bring current events related to cultural identity into class discussion',
+          'When teaching controversial topics, help students understand how cultural and historical positions shape perspectives',
+        ],
+      },
+      {
+        id: 'math',
+        name: 'Math',
+        items: [
+          'Examine how math has been used as a gatekeeper and how that affects different communities',
+          'Pose problems set in diverse contexts and ask students to consider whether context matters',
+          'Question the "one right answer" framing and explore how mathematical modeling involves value choices',
+          'Investigate how algorithms can encode bias and affect different communities differently',
+        ],
+      },
+      {
+        id: 'science',
+        name: 'Science',
+        items: [
+          'Explore bioethics case studies that involve different cultural perspectives on the body, medicine, and nature',
+          'Examine environmental justice: who bears the burden of pollution, resource extraction, climate change?',
+          'Discuss informed consent, research ethics, and the history of exploitation of marginalized communities in research',
+          'Ask students to consider: "Who decides what counts as scientific knowledge?" and "Who benefits from this research?"',
+        ],
+      },
+      {
+        id: 'languages',
+        name: 'Languages',
+        items: [
+          'Address code-switching and linguistic identity: when and why people shift between languages or registers',
+          'Discuss language policy and politics in the target culture',
+          'Help students navigate cultural misunderstandings with curiosity rather than judgment',
+          'Teach students to ask questions that go beyond surface differences to underlying values and worldviews',
+        ],
+      },
+      {
+        id: 'arts',
+        name: 'The Arts',
+        items: [
+          'Examine cultural appropriation vs. appreciation: when does borrowing become theft? What obligations do artists have?',
+          'Analyze how art can perpetuate stereotypes—and how it can challenge them',
+          "Discuss power dynamics in whose art gets funding, exhibition space, and critical attention",
+          'Create opportunities for students to use art as a medium for exploring and expressing cultural identity',
+        ],
+      },
+    ],
+  },
+];
+
+const ALIGNMENT_ACCORDION_ITEMS = ALIGNMENTS.map((comp) => ({
+  id: comp.id,
+  eyebrow: `Competency ${comp.eyebrow}`,
+  title: comp.title,
+  body: (
+    <AlignmentTable
+      disciplines={comp.disciplines}
+      ariaLabel={`${comp.title} — discipline alignment`}
+    />
+  ),
+}));
+
 export default function CommunityEquity() {
   useEffect(() => {
     const previous = document.title;
@@ -290,6 +534,26 @@ export default function CommunityEquity() {
       <section className="ce-section" aria-label="Cultural competencies">
         <div className="container">
           <CulturalCompetencyTable competencies={COMPETENCIES} />
+        </div>
+      </section>
+
+      <section className="ce-section ce-section--alignment" aria-labelledby="ce-alignment-title">
+        <div className="container">
+          <header className="ce-section__header">
+            <p className="ce-section__eyebrow">Discipline Alignment</p>
+            <h2 id="ce-alignment-title" className="ce-section__title">
+              Cultural Competency Across the Curriculum
+            </h2>
+            <p className="ce-section__subtitle">
+              Expand a competency to view how it aligns to each discipline, then
+              expand a discipline to see concrete teaching moves.
+            </p>
+          </header>
+
+          <Accordion
+            items={ALIGNMENT_ACCORDION_ITEMS}
+            ariaLabel="Cultural competency discipline alignment"
+          />
         </div>
       </section>
     </>
