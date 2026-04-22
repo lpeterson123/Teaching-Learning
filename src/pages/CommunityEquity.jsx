@@ -177,9 +177,7 @@ function CulturalCompetencyTable({ competencies }) {
         <table className="cc-table" aria-label="Cultural competencies reference table">
           <thead>
             <tr>
-              <th scope="col" className="cc-rowhead cc-rowhead--corner">
-                <span className="cc-rowhead__eyebrow">Row</span>
-              </th>
+              <th scope="col" className="cc-corner" aria-hidden="true"></th>
               {competencies.map((c) => (
                 <th key={c.id} scope="col" className="cc-colhead">
                   <span className="cc-colhead__eyebrow">Competency</span>
@@ -191,7 +189,6 @@ function CulturalCompetencyTable({ competencies }) {
           <tbody>
             <tr>
               <th scope="row" className="cc-rowhead">
-                <span className="cc-rowhead__eyebrow">Row 1</span>
                 <span className="cc-rowhead__label">
                   What it looks like at the &ldquo;Exceeding&rdquo; level
                 </span>
@@ -204,7 +201,6 @@ function CulturalCompetencyTable({ competencies }) {
             </tr>
             <tr>
               <th scope="row" className="cc-rowhead">
-                <span className="cc-rowhead__eyebrow">Row 2</span>
                 <span className="cc-rowhead__label">
                   Broad Suggestions for All Teachers
                 </span>
