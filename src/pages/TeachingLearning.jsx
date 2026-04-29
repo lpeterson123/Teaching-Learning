@@ -55,7 +55,7 @@ const DOMAINS = [
   {
     id: 'domain-1',
     eyebrow: 'Domain 1',
-    title: 'The Learning Environment — Culture, Management, and Relationships',
+    title: 'The Learning Environment — Culture and Relationships',
     details: {
       definition:
         'Creating and maintaining an organized, efficient, and purposeful learning environment that maximizes time on task, minimizes disruption, and fosters a supportive, intellectually stimulating classroom culture characterized by high expectations, positive relationships, and a shared commitment to thinking and learning.',

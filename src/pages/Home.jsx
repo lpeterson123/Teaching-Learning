@@ -19,7 +19,7 @@ const TEACHING_DOMAINS = [
   {
     id: 'domain-1',
     eyebrow: 'Domain I',
-    title: 'The Learning Environment — Culture, Management, and Relationships',
+    title: 'The Learning Environment — Culture and Relationships',
     body: (
       <p>
         Creating and maintaining an organized, efficient, and purposeful learning
@@ -145,9 +145,8 @@ export default function Home() {
     <>
       <section className="home-hero" aria-labelledby="home-hero-title">
         <div className="container home-hero__inner">
-          <p className="home-hero__eyebrow">Teaching &amp; Learning</p>
           <h1 id="home-hero-title" className="home-hero__title">
-            Our Learning &amp; Teaching Framework
+            Our Teaching &amp; Learning Framework
           </h1>
           <p className="home-hero__subtitle">
             A shared vision for intentional teaching and empowered student
