@@ -6,7 +6,7 @@ import './CommunityEquity.css';
 const COMPETENCIES = [
   {
     id: 'knowledge',
-    name: 'Knowledge of Other Cultures',
+    name: 'Cultural Knowledge',
     exceeding:
       "Teachers demonstrate sophisticated understanding of other cultures' histories, values, communication styles, and practices.",
     suggestions: [
@@ -34,7 +34,7 @@ const COMPETENCIES = [
   },
   {
     id: 'engagement',
-    name: 'Intentional Intercultural Engagement',
+    name: 'Intentional Cultural Engagement',
     exceeding:
       'Teachers consistently incorporate diverse perspectives and facilitate shared understanding among students.',
     suggestions: [
@@ -57,38 +57,6 @@ const COMPETENCIES = [
       {
         term: 'Model curiosity and humility',
         body: 'when engaging with perspectives different from your own.',
-      },
-    ],
-  },
-  {
-    id: 'growth',
-    name: 'Focus on Intercultural Growth',
-    exceeding:
-      'Teachers demonstrate adjusted attitudes from working across differences and promote engagement with diversity.',
-    suggestions: [
-      {
-        term: 'Reflect regularly',
-        body: 'on how your own cultural position shapes your teaching assumptions and practices.',
-      },
-      {
-        term: 'Seek feedback',
-        body: 'from students, families, and colleagues from different backgrounds about your teaching.',
-      },
-      {
-        term: 'Share your own growth journey',
-        body: 'with students—model that intercultural learning is lifelong.',
-      },
-      {
-        term: 'Create structures for student reflection',
-        body: 'on their own cultural assumptions and growth.',
-      },
-      {
-        term: 'Frame mistakes as learning opportunities',
-        body: '—both for yourself and students—when navigating cultural difference.',
-      },
-      {
-        term: 'Build relationships',
-        body: 'with colleagues from different backgrounds; learn from how they approach teaching.',
       },
     ],
   },
@@ -121,6 +89,38 @@ const COMPETENCIES = [
       {
         term: 'Adjust your communication style',
         body: 'when working with families from different cultural backgrounds.',
+      },
+    ],
+  },
+  {
+    id: 'growth',
+    name: 'Assess and Reap Benefits of Intercultural Growth',
+    exceeding:
+      'Teachers demonstrate adjusted attitudes from working across differences and promote engagement with diversity.',
+    suggestions: [
+      {
+        term: 'Reflect regularly',
+        body: 'on how your own cultural position shapes your teaching assumptions and practices.',
+      },
+      {
+        term: 'Seek feedback',
+        body: 'from students, families, and colleagues from different backgrounds about your teaching.',
+      },
+      {
+        term: 'Share your own growth journey',
+        body: 'with students—model that intercultural learning is lifelong.',
+      },
+      {
+        term: 'Create structures for student reflection',
+        body: 'on their own cultural assumptions and growth.',
+      },
+      {
+        term: 'Frame mistakes as learning opportunities',
+        body: '—both for yourself and students—when navigating cultural difference.',
+      },
+      {
+        term: 'Build relationships',
+        body: 'with colleagues from different backgrounds; learn from how they approach teaching.',
       },
     ],
   },
@@ -269,7 +269,7 @@ const ALIGNMENTS = [
   {
     id: 'knowledge',
     eyebrow: '1',
-    title: 'Knowledge of Other Cultures',
+    title: 'Cultural Knowledge',
     disciplines: [
       {
         id: 'humanities',
@@ -325,7 +325,7 @@ const ALIGNMENTS = [
   {
     id: 'engagement',
     eyebrow: '2',
-    title: 'Intentional Intercultural Engagement',
+    title: 'Intentional Cultural Engagement',
     disciplines: [
       {
         id: 'humanities',
@@ -379,65 +379,8 @@ const ALIGNMENTS = [
     ],
   },
   {
-    id: 'growth',
-    eyebrow: '3',
-    title: 'Focus on Intercultural Growth',
-    disciplines: [
-      {
-        id: 'humanities',
-        name: 'Humanities',
-        items: [
-          'Incorporate reflective writing where students examine how their own backgrounds shape their interpretations',
-          "Teach students to notice when they're making assumptions based on their own cultural lens",
-          'Use "cultural autobiography" assignments that help students examine their own identities',
-          'Model intellectual humility when you discover your own blind spots in interpreting texts or history',
-        ],
-      },
-      {
-        id: 'math',
-        name: 'Math',
-        items: [
-          'Examine and question assumptions about who is "good at math" and where those assumptions come from',
-          'Reflect on how you form expectations of students and whether cultural biases influence those expectations',
-          'Create space for students to reflect on their own math identity and experiences',
-          'Challenge fixed mindset language that may correlate with cultural stereotypes',
-        ],
-      },
-      {
-        id: 'science',
-        name: 'Science',
-        items: [
-          'Critically examine case studies where scientific "objectivity" was compromised by cultural bias (e.g., historical medical racism)',
-          'Have students research how their own communities have been impacted by scientific research—positively or negatively',
-          'Reflect on representation in science and what messages students receive about who belongs',
-          'Create science autobiography assignments where students trace their relationship to science',
-        ],
-      },
-      {
-        id: 'languages',
-        name: 'Languages',
-        items: [
-          'Encourage students to reflect on their own cultural communication styles and how they differ from target-culture norms',
-          'Examine language hierarchies: why some accents or dialects are valued over others',
-          "Create assignments where students explore their family's language history",
-          'Model for students when you learn something new about the target culture that surprises you',
-        ],
-      },
-      {
-        id: 'arts',
-        name: 'The Arts',
-        items: [
-          'Build in regular self-reflection on artistic choices and their cultural influences',
-          'Examine how standards of "good art" or "good technique" are culturally constructed',
-          'Have students create artist statements that address their cultural identities and influences',
-          'Create critique protocols that ask "What cultural perspective might I be missing in my response to this work?"',
-        ],
-      },
-    ],
-  },
-  {
     id: 'responsiveness',
-    eyebrow: '4',
+    eyebrow: '3',
     title: 'Intercultural Responsiveness',
     disciplines: [
       {
@@ -489,6 +432,63 @@ const ALIGNMENTS = [
           'Analyze how art can perpetuate stereotypes—and how it can challenge them',
           "Discuss power dynamics in whose art gets funding, exhibition space, and critical attention",
           'Create opportunities for students to use art as a medium for exploring and expressing cultural identity',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'growth',
+    eyebrow: '4',
+    title: 'Assess and Reap Benefits of Intercultural Growth',
+    disciplines: [
+      {
+        id: 'humanities',
+        name: 'Humanities',
+        items: [
+          'Incorporate reflective writing where students examine how their own backgrounds shape their interpretations',
+          "Teach students to notice when they're making assumptions based on their own cultural lens",
+          'Use "cultural autobiography" assignments that help students examine their own identities',
+          'Model intellectual humility when you discover your own blind spots in interpreting texts or history',
+        ],
+      },
+      {
+        id: 'math',
+        name: 'Math',
+        items: [
+          'Examine and question assumptions about who is "good at math" and where those assumptions come from',
+          'Reflect on how you form expectations of students and whether cultural biases influence those expectations',
+          'Create space for students to reflect on their own math identity and experiences',
+          'Challenge fixed mindset language that may correlate with cultural stereotypes',
+        ],
+      },
+      {
+        id: 'science',
+        name: 'Science',
+        items: [
+          'Critically examine case studies where scientific "objectivity" was compromised by cultural bias (e.g., historical medical racism)',
+          'Have students research how their own communities have been impacted by scientific research—positively or negatively',
+          'Reflect on representation in science and what messages students receive about who belongs',
+          'Create science autobiography assignments where students trace their relationship to science',
+        ],
+      },
+      {
+        id: 'languages',
+        name: 'Languages',
+        items: [
+          'Encourage students to reflect on their own cultural communication styles and how they differ from target-culture norms',
+          'Examine language hierarchies: why some accents or dialects are valued over others',
+          "Create assignments where students explore their family's language history",
+          'Model for students when you learn something new about the target culture that surprises you',
+        ],
+      },
+      {
+        id: 'arts',
+        name: 'The Arts',
+        items: [
+          'Build in regular self-reflection on artistic choices and their cultural influences',
+          'Examine how standards of "good art" or "good technique" are culturally constructed',
+          'Have students create artist statements that address their cultural identities and influences',
+          'Create critique protocols that ask "What cultural perspective might I be missing in my response to this work?"',
         ],
       },
     ],
