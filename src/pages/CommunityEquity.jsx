@@ -8,7 +8,7 @@ const COMPETENCIES = [
     id: 'knowledge',
     name: 'Cultural Knowledge',
     exceeding:
-      "Teachers demonstrate sophisticated understanding of other cultures' histories, values, communication styles, and practices.",
+      'We demonstrate a sophisticated understanding of the range of cultures represented by students, co-workers, and families. Importantly, this includes the educator’s own culture and the School’s culture—institutional and social.',
     suggestions: [
       {
         term: 'Audit your curriculum',
@@ -36,7 +36,7 @@ const COMPETENCIES = [
     id: 'engagement',
     name: 'Intentional Cultural Engagement',
     exceeding:
-      'Teachers consistently incorporate diverse perspectives and facilitate shared understanding among students.',
+      'Teachers consistently incorporate diverse perspectives of learning and assessment, facilitate shared understanding among students and appreciation of cultures among students, and demonstrate awareness of the benefits and limitations of the teacher’s own cultural vantage.',
     suggestions: [
       {
         term: 'Design collaborative activities',
@@ -64,7 +64,7 @@ const COMPETENCIES = [
     id: 'responsiveness',
     name: 'Intercultural Responsiveness',
     exceeding:
-      'Teachers ask complex questions, assess their own biases, and seek multiple cultural perspectives.',
+      'Teachers regularly take measures to correct and recalibrate in awareness of their own biases; they ask complex questions (first of themselves and then of their students); and they seek multiple cultural perspectives, especially in terms of the expectations that surround teachers’ delivery of information, students’ studying and retention of information, and student assessment.',
     suggestions: [
       {
         term: 'Intervene thoughtfully',
@@ -96,7 +96,7 @@ const COMPETENCIES = [
     id: 'growth',
     name: 'Assess and Reap Benefits of Intercultural Growth',
     exceeding:
-      'Teachers demonstrate adjusted attitudes from working across differences and promote engagement with diversity.',
+      'Teachers assess and reap the benefits of their growth during the cycle. In so doing, they demonstrate adjusted attitudes from working across differences and they continually promote engagement with other cultures, including revised approaches in areas expected and unexpected, including growth experiences from which others might benefit.',
     suggestions: [
       {
         term: 'Reflect regularly',
