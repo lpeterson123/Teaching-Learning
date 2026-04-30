@@ -56,9 +56,21 @@
   line-height: 1.55;
 }
 
+/* Mission Statement — full-width band between hero and the two-column grid */
+.mission {
+  padding: 3.5rem 0 1.5rem;
+  background-color: #ffffff;
+}
+
+.mission .framework__column--mission {
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: left;
+}
+
 /* Framework grid */
 .framework {
-  padding: 3.5rem 0 4rem;
+  padding: 1.5rem 0 4rem;
   background-color: #ffffff;
 }
 
@@ -111,17 +123,12 @@
   color: var(--slate-700);
 }
 
-/* Responsive: three columns on wide screens */
-@media (min-width: 1000px) {
+/* Responsive: two columns on wide screens (mission is now its own band above) */
+@media (min-width: 900px) {
   .framework__grid {
-    grid-template-columns: 1.15fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 2.5rem;
     align-items: start;
-  }
-
-  .framework__column--mission {
-    position: sticky;
-    top: calc(var(--nav-height) + 1.5rem);
   }
 }
 

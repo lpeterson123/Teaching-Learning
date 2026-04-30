@@ -155,15 +155,22 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="framework" aria-label="Framework">
-        <div className="container framework__grid">
-          <article className="framework__column framework__column--mission" aria-labelledby="col-1-title">
-            <h2 id="col-1-title" className="framework__heading">
+      <section className="mission" aria-labelledby="mission-title">
+        <div className="container">
+          <article
+            className="framework__column framework__column--mission"
+            aria-labelledby="mission-title"
+          >
+            <h2 id="mission-title" className="framework__heading">
               Mission Statement
             </h2>
             <p className="framework__prose">{MISSION_STATEMENT}</p>
           </article>
+        </div>
+      </section>
 
+      <section className="framework" aria-label="Framework">
+        <div className="container framework__grid">
           <article className="framework__column" aria-labelledby="col-2-title">
             <h2 id="col-2-title" className="framework__heading">
               Key Domains of Teaching Excellence
