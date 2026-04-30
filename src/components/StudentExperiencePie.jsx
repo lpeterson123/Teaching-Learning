@@ -49,60 +49,62 @@ export default function StudentExperiencePie({ items, activeId, onActiveChange }
 
   return (
     <div className="pie">
-      <div className="pie__chart">
-        <svg
-          className="pie__svg"
-          viewBox="0 0 440 440"
-          role="img"
-          aria-label="Our students' experience — four equal portions"
-        >
-          {slicePaths.map((d, i) => {
-            const item = items[i];
-            const isActive = activeIdx === i;
+      <div className="pie__top">
+        <ul className="pie__legend" aria-label="Legend">
+          {LEGEND_ORDER.map((idx) => {
+            const item = items[idx];
+            const isActive = activeIdx === idx;
             return (
-              <path
+              <li
                 key={item.id}
-                className={`pie__slice${isActive ? ' pie__slice--active' : ''}`}
-                d={d}
-                fill={item.color}
-                tabIndex={0}
-                role="button"
-                aria-pressed={isActive}
-                aria-label={item.title}
+                className={`pie__legend-item${isActive ? ' pie__legend-item--active' : ''}`}
                 onMouseEnter={setActive(item.id)}
                 onMouseLeave={clearActive}
                 onFocus={setActive(item.id)}
                 onBlur={clearActive}
-              />
+                tabIndex={0}
+              >
+                <span
+                  className="pie__legend-swatch"
+                  style={{ backgroundColor: item.color }}
+                  aria-hidden="true"
+                />
+                <span className="pie__legend-name">{item.title}</span>
+              </li>
             );
           })}
-        </svg>
-      </div>
+        </ul>
 
-      <ul className="pie__legend" aria-label="Legend">
-        {LEGEND_ORDER.map((idx) => {
-          const item = items[idx];
-          const isActive = activeIdx === idx;
-          return (
-            <li
-              key={item.id}
-              className={`pie__legend-item${isActive ? ' pie__legend-item--active' : ''}`}
-              onMouseEnter={setActive(item.id)}
-              onMouseLeave={clearActive}
-              onFocus={setActive(item.id)}
-              onBlur={clearActive}
-              tabIndex={0}
-            >
-              <span
-                className="pie__legend-swatch"
-                style={{ backgroundColor: item.color }}
-                aria-hidden="true"
-              />
-              <span className="pie__legend-name">{item.title}</span>
-            </li>
-          );
-        })}
-      </ul>
+        <div className="pie__chart">
+          <svg
+            className="pie__svg"
+            viewBox="0 0 440 440"
+            role="img"
+            aria-label="Our students' experience — four equal portions"
+          >
+            {slicePaths.map((d, i) => {
+              const item = items[i];
+              const isActive = activeIdx === i;
+              return (
+                <path
+                  key={item.id}
+                  className={`pie__slice${isActive ? ' pie__slice--active' : ''}`}
+                  d={d}
+                  fill={item.color}
+                  tabIndex={0}
+                  role="button"
+                  aria-pressed={isActive}
+                  aria-label={item.title}
+                  onMouseEnter={setActive(item.id)}
+                  onMouseLeave={clearActive}
+                  onFocus={setActive(item.id)}
+                  onBlur={clearActive}
+                />
+              );
+            })}
+          </svg>
+        </div>
+      </div>
 
       <div className="pie__panel" role="status" aria-live="polite">
         {active ? (

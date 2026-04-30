@@ -5,6 +5,22 @@
   flex: 1;
 }
 
+/* Row that pairs the 2x2 legend with the donut chart. Legend is on the
+   left, chart on the right. Stacks on narrow screens. */
+.pie__top {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.85fr) minmax(0, 1.15fr);
+  gap: 1.5rem;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .pie__top {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
 .pie__chart {
   display: flex;
   justify-content: center;
@@ -12,7 +28,7 @@
 
 .pie__svg {
   width: 100%;
-  max-width: 420px;
+  max-width: 380px;
   height: auto;
   display: block;
   overflow: visible;
