@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  flex: 1;
 }
 
 .pie__chart {
@@ -11,14 +12,14 @@
 
 .pie__svg {
   width: 100%;
-  max-width: 520px;
+  max-width: 420px;
   height: auto;
   display: block;
   overflow: visible;
 }
 
-/* Each slice: subtle white separator, animated pop on hover/focus */
-.pie__slice path {
+/* Donut wedges — subtle white separators, pop on hover/focus */
+.pie__slice {
   stroke: #ffffff;
   stroke-width: 3;
   cursor: pointer;
@@ -26,34 +27,71 @@
   transition: transform 220ms ease, filter 220ms ease;
 }
 
-.pie__slice path:focus {
+.pie__slice:focus {
   outline: none;
 }
 
-.pie__slice path:focus-visible {
+.pie__slice:focus-visible {
   outline: 3px solid var(--ehs-light-blue);
   outline-offset: 2px;
 }
 
-.pie__slice--active path {
+.pie__slice--active {
   transform: scale(1.04);
   filter: brightness(1.08) drop-shadow(0 4px 10px rgba(15, 23, 42, 0.18));
 }
 
-.pie__label {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  font-size: 18px;
-  fill: #ffffff;
-  pointer-events: none;
-  letter-spacing: 0.01em;
+/* 2×2 legend below the chart */
+.pie__legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1.25rem;
+}
+
+.pie__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  outline: none;
+}
+
+.pie__legend-item:hover,
+.pie__legend-item:focus-visible {
+  background-color: var(--slate-50);
+}
+
+.pie__legend-item--active {
+  background-color: var(--slate-100);
+}
+
+.pie__legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pie__legend-name {
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--slate-800);
+  line-height: 1.25;
 }
 
 /* Hint / active card panel */
 .pie__panel {
-  min-height: 130px;
+  flex: 1;
   display: flex;
   align-items: stretch;
+  min-height: 130px;
 }
 
 .pie__hint {
@@ -115,15 +153,10 @@
   }
 }
 
-@media (max-width: 480px) {
-  .pie__label {
-    font-size: 15px;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .pie__slice path,
-  .pie__card {
+  .pie__slice,
+  .pie__card,
+  .pie__legend-item {
     transition: none;
     animation: none;
   }

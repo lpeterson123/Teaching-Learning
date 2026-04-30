@@ -86,16 +86,6 @@
   min-width: 0;
 }
 
-.framework__eyebrow {
-  margin: 0 0 0.35rem;
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ehs-maroon);
-}
-
 .framework__heading {
   margin: 0 0 1rem;
   font-family: var(--font-serif);
@@ -123,12 +113,14 @@
   color: var(--slate-700);
 }
 
-/* Responsive: two columns on wide screens (mission is now its own band above) */
+/* Responsive: two columns on wide screens (mission is now its own band above).
+   Use stretch alignment so both columns share the row's full height; the pie
+   column's description panel expands via flex to match the domains accordion. */
 @media (min-width: 900px) {
   .framework__grid {
     grid-template-columns: 1fr 1fr;
     gap: 2.5rem;
-    align-items: start;
+    align-items: stretch;
   }
 }
 
