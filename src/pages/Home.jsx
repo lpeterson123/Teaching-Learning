@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import Accordion from '../components/Accordion.jsx';
+import StudentExperiencePie from '../components/StudentExperiencePie.jsx';
 import './Home.css';
 
 const MISSION_STATEMENT = `Our Learning and Teaching Framework is anchored in the belief that
@@ -83,52 +84,30 @@ const STUDENT_EXPERIENCE = [
   {
     id: 'experience-1',
     title: 'Voice & Ownership',
-    body: (
-      <p>
-        Students shape, plan, and lead their own learning. They set meaningful
-        goals, reflect on progress, and provide feedback on their educational
-        experience. Through a growth mindset, they develop resilience, embrace
-        challenges, learn from feedback, and take responsibility as members of a
-        caring community.
-      </p>
-    ),
+    titleLines: ['Voice &', 'Ownership'],
+    body:
+      'Students shape, plan, and lead their own learning. They set meaningful goals, reflect on progress, and provide feedback on their educational experience. Through a growth mindset, they develop resilience, embrace challenges, learn from feedback, and take responsibility as members of a caring community.',
   },
   {
     id: 'experience-2',
     title: 'Personalized Growth',
-    body: (
-      <p>
-        Every student is supported and challenged through differentiated
-        outcomes, flexible groupings, and appropriate accommodations. Growth is
-        tracked through balanced internal and external data, enabling
-        personalized support, early intervention, and informed goal-setting that
-        honors each learner&rsquo;s trajectory.
-      </p>
-    ),
+    titleLines: ['Personalized', 'Growth'],
+    body:
+      "Every student is supported and challenged through differentiated outcomes, flexible groupings, and appropriate accommodations. Growth is tracked through balanced internal and external data, enabling personalized support, early intervention, and informed goal-setting that honors each learner’s trajectory.",
   },
   {
     id: 'experience-3',
     title: 'Purposeful Pedagogy',
-    body: (
-      <p>
-        Teachers employ varied questioning techniques, thinking routines, and a
-        shared academic vocabulary that makes learning visible and transferable
-        across disciplines. Assessment is continuous, practical, and integral to
-        learning. Technology extends and enhances learning when it serves a
-        clear pedagogical purpose.
-      </p>
-    ),
+    titleLines: ['Purposeful', 'Pedagogy'],
+    body:
+      'Teachers employ varied questioning techniques, thinking routines, and a shared academic vocabulary that makes learning visible and transferable across disciplines. Assessment is continuous, practical, and integral to learning. Technology extends and enhances learning when it serves a clear pedagogical purpose.',
   },
   {
     id: 'experience-4',
     title: 'Learning Beyond the Classroom',
-    body: (
-      <p>
-        Students pursue opportunities that extend learning and leadership beyond
-        campus&mdash;through service, internships, and engagement with the greater
-        Washington, D.C. community and the world beyond.
-      </p>
-    ),
+    titleLines: ['Learning Beyond', 'the Classroom'],
+    body:
+      'Students pursue opportunities that extend learning and leadership beyond campus—through service, internships, and engagement with the greater Washington, D.C. community and the world beyond.',
   },
 ];
 
@@ -171,27 +150,24 @@ export default function Home() {
 
       <section className="framework" aria-label="Framework">
         <div className="container framework__grid">
-          <article className="framework__column" aria-labelledby="col-2-title">
-            <h2 id="col-2-title" className="framework__heading">
+          <article className="framework__column" aria-labelledby="col-experience-title">
+            <h2 id="col-experience-title" className="framework__heading">
+              Our Students&rsquo; Experience
+            </h2>
+            <p className="framework__hint">
+              Hover or focus a wedge to read about that experience.
+            </p>
+            <StudentExperiencePie items={STUDENT_EXPERIENCE} />
+          </article>
+
+          <article className="framework__column" aria-labelledby="col-domains-title">
+            <h2 id="col-domains-title" className="framework__heading">
               Key Domains of Teaching Excellence
             </h2>
             <p className="framework__hint">Select a domain to read more.</p>
             <Accordion
               items={TEACHING_DOMAINS}
               ariaLabel="Key Domains of Teaching Excellence"
-            />
-          </article>
-
-          <article className="framework__column" aria-labelledby="col-3-title">
-            <h2 id="col-3-title" className="framework__heading">
-              Our Students&rsquo; Experience
-            </h2>
-            <p className="framework__hint">
-              Select an outcome to read more.
-            </p>
-            <Accordion
-              items={STUDENT_EXPERIENCE}
-              ariaLabel="Our Students' Experience: Impact and Outcome"
             />
           </article>
         </div>

@@ -1,0 +1,130 @@
+.pie {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.pie__chart {
+  display: flex;
+  justify-content: center;
+}
+
+.pie__svg {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* Each slice: subtle white separator, animated pop on hover/focus */
+.pie__slice path {
+  stroke: #ffffff;
+  stroke-width: 3;
+  cursor: pointer;
+  transform-origin: 200px 200px;
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.pie__slice path:focus {
+  outline: none;
+}
+
+.pie__slice path:focus-visible {
+  outline: 3px solid var(--ehs-light-blue);
+  outline-offset: 2px;
+}
+
+.pie__slice--active path {
+  transform: scale(1.04);
+  filter: brightness(1.08) drop-shadow(0 4px 10px rgba(15, 23, 42, 0.18));
+}
+
+.pie__label {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 18px;
+  fill: #ffffff;
+  pointer-events: none;
+  letter-spacing: 0.01em;
+}
+
+/* Hint / active card panel */
+.pie__panel {
+  min-height: 130px;
+  display: flex;
+  align-items: stretch;
+}
+
+.pie__hint {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--slate-500);
+  align-self: center;
+  padding: 1rem 0.5rem;
+  border-top: 1px dashed var(--color-border);
+}
+
+.pie__card {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  animation: pie-card-in 180ms ease;
+}
+
+.pie__card-swatch {
+  flex-shrink: 0;
+  width: 6px;
+  align-self: stretch;
+  border-radius: 999px;
+  margin-top: 2px;
+}
+
+.pie__card-title {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: var(--slate-900);
+}
+
+.pie__card-body {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: var(--slate-700);
+}
+
+@keyframes pie-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .pie__label {
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pie__slice path,
+  .pie__card {
+    transition: none;
+    animation: none;
+  }
+}
