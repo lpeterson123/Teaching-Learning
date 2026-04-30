@@ -7,7 +7,7 @@ import './Home.css';
 // Hovering or focusing a wedge / legend row highlights those domains in the
 // accordion next to the chart.
 const EXPERIENCE_TO_DOMAINS = {
-  'experience-voice': ['domain-1', 'domain-5'],
+  'experience-voice': ['domain-1', 'domain-3', 'domain-5'],
   'experience-personalized': ['domain-1', 'domain-4', 'domain-5'],
   'experience-pedagogy': ['domain-2', 'domain-3', 'domain-5'],
   'experience-beyond': ['domain-1', 'domain-2', 'domain-3'],
