@@ -171,17 +171,6 @@ export default function Home() {
 
       <section className="framework" aria-label="Framework">
         <div className="container framework__grid">
-          <article className="framework__column" aria-labelledby="col-2-title">
-            <h2 id="col-2-title" className="framework__heading">
-              Key Domains of Teaching Excellence
-            </h2>
-            <p className="framework__hint">Select a domain to read more.</p>
-            <Accordion
-              items={TEACHING_DOMAINS}
-              ariaLabel="Key Domains of Teaching Excellence"
-            />
-          </article>
-
           <article className="framework__column" aria-labelledby="col-3-title">
             <h2 id="col-3-title" className="framework__heading">
               Our Students&rsquo; Experience
@@ -192,6 +181,17 @@ export default function Home() {
             <Accordion
               items={STUDENT_EXPERIENCE}
               ariaLabel="Our Students' Experience: Impact and Outcome"
+            />
+          </article>
+
+          <article className="framework__column" aria-labelledby="col-2-title">
+            <h2 id="col-2-title" className="framework__heading">
+              Key Domains of Teaching Excellence
+            </h2>
+            <p className="framework__hint">Select a domain to read more.</p>
+            <Accordion
+              items={TEACHING_DOMAINS}
+              ariaLabel="Key Domains of Teaching Excellence"
             />
           </article>
         </div>
