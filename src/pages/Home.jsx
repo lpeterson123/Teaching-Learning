@@ -1,7 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Accordion from '../components/Accordion.jsx';
 import StudentExperiencePie from '../components/StudentExperiencePie.jsx';
 import './Home.css';
+
+// Each student experience connects to a subset of the five teaching domains.
+// Hovering or focusing a wedge / legend row highlights those domains in the
+// accordion next to the chart.
+const EXPERIENCE_TO_DOMAINS = {
+  'experience-voice': ['domain-1', 'domain-5'],
+  'experience-personalized': ['domain-1', 'domain-4', 'domain-5'],
+  'experience-pedagogy': ['domain-2', 'domain-3', 'domain-5'],
+  'experience-beyond': ['domain-1', 'domain-2', 'domain-3'],
+};
 
 const MISSION_STATEMENT = `Our Learning and Teaching Framework is anchored in the belief that
 intentionality drives excellence. High-quality teaching is a deliberate,
@@ -118,6 +128,8 @@ const STUDENT_EXPERIENCE = [
 ];
 
 export default function Home() {
+  const [activeExperienceId, setActiveExperienceId] = useState(null);
+
   useEffect(() => {
     const previous = document.title;
     document.title = 'Home | Episcopal High School';
@@ -125,6 +137,17 @@ export default function Home() {
       document.title = previous;
     };
   }, []);
+
+  const activeExperience = STUDENT_EXPERIENCE.find(
+    (e) => e.id === activeExperienceId,
+  );
+  const highlightedDomains = useMemo(
+    () =>
+      activeExperienceId
+        ? new Set(EXPERIENCE_TO_DOMAINS[activeExperienceId] ?? [])
+        : new Set(),
+    [activeExperienceId],
+  );
 
   return (
     <>
@@ -161,9 +184,14 @@ export default function Home() {
               Our Students&rsquo; Experience
             </h2>
             <p className="framework__hint">
-              Hover or focus a wedge to read about that experience.
+              Hover or focus a wedge to read about that experience and see the
+              connected teaching domains light up.
             </p>
-            <StudentExperiencePie items={STUDENT_EXPERIENCE} />
+            <StudentExperiencePie
+              items={STUDENT_EXPERIENCE}
+              activeId={activeExperienceId}
+              onActiveChange={setActiveExperienceId}
+            />
           </article>
 
           <article className="framework__column" aria-labelledby="col-domains-title">
@@ -174,6 +202,8 @@ export default function Home() {
             <Accordion
               items={TEACHING_DOMAINS}
               ariaLabel="Key Domains of Teaching Excellence"
+              highlightedIds={highlightedDomains}
+              highlightColor={activeExperience?.color}
             />
           </article>
         </div>

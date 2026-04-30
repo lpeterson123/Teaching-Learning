@@ -38,14 +38,14 @@ function buildSlice(i) {
 //   Bottom row: BL, BR    => indices [2, 1]
 const LEGEND_ORDER = [3, 0, 2, 1];
 
-export default function StudentExperiencePie({ items }) {
-  const [activeIdx, setActiveIdx] = useState(null);
+export default function StudentExperiencePie({ items, activeId, onActiveChange }) {
   const slicePaths = items.map((_, i) => buildSlice(i));
 
-  const setActive = (i) => () => setActiveIdx(i);
-  const clearActive = () => setActiveIdx(null);
+  const setActive = (id) => () => onActiveChange?.(id);
+  const clearActive = () => onActiveChange?.(null);
 
-  const active = activeIdx !== null ? items[activeIdx] : null;
+  const activeIdx = items.findIndex((item) => item.id === activeId);
+  const active = activeIdx >= 0 ? items[activeIdx] : null;
 
   return (
     <div className="pie">
@@ -69,9 +69,9 @@ export default function StudentExperiencePie({ items }) {
                 role="button"
                 aria-pressed={isActive}
                 aria-label={item.title}
-                onMouseEnter={setActive(i)}
+                onMouseEnter={setActive(item.id)}
                 onMouseLeave={clearActive}
-                onFocus={setActive(i)}
+                onFocus={setActive(item.id)}
                 onBlur={clearActive}
               />
             );
@@ -87,9 +87,9 @@ export default function StudentExperiencePie({ items }) {
             <li
               key={item.id}
               className={`pie__legend-item${isActive ? ' pie__legend-item--active' : ''}`}
-              onMouseEnter={setActive(idx)}
+              onMouseEnter={setActive(item.id)}
               onMouseLeave={clearActive}
-              onFocus={setActive(idx)}
+              onFocus={setActive(item.id)}
               onBlur={clearActive}
               tabIndex={0}
             >

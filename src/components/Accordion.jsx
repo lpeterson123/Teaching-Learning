@@ -1,7 +1,7 @@
 import { useId, useState } from 'react';
 import './Accordion.css';
 
-export default function Accordion({ items, ariaLabel }) {
+export default function Accordion({ items, ariaLabel, highlightedIds, highlightColor }) {
   const [openKeys, setOpenKeys] = useState(() => new Set());
   const groupId = useId();
 
@@ -22,11 +22,20 @@ export default function Accordion({ items, ariaLabel }) {
       {items.map((item, index) => {
         const key = item.id ?? index;
         const isOpen = openKeys.has(key);
+        const isHighlighted = highlightedIds?.has(item.id) ?? false;
         const headerId = `${groupId}-h-${index}`;
         const panelId = `${groupId}-p-${index}`;
+        const itemStyle =
+          isHighlighted && highlightColor
+            ? { '--accordion-highlight': highlightColor }
+            : undefined;
 
         return (
-          <li key={key} className={`accordion__item${isOpen ? ' accordion__item--open' : ''}`}>
+          <li
+            key={key}
+            className={`accordion__item${isOpen ? ' accordion__item--open' : ''}${isHighlighted ? ' accordion__item--highlighted' : ''}`}
+            style={itemStyle}
+          >
             <h3 className="accordion__heading">
               <button
                 type="button"
