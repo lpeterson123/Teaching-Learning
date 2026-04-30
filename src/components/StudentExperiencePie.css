@@ -11,7 +11,7 @@
 
 .pie__svg {
   width: 100%;
-  max-width: 420px;
+  max-width: 520px;
   height: auto;
   display: block;
   overflow: visible;
@@ -22,7 +22,7 @@
   stroke: #ffffff;
   stroke-width: 3;
   cursor: pointer;
-  transform-origin: 200px 200px;
+  transform-origin: 220px 220px;
   transition: transform 220ms ease, filter 220ms ease;
 }
 

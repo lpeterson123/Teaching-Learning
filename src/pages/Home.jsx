@@ -80,34 +80,40 @@ const TEACHING_DOMAINS = [
   },
 ];
 
+// Order matches pie geometry: slice 0 = top-right, slice 1 = bottom-right,
+// slice 2 = bottom-left, slice 3 = top-left.
 const STUDENT_EXPERIENCE = [
   {
-    id: 'experience-1',
-    title: 'Voice & Ownership',
-    titleLines: ['Voice &', 'Ownership'],
-    body:
-      'Students shape, plan, and lead their own learning. They set meaningful goals, reflect on progress, and provide feedback on their educational experience. Through a growth mindset, they develop resilience, embrace challenges, learn from feedback, and take responsibility as members of a caring community.',
-  },
-  {
-    id: 'experience-2',
+    id: 'experience-personalized',
     title: 'Personalized Growth',
     titleLines: ['Personalized', 'Growth'],
+    color: '#006890',
     body:
       "Every student is supported and challenged through differentiated outcomes, flexible groupings, and appropriate accommodations. Growth is tracked through balanced internal and external data, enabling personalized support, early intervention, and informed goal-setting that honors each learner’s trajectory.",
   },
   {
-    id: 'experience-3',
+    id: 'experience-beyond',
+    title: 'Learning Beyond the Classroom',
+    titleLines: ['Learning Beyond', 'the Classroom'],
+    color: '#5a1434',
+    body:
+      'Students pursue opportunities that extend learning and leadership beyond campus—through service, internships, and engagement with the greater Washington, D.C. community and the world beyond.',
+  },
+  {
+    id: 'experience-pedagogy',
     title: 'Purposeful Pedagogy',
     titleLines: ['Purposeful', 'Pedagogy'],
+    color: '#54565b',
     body:
       'Teachers employ varied questioning techniques, thinking routines, and a shared academic vocabulary that makes learning visible and transferable across disciplines. Assessment is continuous, practical, and integral to learning. Technology extends and enhances learning when it serves a clear pedagogical purpose.',
   },
   {
-    id: 'experience-4',
-    title: 'Learning Beyond the Classroom',
-    titleLines: ['Learning Beyond', 'the Classroom'],
+    id: 'experience-voice',
+    title: 'Voice & Ownership',
+    titleLines: ['Voice &', 'Ownership'],
+    color: '#7a1e46',
     body:
-      'Students pursue opportunities that extend learning and leadership beyond campus—through service, internships, and engagement with the greater Washington, D.C. community and the world beyond.',
+      'Students shape, plan, and lead their own learning. They set meaningful goals, reflect on progress, and provide feedback on their educational experience. Through a growth mindset, they develop resilience, embrace challenges, learn from feedback, and take responsibility as members of a caring community.',
   },
 ];
 

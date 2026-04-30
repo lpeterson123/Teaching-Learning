@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import './StudentExperiencePie.css';
 
-// Four equal 90° wedges, drawn clockwise starting at 12 o'clock.
-const SLICE_COLORS = ['#7a1e46', '#006890', '#54565b', '#5a1434'];
-
-const CX = 200;
-const CY = 200;
-const R = 170;
+// Four equal 90° wedges drawn clockwise starting at 12 o'clock.
+// Slice 0 = top-right, 1 = bottom-right, 2 = bottom-left, 3 = top-left.
+const CX = 220;
+const CY = 220;
+const R = 200;
 
 function buildSlice(i) {
   const startDeg = i * 90;
@@ -21,10 +20,9 @@ function buildSlice(i) {
 
   const midDeg = startDeg + 45;
   const mid = (midDeg * Math.PI) / 180;
-  const labelR = R * 0.6;
+  const labelR = R * 0.62;
   return {
     path,
-    color: SLICE_COLORS[i],
     labelX: CX + labelR * Math.sin(mid),
     labelY: CY - labelR * Math.cos(mid),
   };
@@ -44,7 +42,7 @@ export default function StudentExperiencePie({ items }) {
       <div className="pie__chart">
         <svg
           className="pie__svg"
-          viewBox="0 0 400 400"
+          viewBox="0 0 440 440"
           role="img"
           aria-label="Our students' experience — four equal portions"
         >
@@ -60,7 +58,7 @@ export default function StudentExperiencePie({ items }) {
               >
                 <path
                   d={s.path}
-                  fill={s.color}
+                  fill={item.color}
                   tabIndex={0}
                   role="button"
                   aria-pressed={isActive}
@@ -96,7 +94,7 @@ export default function StudentExperiencePie({ items }) {
           <article className="pie__card">
             <span
               className="pie__card-swatch"
-              style={{ backgroundColor: SLICE_COLORS[activeIdx] }}
+              style={{ backgroundColor: active.color }}
               aria-hidden="true"
             />
             <div>
