@@ -22,18 +22,13 @@ const SHORT_DOMAIN_NAMES = {
   'domain-5': 'Assessment & Feedback',
 };
 
-const MISSION_STATEMENT = `Our Learning and Teaching Framework is anchored in the belief that
-intentionality drives excellence. High-quality teaching is a deliberate,
-reflective practice focused on creating the optimal conditions—intellectual,
-environmental, and relational—that enable deep thinking, retention, and
-transfer of knowledge. Within our unique 100% boarding community, we move
-beyond content coverage to develop empowered, self-directed learners through
-experiential and interdisciplinary opportunities aligned with the Portrait
-of a Graduate. We are committed to inclusive and equitable learning for all.
-This requires educators to integrate high expectations with deep understanding
-and support, model professional growth, differentiate instruction, and foster
-a climate where every student is challenged, feels a genuine sense of
-belonging, and takes ownership of their journey as a lifelong learner.`;
+const MISSION_STATEMENT = `At the heart of our work is a commitment to every
+learner — ensuring equitable, inclusive conditions where students are
+challenged, supported, and empowered to take ownership of their growth.
+Within our unique 100% boarding, D.C.-area community, we cultivate
+self-directed learners through purposeful experiential and interdisciplinary
+opportunities, while educators model the same professional curiosity,
+collaboration, and lifelong learning we ask of our students.`;
 
 const TEACHING_DOMAINS = [
   {
