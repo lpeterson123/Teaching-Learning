@@ -13,6 +13,15 @@ const EXPERIENCE_TO_DOMAINS = {
   'experience-beyond': ['domain-1', 'domain-2', 'domain-3'],
 };
 
+// Short labels used in the "Driven by" footer of the description card.
+const SHORT_DOMAIN_NAMES = {
+  'domain-1': 'Learning Environment',
+  'domain-2': 'Content Mastery',
+  'domain-3': 'Instructional Clarity',
+  'domain-4': 'Practice & Memory',
+  'domain-5': 'Assessment & Feedback',
+};
+
 const MISSION_STATEMENT = `Our Learning and Teaching Framework is anchored in the belief that
 intentionality drives excellence. High-quality teaching is a deliberate,
 reflective practice focused on creating the optimal conditions—intellectual,
@@ -138,9 +147,20 @@ export default function Home() {
     };
   }, []);
 
-  const activeExperience = STUDENT_EXPERIENCE.find(
-    (e) => e.id === activeExperienceId,
+  // Augment each experience item with the list of short domain names it is
+  // driven by, so the pie's description card can render the "Driven by" line.
+  const pieItems = useMemo(
+    () =>
+      STUDENT_EXPERIENCE.map((exp) => ({
+        ...exp,
+        drivenBy: (EXPERIENCE_TO_DOMAINS[exp.id] ?? []).map(
+          (d) => SHORT_DOMAIN_NAMES[d],
+        ),
+      })),
+    [],
   );
+
+  const activeExperience = pieItems.find((e) => e.id === activeExperienceId);
   const highlightedDomains = useMemo(
     () =>
       activeExperienceId
@@ -188,7 +208,7 @@ export default function Home() {
               connected teaching domains light up.
             </p>
             <StudentExperiencePie
-              items={STUDENT_EXPERIENCE}
+              items={pieItems}
               activeId={activeExperienceId}
               onActiveChange={setActiveExperienceId}
             />

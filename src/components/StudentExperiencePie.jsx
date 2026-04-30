@@ -106,16 +106,24 @@ export default function StudentExperiencePie({ items, activeId, onActiveChange }
 
       <div className="pie__panel" role="status" aria-live="polite">
         {active ? (
-          <article className="pie__card">
-            <span
-              className="pie__card-swatch"
-              style={{ backgroundColor: active.color }}
-              aria-hidden="true"
-            />
-            <div>
-              <h3 className="pie__card-title">{active.title}</h3>
-              <p className="pie__card-body">{active.body}</p>
-            </div>
+          <article
+            className="pie__card"
+            style={{ '--card-accent': active.color }}
+          >
+            <p className="pie__card-eyebrow">Student Outcome</p>
+            <h3 className="pie__card-title">{active.title}</h3>
+            <p className="pie__card-body">{active.body}</p>
+            {active.drivenBy && active.drivenBy.length > 0 && (
+              <>
+                <hr className="pie__card-divider" />
+                <p className="pie__card-driven">
+                  <span className="pie__card-driven-label">Driven by</span>
+                  <span className="pie__card-driven-list">
+                    {active.drivenBy.join(' · ')}
+                  </span>
+                </p>
+              </>
+            )}
           </article>
         ) : (
           <p className="pie__hint">
