@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import './StudentExperiencePie.css';
 
 // Annular sector geometry. Slice 0 = top-right, then clockwise.
@@ -38,14 +38,45 @@ function buildSlice(i) {
 //   Bottom row: BL, BR    => indices [2, 1]
 const LEGEND_ORDER = [3, 0, 2, 1];
 
-export default function StudentExperiencePie({ items, activeId, onActiveChange }) {
+export default function StudentExperiencePie({
+  items,
+  activeId,
+  pinnedId,
+  onActiveChange,
+  onTogglePin,
+}) {
   const slicePaths = items.map((_, i) => buildSlice(i));
 
   const setActive = (id) => () => onActiveChange?.(id);
   const clearActive = () => onActiveChange?.(null);
 
+  const togglePin = (id) => (event) => {
+    event.preventDefault();
+    onTogglePin?.(id);
+  };
+
+  const handleKeyToggle = (id) => (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onTogglePin?.(id);
+    }
+  };
+
+  // Esc dismisses the current pin.
+  useEffect(() => {
+    if (!pinnedId) return undefined;
+    const handler = (event) => {
+      if (event.key === 'Escape') {
+        onTogglePin?.(pinnedId);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [pinnedId, onTogglePin]);
+
   const activeIdx = items.findIndex((item) => item.id === activeId);
   const active = activeIdx >= 0 ? items[activeIdx] : null;
+  const isPinnedActive = pinnedId && active && pinnedId === active.id;
 
   return (
     <div className="pie">
@@ -54,14 +85,19 @@ export default function StudentExperiencePie({ items, activeId, onActiveChange }
           {LEGEND_ORDER.map((idx) => {
             const item = items[idx];
             const isActive = activeIdx === idx;
+            const isPinned = pinnedId === item.id;
             return (
               <li
                 key={item.id}
-                className={`pie__legend-item${isActive ? ' pie__legend-item--active' : ''}`}
+                className={`pie__legend-item${isActive ? ' pie__legend-item--active' : ''}${isPinned ? ' pie__legend-item--pinned' : ''}`}
                 onMouseEnter={setActive(item.id)}
                 onMouseLeave={clearActive}
                 onFocus={setActive(item.id)}
                 onBlur={clearActive}
+                onClick={togglePin(item.id)}
+                onKeyDown={handleKeyToggle(item.id)}
+                role="button"
+                aria-pressed={isPinned}
                 tabIndex={0}
               >
                 <span
@@ -85,20 +121,26 @@ export default function StudentExperiencePie({ items, activeId, onActiveChange }
             {slicePaths.map((d, i) => {
               const item = items[i];
               const isActive = activeIdx === i;
+              const isPinned = pinnedId === item.id;
+              const cls = ['pie__slice'];
+              if (isActive) cls.push('pie__slice--active');
+              if (isPinned) cls.push('pie__slice--pinned');
               return (
                 <path
                   key={item.id}
-                  className={`pie__slice${isActive ? ' pie__slice--active' : ''}`}
+                  className={cls.join(' ')}
                   d={d}
                   fill={item.color}
                   tabIndex={0}
                   role="button"
-                  aria-pressed={isActive}
-                  aria-label={item.title}
+                  aria-pressed={isPinned}
+                  aria-label={`${item.title}${isPinned ? ', pinned' : ''}`}
                   onMouseEnter={setActive(item.id)}
                   onMouseLeave={clearActive}
                   onFocus={setActive(item.id)}
                   onBlur={clearActive}
+                  onClick={togglePin(item.id)}
+                  onKeyDown={handleKeyToggle(item.id)}
                 />
               );
             })}
@@ -109,10 +151,23 @@ export default function StudentExperiencePie({ items, activeId, onActiveChange }
       <div className="pie__panel" role="status" aria-live="polite">
         {active ? (
           <article
-            className="pie__card"
+            className={`pie__card${isPinnedActive ? ' pie__card--pinned' : ''}`}
             style={{ '--card-accent': active.color }}
           >
-            <p className="pie__card-eyebrow">Student Outcome</p>
+            <div className="pie__card-eyebrow-row">
+              <p className="pie__card-eyebrow">Student Outcome</p>
+              {isPinnedActive && (
+                <button
+                  type="button"
+                  className="pie__card-unpin"
+                  onClick={() => onTogglePin?.(active.id)}
+                  aria-label="Unpin this student outcome"
+                  title="Click the wedge again or press Esc to dismiss"
+                >
+                  <span aria-hidden="true">Pinned ×</span>
+                </button>
+              )}
+            </div>
             <h3 className="pie__card-title">{active.title}</h3>
             <p className="pie__card-body">{active.body}</p>
             {active.drivenBy && active.drivenBy.length > 0 && (
@@ -129,8 +184,8 @@ export default function StudentExperiencePie({ items, activeId, onActiveChange }
           </article>
         ) : (
           <p className="pie__hint">
-            Hover (or tab to) a wedge or legend item to read about that part of
-            our students&rsquo; experience.
+            Hover or tab to a wedge to preview, or click to pin its connected
+            teaching domains so you can explore them.
           </p>
         )}
       </div>

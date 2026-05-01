@@ -57,6 +57,17 @@
   filter: brightness(1.08) drop-shadow(0 4px 10px rgba(15, 23, 42, 0.18));
 }
 
+/* When a wedge is pinned (clicked), it stays nudged and gets a slightly
+   thicker white separator so the locked state is visible even when the
+   cursor moves elsewhere. */
+.pie__slice--pinned {
+  stroke-width: 5;
+}
+
+.pie__slice--pinned:not(.pie__slice--active) {
+  transform: scale(1.025);
+}
+
 /* Single-column legend (4 rows) — sits to the left of the donut. */
 .pie__legend {
   list-style: none;
@@ -85,6 +96,10 @@
 
 .pie__legend-item--active {
   background-color: var(--slate-100);
+}
+
+.pie__legend-item--pinned {
+  box-shadow: inset 3px 0 0 var(--ehs-maroon);
 }
 
 .pie__legend-swatch {
@@ -138,14 +153,43 @@
   animation: pie-card-in 180ms ease;
 }
 
-.pie__card-eyebrow {
+.pie__card-eyebrow-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   margin: 0 0 0.55rem;
+}
+
+.pie__card-eyebrow {
+  margin: 0;
   font-family: var(--font-sans);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ehs-maroon);
+}
+
+.pie__card-unpin {
+  appearance: none;
+  background-color: var(--ehs-maroon);
+  color: #ffffff;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.pie__card-unpin:hover,
+.pie__card-unpin:focus-visible {
+  background-color: var(--ehs-maroon-dark);
 }
 
 .pie__card-title {

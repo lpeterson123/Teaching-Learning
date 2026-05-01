@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Accordion from '../components/Accordion.jsx';
 import StudentExperiencePie from '../components/StudentExperiencePie.jsx';
 import './Home.css';
@@ -132,7 +132,16 @@ const STUDENT_EXPERIENCE = [
 ];
 
 export default function Home() {
-  const [activeExperienceId, setActiveExperienceId] = useState(null);
+  // Hover/focus produces a transient "preview"; click pins an experience so
+  // the connected-domain highlight persists. Effective active = preview if
+  // present, otherwise pinned.
+  const [hoverExperienceId, setHoverExperienceId] = useState(null);
+  const [pinnedExperienceId, setPinnedExperienceId] = useState(null);
+  const activeExperienceId = hoverExperienceId ?? pinnedExperienceId;
+
+  const togglePinnedExperience = useCallback((id) => {
+    setPinnedExperienceId((prev) => (prev === id ? null : id));
+  }, []);
 
   useEffect(() => {
     const previous = document.title;
@@ -205,7 +214,9 @@ export default function Home() {
             <StudentExperiencePie
               items={pieItems}
               activeId={activeExperienceId}
-              onActiveChange={setActiveExperienceId}
+              pinnedId={pinnedExperienceId}
+              onActiveChange={setHoverExperienceId}
+              onTogglePin={togglePinnedExperience}
             />
           </article>
 
