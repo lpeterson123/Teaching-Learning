@@ -11,24 +11,28 @@ const COMPETENCIES = [
       'We demonstrate a sophisticated understanding of the range of cultures represented by students, co-workers, and families. Importantly, this includes the educator’s own culture and the School’s culture—institutional and social.',
     suggestions: [
       {
+        term: 'Examine your own cultural identity.',
+        body: 'Take time to learn, then interrogate your own cultural norms, and think about how they play out in the way you relate to students.',
+      },
+      {
         term: 'Audit your curriculum',
-        body: 'for whose voices, histories, and contributions are represented—and whose are missing.',
+        body: 'for whose voices, histories, and contributions are represented and whose are missing.',
       },
       {
         term: 'Learn the cultural backgrounds',
-        body: 'of your students and their families; understand how those backgrounds shape learning preferences and communication styles.',
+        body: 'of your students and their families; understand how culture shapes learning and communication styles.',
       },
       {
         term: 'Engage in ongoing self-education',
-        body: 'about cultures represented in your classroom and broader society (reading, workshops, community events).',
+        body: 'about cultures represented in your classroom and society (reading, workshops, community events).',
       },
       {
-        term: 'Avoid "tourist" approaches',
-        body: 'that reduce cultures to food, holidays, and costumes; explore deeper values, historical contexts, and contemporary realities.',
+        term: 'Move cultural exploration',
+        body: 'beyond food, holidays, and costumes to explore values, historical contexts, and contemporary realities.',
       },
       {
-        term: 'Recognize within-group diversity',
-        body: '—no culture is monolithic.',
+        term: 'Recognize intra-group diversity',
+        body: 'to see that viewpoints and norms vary, even within a single cultural identity.',
       },
     ],
   },
@@ -39,24 +43,32 @@ const COMPETENCIES = [
       'Teachers consistently incorporate diverse perspectives of learning and assessment, facilitate shared understanding among students and appreciation of cultures among students, and demonstrate awareness of the benefits and limitations of the teacher’s own cultural vantage.',
     suggestions: [
       {
-        term: 'Design collaborative activities',
-        body: 'that intentionally mix students across cultural backgrounds.',
+        term: 'Establish and update classroom norms',
+        body: 'that value multiple communication styles and establish guardrails for respectful inquiry about differences.',
       },
       {
-        term: 'Establish classroom norms',
-        body: 'that value multiple communication styles (not just dominant-culture norms like direct eye contact or individual competition).',
+        term: 'Model classroom norms,',
+        body: 'including curiosity and humility, especially when engaging with perspectives and cultures different from your own.',
       },
       {
-        term: 'Create structures for dialogue',
+        term: 'Create structures for dialogue and collaboration',
         body: "where students share perspectives and build on each other's ideas.",
       },
       {
-        term: 'Use varied participation formats',
-        body: ': written reflection, small groups, fishbowl discussions, anonymous polls—so different communication styles can thrive.',
+        term: 'Share the story of your own growth journey',
+        body: 'with students—model vulnerability, showing we never stop learning.',
       },
       {
-        term: 'Model curiosity and humility',
-        body: 'when engaging with perspectives different from your own.',
+        term: 'Use varied participation formats',
+        body: '—written reflection, small groups, fishbowl discussions, anonymous polls—so different communication styles can thrive.',
+      },
+      {
+        term: 'Design collaborative activities',
+        body: 'that intentionally mix students across cultural backgrounds, with reminders and modeling about respectful inquiry.',
+      },
+      {
+        term: 'Whenever possible, practice anonymous grading.',
+        body: 'Note the impulse to guess who you are grading; re-think your exercise of discretion on assessing clarity of expression or how much credit to award for "showing work."',
       },
     ],
   },
@@ -67,24 +79,28 @@ const COMPETENCIES = [
       'Teachers regularly take measures to correct and recalibrate in awareness of their own biases; they ask complex questions (first of themselves and then of their students); and they seek multiple cultural perspectives, especially in terms of the expectations that surround teachers’ delivery of information, students’ studying and retention of information, and student assessment.',
     suggestions: [
       {
+        term: 'Reflect regularly',
+        body: 'on how your own cultural position shapes your teaching assumptions and practices.',
+      },
+      {
+        term: 'Tweak curriculum:',
+        body: 'layer simpler questions and data points to form increasingly complex inquiries about culture, identity, and difference (i.e., avoid surface-level celebrations, affirmations, or statements of allyship).',
+      },
+      {
         term: 'Intervene thoughtfully',
-        body: 'when bias or stereotyping appears in classroom discussions—use it as a teaching moment.',
+        body: 'when bias or stereotyping appears in classroom discussions, and be transparent when it shows up for you—use it as a teaching moment.',
       },
       {
-        term: 'Design curriculum that asks complex questions',
-        body: 'about culture, identity, and difference—not just surface-level celebration.',
+        term: 'Reserve space in your curriculum',
+        body: 'for responding to current events that affect different student communities with care and openness.',
       },
       {
-        term: 'Differentiate instruction',
-        body: 'based on cultural learning styles and needs, not just academic levels.',
-      },
-      {
-        term: 'Respond to current events',
-        body: 'that affect different student communities with care and openness.',
+        term: 'Adapt instruction',
+        body: 'based on cultural learning styles and needs in addition to focusing on the "level" of the course.',
       },
       {
         term: 'Examine your own assumptions',
-        body: 'before reacting to student behavior that may be culturally influenced.',
+        body: 'before reacting to or assessing students or behavior that might be culturally influenced.',
       },
       {
         term: 'Adjust your communication style',
@@ -99,28 +115,24 @@ const COMPETENCIES = [
       'Teachers assess and reap the benefits of their growth during the cycle. In so doing, they demonstrate adjusted attitudes from working across differences and they continually promote engagement with other cultures, including revised approaches in areas expected and unexpected, including growth experiences from which others might benefit.',
     suggestions: [
       {
-        term: 'Reflect regularly',
-        body: 'on how your own cultural position shapes your teaching assumptions and practices.',
+        term: 'Create structures for student reflection',
+        body: 'on their own cultural assumptions and growth, including ongoing reflection on how they respond to your various modes of instruction.',
       },
       {
         term: 'Seek feedback',
         body: 'from students, families, and colleagues from different backgrounds about your teaching.',
       },
       {
-        term: 'Share your own growth journey',
-        body: 'with students—model that intercultural learning is lifelong.',
+        term: 'Acknowledge mistakes and blind spots,',
+        body: 'using them as learning opportunities for yourself and for your students, especially when navigating cultural differences.',
       },
       {
-        term: 'Create structures for student reflection',
-        body: 'on their own cultural assumptions and growth.',
-      },
-      {
-        term: 'Frame mistakes as learning opportunities',
-        body: '—both for yourself and students—when navigating cultural difference.',
+        term: 'Compile the story of your own growth journey,',
+        body: 'using the results of your periodic reflections and check-ins.',
       },
       {
         term: 'Build relationships',
-        body: 'with colleagues from different backgrounds; learn from how they approach teaching.',
+        body: 'with friends and colleagues from different backgrounds and, as relevant, learn how they approach cultural competence in work and their personal lives.',
       },
     ],
   },
