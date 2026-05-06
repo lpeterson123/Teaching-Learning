@@ -205,7 +205,7 @@ export default function Home() {
         <div className="container framework__grid">
           <article className="framework__column" aria-labelledby="col-experience-title">
             <h2 id="col-experience-title" className="framework__heading">
-              Our Students&rsquo; Experience
+              Student Experience
             </h2>
             <p className="framework__hint">
               Hover or focus a wedge to read about that experience and see the
