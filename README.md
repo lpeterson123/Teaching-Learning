@@ -17,7 +17,7 @@ Teaching &amp; Learning department.
 | `/`                          | Home                            |
 | `/teaching-learning`         | Teaching &amp; Learning         |
 | `/community-equity`          | Office of Community and Equity  |
-| `/portrait-of-a-graduate`    | Portrait of a Graduate          |
+| `/washington-program`        | Washington Program              |
 | `/ai`                        | AI                              |
 | `/resources`                 | Resources                       |
 

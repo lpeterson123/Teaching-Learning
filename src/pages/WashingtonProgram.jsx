@@ -1,9 +1,9 @@
 import Placeholder from '../components/Placeholder.jsx';
 
-export default function PortraitOfGraduate() {
+export default function WashingtonProgram() {
   return (
     <Placeholder
-      title="Portrait of a Graduate"
+      title="Washington Program"
       eyebrow="Our Vision"
     />
   );

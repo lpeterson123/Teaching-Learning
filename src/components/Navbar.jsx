@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { to: '/', label: 'Home', end: true },
   { to: '/teaching-learning', label: 'Teaching & Learning' },
   { to: '/community-equity', label: 'Office of Community and Equity' },
-  { to: '/portrait-of-a-graduate', label: 'Portrait of a Graduate' },
+  { to: '/washington-program', label: 'Washington Program' },
   { to: '/ai', label: 'AI' },
   { to: '/resources', label: 'Resources' },
 ];
