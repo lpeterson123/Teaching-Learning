@@ -287,9 +287,9 @@ const ALIGNMENTS = [
         id: 'humanities',
         name: 'Humanities',
         items: [
-          'Teach historical events from multiple cultural perspectives (e.g., colonization from Indigenous viewpoints, the Cold War from Global South perspectives)',
+          'Teach from multiple perspectives (e.g., colonization from Indigenous viewpoints, the Cold War from Global South perspectives)',
           'Include literature by authors from diverse backgrounds as central texts, not supplements',
-          'Examine how power structures have shaped whose stories get told and preserved',
+          'Examine how power structures have shaped whose stories are preserved and celebrated',
           'Analyze primary sources from non-Western archives and oral traditions',
         ],
       },
@@ -297,9 +297,10 @@ const ALIGNMENTS = [
         id: 'math',
         name: 'Math',
         items: [
-          'Explore the global history of mathematics: contributions from Babylonian, Indian, Chinese, Islamic, and African mathematical traditions',
-          'Research mathematicians from underrepresented backgrounds and their contexts',
+          'Reference the global history of mathematics from diverse traditions (e.g., Babylonian, Islamic, African)',
+          'Highlight the diverse contexts and identities of mathematicians who contributed to the specific concepts being taught',
           'Understand how cultural contexts shape mathematical notation, problem-solving approaches, and applications',
+          'Address and challenge entrenched stereotypes regarding math "ability" by emphasizing cultural values and practices',
         ],
       },
       {
@@ -307,9 +308,9 @@ const ALIGNMENTS = [
         name: 'Science',
         items: [
           'Highlight scientists from diverse backgrounds and the barriers they overcame',
-          'Incorporate Indigenous ecological knowledge and traditional scientific practices',
+          'Incorporate diverse ecological perspectives and traditional scientific practices into the study of natural systems',
           'Examine how scientific "objectivity" has historically been shaped by cultural assumptions',
-          'Discuss how access to science education varies globally and why',
+          'Contextualize the global distribution of scientific resources and the impact of geography on scientific discovery',
         ],
       },
       {
@@ -319,7 +320,7 @@ const ALIGNMENTS = [
           'Teach target cultures as living, evolving entities—not frozen in textbook stereotypes',
           'Explore dialectical and regional variations within a language community',
           'Address the colonial histories that shaped language spread',
-          "Value heritage speakers' cultural knowledge as classroom resources",
+          "Value heritage speakers' cultural knowledge as resources without placing the burden of teaching on them",
         ],
       },
       {
@@ -328,7 +329,7 @@ const ALIGNMENTS = [
         items: [
           'Study artistic traditions from multiple cultures with attention to their original contexts and meanings',
           'Examine how Western art history has marginalized or appropriated other traditions',
-          'Invite students to explore their own cultural artistic heritage',
+          'Encourage students to draw upon their own cultural artistic heritage in their creative output',
           'Discuss the ethics of cultural borrowing vs. cultural exchange in creative work',
         ],
       },
