@@ -7,6 +7,7 @@ import WashingtonProgram from './pages/WashingtonProgram.jsx';
 import WashingtonProgramMap from './pages/WashingtonProgramMap.jsx';
 import AI from './pages/AI.jsx';
 import Resources from './pages/Resources.jsx';
+import Newsletters from './pages/Newsletters.jsx';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/washington-program/map" element={<WashingtonProgramMap />} />
         <Route path="/ai" element={<AI />} />
         <Route path="/resources" element={<Resources />} />
+        <Route path="/resources/newsletters" element={<Newsletters />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
