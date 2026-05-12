@@ -6,8 +6,13 @@ const NAV_LINKS = [
   { to: '/', label: 'Home', end: true },
   { to: '/teaching-learning', label: 'Teaching & Learning' },
   { to: '/community-equity', label: 'Office of Community and Equity' },
-  { to: '/washington-program', label: 'Washington Program' },
-  { to: '/washington-program/map', label: 'Washington Program Map' },
+  {
+    label: 'Washington Program',
+    children: [
+      { to: '/washington-program', label: 'Washington Program', end: true },
+      { to: '/washington-program/map', label: 'Map' },
+    ],
+  },
   { to: '/ai', label: 'AI' },
   { to: '/resources', label: 'Resources' },
 ];
@@ -62,19 +67,55 @@ export default function Navbar() {
 
         <nav className="navbar__desktop" aria-label="Primary">
           <ul className="navbar__list">
-            {NAV_LINKS.map((link) => (
-              <li key={link.to}>
-                <NavLink
-                  to={link.to}
-                  end={link.end}
-                  className={({ isActive }) =>
-                    `navbar__link${isActive ? ' navbar__link--active' : ''}`
-                  }
-                >
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
+            {NAV_LINKS.map((link) => {
+              if (link.children) {
+                const isChildActive = link.children.some(
+                  (c) => pathname === c.to || pathname.startsWith(c.to + '/'),
+                );
+                return (
+                  <li key={link.label} className="navbar__dropdown">
+                    <button
+                      className={`navbar__link navbar__dropdown-toggle${isChildActive ? ' navbar__link--active' : ''}`}
+                      aria-haspopup="true"
+                    >
+                      {link.label}
+                      <svg className="navbar__chevron" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true">
+                        <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                    <ul className="navbar__dropdown-menu" role="menu">
+                      {link.children.map((child) => (
+                        <li key={child.to} role="none">
+                          <NavLink
+                            to={child.to}
+                            end={child.end}
+                            className={({ isActive }) =>
+                              `navbar__dropdown-item${isActive ? ' navbar__dropdown-item--active' : ''}`
+                            }
+                            role="menuitem"
+                          >
+                            {child.label}
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                );
+              }
+              return (
+                <li key={link.to}>
+                  <NavLink
+                    to={link.to}
+                    end={link.end}
+                    className={({ isActive }) =>
+                      `navbar__link${isActive ? ' navbar__link--active' : ''}`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
@@ -100,20 +141,42 @@ export default function Navbar() {
       >
         <nav aria-label="Mobile">
           <ul className="navbar__mobile-list">
-            {NAV_LINKS.map((link) => (
-              <li key={link.to}>
-                <NavLink
-                  to={link.to}
-                  end={link.end}
-                  className={({ isActive }) =>
-                    `navbar__mobile-link${isActive ? ' navbar__mobile-link--active' : ''}`
-                  }
-                  tabIndex={menuOpen ? 0 : -1}
-                >
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
+            {NAV_LINKS.map((link) => {
+              if (link.children) {
+                return (
+                  <li key={link.label}>
+                    {link.children.map((child, i) => (
+                      <NavLink
+                        key={child.to}
+                        to={child.to}
+                        end={child.end}
+                        className={({ isActive }) =>
+                          `navbar__mobile-link${i > 0 ? ' navbar__mobile-link--sub' : ''}${isActive ? ' navbar__mobile-link--active' : ''}`
+                        }
+                        tabIndex={menuOpen ? 0 : -1}
+                      >
+                        {i > 0 && <span className="navbar__mobile-sub-arrow" aria-hidden="true">↳</span>}
+                        {child.label}
+                      </NavLink>
+                    ))}
+                  </li>
+                );
+              }
+              return (
+                <li key={link.to}>
+                  <NavLink
+                    to={link.to}
+                    end={link.end}
+                    className={({ isActive }) =>
+                      `navbar__mobile-link${isActive ? ' navbar__mobile-link--active' : ''}`
+                    }
+                    tabIndex={menuOpen ? 0 : -1}
+                  >
+                    {link.label}
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       </div>
