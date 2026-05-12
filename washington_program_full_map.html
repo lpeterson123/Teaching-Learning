@@ -1,0 +1,344 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.hdr{padding:.875rem 0 .75rem;border-bottom:.5px solid var(--color-border-tertiary);margin-bottom:.75rem}
+.toprow{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:8px}
+.pgtitle{font-size:18px;font-weight:500;color:var(--color-text-primary)}
+.vt{display:flex;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);overflow:hidden}
+.vb{font-size:12px;padding:5px 12px;background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;border:none;border-right:.5px solid var(--color-border-secondary)}
+.vb:last-child{border-right:none}
+.vb.act{background:var(--color-text-primary);color:var(--color-background-primary)}
+.frow{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.fl{font-size:11px;color:var(--color-text-tertiary);margin-right:2px}
+.chip{font-size:11px;padding:3px 9px;border-radius:99px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all .12s}
+.chip.act{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+#map-c{height:460px;border-radius:var(--border-radius-lg);overflow:hidden;border:.5px solid var(--color-border-tertiary)}
+#list-c{display:none;padding-top:.5rem}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.lc{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:.75rem}
+.lbadge{font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;padding:2px 6px;border-radius:4px;display:inline-block;margin-bottom:5px;margin-right:3px}
+.ltitle{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px;line-height:1.3}
+.laddr{font-size:10px;color:var(--color-text-tertiary)}
+.cnt{font-size:11px;color:var(--color-text-tertiary);margin-top:.5rem}
+.leg{display:flex;flex-wrap:wrap;gap:8px;padding:.6rem 0 0;align-items:center}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
+.ld{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.leaflet-popup-content-wrapper{border-radius:10px!important;border:.5px solid #ccc;box-shadow:0 2px 8px rgba(0,0,0,.12)!important;padding:0!important}
+.leaflet-popup-content{margin:0!important}
+.pu{padding:11px 12px;width:250px}
+.putitle{font-size:13px;font-weight:500;color:#1a1a1a;line-height:1.3;margin-bottom:2px}
+.puaddr{font-size:10px;color:#aaa;margin-bottom:8px}
+.pubadge{font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;padding:2px 7px;border-radius:4px;display:inline-block;margin-bottom:6px}
+.putab-bar{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #eee}
+.putb{font-size:9px;padding:3px 8px;border-radius:99px;border:1px solid #ddd;background:white;color:#888;cursor:pointer;letter-spacing:.04em;line-height:1.4}
+.putb.act{color:white;border-color:transparent}
+.putc{display:none}
+.putc.show{display:block}
+.puph{font-size:11px;color:#bbb;font-style:italic;margin-top:3px}
+</style>
+
+<div id="root">
+  <div class="hdr">
+    <div class="toprow">
+      <span class="pgtitle">Washington Program — Full Map</span>
+      <div class="vt">
+        <button class="vb act" id="btn-map">Map</button>
+        <button class="vb" id="btn-list">List</button>
+      </div>
+    </div>
+    <div class="frow">
+      <span class="fl">Dept</span>
+      <span class="chip act" data-d="all">All</span>
+      <span class="chip" data-d="arts">Arts</span>
+      <span class="chip" data-d="english">English</span>
+      <span class="chip" data-d="lang">Languages</span>
+      <span class="chip" data-d="math">Math</span>
+      <span class="chip" data-d="sci">Science</span>
+      <span class="chip" data-d="social">Social Studies</span>
+      <span class="chip" data-d="theo">Theology</span>
+      <span class="chip" data-d="hw">Health &amp; Wellness</span>
+    </div>
+  </div>
+  <div id="map-c"></div>
+  <div id="list-c"></div>
+  <div class="cnt" id="cnt"></div>
+  <div class="leg">
+    <div class="li"><div class="ld" style="background:#D4537E"></div>Arts</div>
+    <div class="li"><div class="ld" style="background:#378ADD"></div>English</div>
+    <div class="li"><div class="ld" style="background:#7F77DD"></div>Languages</div>
+    <div class="li"><div class="ld" style="background:#BA7517"></div>Math</div>
+    <div class="li"><div class="ld" style="background:#1D9E75"></div>Science</div>
+    <div class="li"><div class="ld" style="background:#639922"></div>Social Studies</div>
+    <div class="li"><div class="ld" style="background:#E24B4A"></div>Theology</div>
+    <div class="li"><div class="ld" style="background:#888780"></div>Health &amp; Wellness</div>
+    <div class="li"><div class="ld" style="background:white;border:2px solid #2C2C2A;width:11px;height:11px"></div>Multiple Depts</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const D={
+  arts:{l:'Arts',h:'#D4537E',bg:'#FBEAF0',dk:'#72243E'},
+  english:{l:'English',h:'#378ADD',bg:'#E6F1FB',dk:'#0C447C'},
+  lang:{l:'Languages',h:'#7F77DD',bg:'#EEEDFE',dk:'#3C3489'},
+  math:{l:'Math',h:'#BA7517',bg:'#FAEEDA',dk:'#633806'},
+  sci:{l:'Science',h:'#1D9E75',bg:'#E1F5EE',dk:'#085041'},
+  social:{l:'Social Studies',h:'#639922',bg:'#EAF3DE',dk:'#27500A'},
+  theo:{l:'Theology',h:'#E24B4A',bg:'#FCEBEB',dk:'#501313'},
+  hw:{l:'Health & Wellness',h:'#888780',bg:'#F1EFE8',dk:'#444441'}
+};
+
+const locs=[
+{n:'National Gallery of Art',a:'4th St & Constitution Ave NW',lat:38.8912,lng:-77.0197,d:['arts','english','lang','social']},
+{n:'National Portrait Gallery & Smithsonian American Art Museum',a:'8th & G St NW',lat:38.8979,lng:-77.0231,d:['arts','english','lang','social']},
+{n:'National Museum of American History',a:'14th St & Constitution Ave NW',lat:38.8913,lng:-77.030,d:['arts','english','lang','sci','social']},
+{n:'National Museum of Natural History',a:'10th St & Constitution Ave NW',lat:38.8913,lng:-77.0261,d:['english','sci']},
+{n:'National Air and Space Museum',a:'6th St & Independence Ave SW',lat:38.8882,lng:-77.0199,d:['math','sci']},
+{n:'Hirshhorn Museum and Sculpture Garden',a:'Independence Ave & 7th St SW',lat:38.8882,lng:-77.0285,d:['arts','lang','math']},
+{n:'National Museum of Asian Art (Freer/Sackler)',a:'1050 Independence Ave SW',lat:38.8879,lng:-77.0282,d:['arts','english','lang','social']},
+{n:'National Museum of African Art',a:'950 Independence Ave SW',lat:38.8878,lng:-77.0265,d:['english','social']},
+{n:'National Museum of the American Indian',a:'4th St & Independence Ave SW',lat:38.8882,lng:-77.0134,d:['english','social']},
+{n:'U.S. Botanic Garden',a:'100 Maryland Ave SW',lat:38.8874,lng:-77.0133,d:['math','sci']},
+{n:'National Museum of African American History & Culture',a:'1400 Constitution Ave NW',lat:38.8915,lng:-77.0325,d:['english','social']},
+{n:'U.S. Holocaust Memorial Museum',a:'100 Raoul Wallenberg Pl SW',lat:38.8868,lng:-77.0311,d:['english','sci','social']},
+{n:'Bureau of Engraving & Printing',a:'301 14th St SW',lat:38.8874,lng:-77.0307,d:['social']},
+{n:'Tidal Basin',a:'Washington, DC',lat:38.8868,lng:-77.0437,d:['english','math','hw']},
+{n:'FDR Memorial',a:'1850 West Basin Dr SW',lat:38.8868,lng:-77.0482,d:['english','social']},
+{n:'MLK Memorial',a:'1100 Ohio Drive SW',lat:38.8866,lng:-77.044,d:['theo']},
+{n:'Museum of the Bible',a:'400 4th St SW',lat:38.8832,lng:-77.017,d:['english','lang']},
+{n:'ARTECHOUSE',a:'1238 Maryland Ave SW',lat:38.8757,lng:-77.0152,d:['arts','english']},
+{n:'Kadampa Meditation Center',a:'SW Washington, DC',lat:38.879,lng:-77.02,d:['theo']},
+{n:'Arena Stage',a:'1101 6th St SW',lat:38.8796,lng:-77.0183,d:['english']},
+{n:'National Archives',a:'700 Pennsylvania Ave NW',lat:38.8935,lng:-77.0228,d:['english','social']},
+{n:'Lincoln Memorial',a:'2 Lincoln Memorial Cir NW',lat:38.8893,lng:-77.05,d:['english','social']},
+{n:'World War II Memorial',a:'17th St NW',lat:38.8893,lng:-77.0401,d:['math','social']},
+{n:'World War I Memorial',a:'14th St & Pennsylvania Ave NW',lat:38.8973,lng:-77.0319,d:['math','social']},
+{n:'Washington Monument',a:'2 15th St NW',lat:38.8895,lng:-77.0353,d:['math']},
+{n:'Benjamin Banneker Park',a:"429 L'Enfant Plaza SW",lat:38.8808,lng:-77.0249,d:['english','social']},
+{n:'National Building Museum',a:'401 F St NW',lat:38.8974,lng:-77.0186,d:['social']},
+{n:'Capital Jewish Museum',a:'575 3rd St NW',lat:38.8969,lng:-77.0199,d:['english','social']},
+{n:'International Spy Museum',a:"700 L'Enfant Plaza SW",lat:38.8828,lng:-77.0213,d:['math','social']},
+{n:'Museum of Illusions DC',a:'1025 F St NW',lat:38.8972,lng:-77.0244,d:['math','sci']},
+{n:'Woolly Mammoth Theatre',a:'641 D St NW',lat:38.8953,lng:-77.0199,d:['english']},
+{n:'FBI Experience',a:'935 Pennsylvania Ave NW',lat:38.8942,lng:-77.0256,d:['math']},
+{n:'Planet Word',a:'925 13th St NW',lat:38.9015,lng:-77.0302,d:['english','lang']},
+{n:'MLK Memorial Library',a:'901 G St NW',lat:38.8978,lng:-77.0239,d:['english','social']},
+{n:'National Museum of Women in the Arts',a:'1250 New York Ave NW',lat:38.9027,lng:-77.0344,d:['english','social']},
+{n:'The Escape Game',a:'950 F St NW',lat:38.8961,lng:-77.0259,d:['english']},
+{n:'Escape Game DC — Georgetown',a:'3345 M St NW',lat:38.9055,lng:-77.0623,d:['math','sci','social']},
+{n:"Ford's Theatre",a:'511 10th St NW',lat:38.8986,lng:-77.0256,d:['english','social']},
+{n:'IRS Building',a:'1111 Constitution Ave NW',lat:38.8942,lng:-77.0279,d:['social']},
+{n:'Victims of Communism Museum',a:'900 15th St NW',lat:38.9045,lng:-77.0341,d:['social']},
+{n:'AAAS Art Gallery',a:'1200 New York Ave NW',lat:38.9042,lng:-77.0283,d:['sci']},
+{n:'White House & Lafayette Square',a:'1600 Pennsylvania Ave NW',lat:38.8975,lng:-77.037,d:['social']},
+{n:'Renwick Gallery',a:'1661 Pennsylvania Ave NW',lat:38.8982,lng:-77.0405,d:['arts','english']},
+{n:'Kennedy Center',a:'2700 F St NW',lat:38.8956,lng:-77.0567,d:['english','lang','social']},
+{n:'U.S. Institute of Peace',a:'2301 Constitution Ave NW',lat:38.8944,lng:-77.0535,d:['social']},
+{n:'National Museum of American Diplomacy',a:'330 21st St NW (State Dept)',lat:38.8952,lng:-77.0515,d:['social']},
+{n:'Organization of American States',a:'17th St & Constitution Ave NW',lat:38.8951,lng:-77.0439,d:['lang']},
+{n:'Roosevelt Island',a:'Potomac River',lat:38.8967,lng:-77.0631,d:['english','social']},
+{n:'Library of Congress',a:'101 Independence Ave SE',lat:38.8887,lng:-77.0044,d:['english','lang','social']},
+{n:'Folger Shakespeare Library',a:'201 E Capitol St SE',lat:38.8897,lng:-77.004,d:['english']},
+{n:'U.S. Capitol',a:'First St NE, Washington, DC',lat:38.8899,lng:-77.0091,d:['social']},
+{n:'Supreme Court of the U.S.',a:'1 First St NE',lat:38.8906,lng:-77.0044,d:['social']},
+{n:'Dirksen Senate Office Building',a:'423 Dirksen SOB, Washington, DC',lat:38.8924,lng:-77.0042,d:['social']},
+{n:'Rayburn House Office Building',a:'Capitol Hill, Washington, DC',lat:38.8878,lng:-77.0075,d:['social']},
+{n:'Eastern Market',a:'225 7th St SE',lat:38.8832,lng:-77.0007,d:['social']},
+{n:'Lincoln Park',a:'Capitol Hill, Washington, DC',lat:38.892,lng:-76.988,d:['social']},
+{n:'National Theatre',a:'1321 Pennsylvania Ave NW',lat:38.8976,lng:-77.0304,d:['arts']},
+{n:'National Mall',a:'Washington, DC',lat:38.8893,lng:-77.035,d:['math','social']},
+{n:'Anacostia Community Museum',a:'1901 Fort Pl SE',lat:38.8625,lng:-76.995,d:['english']},
+{n:'Frederick Douglass National Historic Site',a:'1411 W Street SE',lat:38.8625,lng:-76.9839,d:['english','social']},
+{n:'Union Market',a:'1309 5th St NE',lat:38.9089,lng:-76.996,d:['english','sci','social']},
+{n:'La Cosecha Latin Market',a:'1280 4th St NE',lat:38.9089,lng:-76.9973,d:['lang','social']},
+{n:'Kenilworth Aquatic Gardens',a:'1550 Anacostia Ave NE',lat:38.9083,lng:-76.9425,d:['english','theo','hw']},
+{n:"Saint Anselm's Abbey",a:'4501 South Dakota Ave NE',lat:38.9347,lng:-76.9982,d:['theo']},
+{n:'Politics & Prose Bookstore',a:'5015 Connecticut Ave NW',lat:38.9547,lng:-77.0775,d:['english']},
+{n:'Smithsonian National Zoo',a:'3001 Connecticut Ave NW',lat:38.9303,lng:-77.0492,d:['arts','lang','sci']},
+{n:'Rock Creek Park',a:'5200 Glover Rd NW',lat:38.95,lng:-77.0508,d:['hw']},
+{n:'Pierce Mill',a:'2401 Tilden St NW',lat:38.9445,lng:-77.0571,d:['social']},
+{n:'Hillwood Estate, Museum & Gardens',a:'4155 Linnean Ave NW',lat:38.9445,lng:-77.0775,d:['english','lang']},
+{n:'Dumbarton Oaks',a:'1703 32nd St NW',lat:38.9162,lng:-77.0601,d:['lang']},
+{n:'Volta Park Recreation Center',a:'1555 34th St NW',lat:38.9086,lng:-77.0674,d:['english']},
+{n:"Martin's Tavern",a:'1264 Wisconsin Ave NW',lat:38.9062,lng:-77.0685,d:['english']},
+{n:'Cafe Georgetown',a:'3141 N St NW',lat:38.9051,lng:-77.0632,d:['english']},
+{n:'The Phillips Collection',a:'1600 21st St NW',lat:38.9103,lng:-77.0444,d:['arts','lang','hw']},
+{n:'Mansion on O Street',a:'2020 O St NW',lat:38.9087,lng:-77.0444,d:['english','social']},
+{n:'Middle East Institute',a:'1763 N St NW',lat:38.9087,lng:-77.0436,d:['social']},
+{n:'Museum of the Palestinian People',a:'1900 18th St NW',lat:38.914,lng:-77.0428,d:['social']},
+{n:'Chinese American Museum DC',a:'1218 16th St NW',lat:38.9091,lng:-77.0444,d:['lang']},
+{n:'Mexican Cultural Institute',a:'2829 16th St NW',lat:38.9288,lng:-77.0362,d:['lang','social']},
+{n:'Spanish Cultural Center',a:'2801 16th St NW',lat:38.9268,lng:-77.0357,d:['lang']},
+{n:'Alliance Française Library',a:'2142 Wyoming Ave NW',lat:38.9196,lng:-77.053,d:['lang']},
+{n:'Islamic Center of Washington',a:'2551 Massachusetts Ave NW',lat:38.9185,lng:-77.0591,d:['social']},
+{n:'South African Embassy',a:'3051 Massachusetts Ave NW',lat:38.9258,lng:-77.0609,d:['social']},
+{n:'Embassy of France',a:'4101 Reservoir Road NW',lat:38.9245,lng:-77.0704,d:['lang']},
+{n:'Western Market',a:'2000 Pennsylvania Ave NW',lat:38.9002,lng:-77.0533,d:['lang']},
+{n:'GALA Hispanic Theatre',a:'3333 14th St NW',lat:38.9301,lng:-77.0323,d:['lang']},
+{n:"Corado's Restaurant",a:'3217 Mt Pleasant St NW',lat:38.9313,lng:-77.0362,d:['lang']},
+{n:'Lost Origins Gallery',a:'3110 Mt Pleasant St NW',lat:38.9313,lng:-77.036,d:['theo']},
+{n:'Capitol Wheel — National Harbor',a:'National Harbor, MD',lat:38.7822,lng:-77.0158,d:['math']},
+{n:'National Harbor Topgolf',a:'6400 Clipper Way, Oxon Hill, MD',lat:38.7782,lng:-77.0234,d:['math']},
+{n:'Arlington National Cemetery',a:'Arlington, VA',lat:38.8763,lng:-77.0712,d:['english','sci','social']},
+{n:'Arlington House / Robert E. Lee Memorial',a:'Arlington National Cemetery, VA',lat:38.8804,lng:-77.0745,d:['english','social']},
+{n:'Gravelly Point',a:'George Washington Memorial Pkwy, Arlington, VA',lat:38.8524,lng:-77.0478,d:['math']},
+{n:'Escape Room Arlington',a:'1100 S Hayes St, Arlington, VA',lat:38.8627,lng:-77.0589,d:['math']},
+{n:'Pentagon City Mall',a:'1100 S Hayes St, Arlington, VA',lat:38.863,lng:-77.059,d:['math']},
+{n:'Westpost Outdoor Ice Skating',a:'1201 S Joyce St, Arlington, VA',lat:38.859,lng:-77.06,d:['sci']},
+{n:'Peruvian Brothers at Amazon HQ2',a:'1450 S Eads St, Arlington, VA',lat:38.859,lng:-77.0573,d:['lang']},
+{n:'Glebe Market & Pupusería Doña Azucena',a:'3830 S Glebe Rd, Arlington, VA',lat:38.8497,lng:-77.0668,d:['lang']},
+{n:'Little Saigon — Arlington',a:'1135 N Highland St, Arlington, VA',lat:38.8867,lng:-77.095,d:['social']},
+{n:'Clarendon Ballroom',a:'Clarendon, Arlington, VA',lat:38.8867,lng:-77.0942,d:['lang']},
+{n:'Colada Shop — Clarendon',a:'2811 Clarendon Blvd, Arlington, VA',lat:38.8867,lng:-77.0945,d:['lang']},
+{n:'Meaza Restaurant',a:'5700 Columbia Pike, Falls Church/Arlington, VA',lat:38.8559,lng:-77.1139,d:['social']},
+{n:'Busboys & Poets — Shirlington',a:'4251 Campbell Ave, Arlington, VA',lat:38.8408,lng:-77.0857,d:['english']},
+{n:'Signature Theatre',a:'4200 Campbell Ave, Arlington, VA',lat:38.8413,lng:-77.087,d:['english']},
+{n:'Alexandria Circuit Court',a:'520 King Street, Alexandria, VA',lat:38.8041,lng:-77.0476,d:['english','social']},
+{n:'Alexandria City Jail',a:'2001 Mill Rd, Alexandria, VA',lat:38.8132,lng:-77.0682,d:['english']},
+{n:'Alexandria Ghost Tour',a:'323 Cameron St, Alexandria, VA',lat:38.8053,lng:-77.0443,d:['english']},
+{n:'ALX Community',a:'201 N Union St, Alexandria, VA',lat:38.8048,lng:-77.0465,d:['english']},
+{n:"Daniel O'Connell's Restaurant",a:'112 King St, Alexandria, VA',lat:38.8048,lng:-77.047,d:['english']},
+{n:'Carlyle House Historic Park',a:'121 N Fairfax St, Alexandria, VA',lat:38.8064,lng:-77.0476,d:['social']},
+{n:'Freedom House Museum',a:'1315 Duke Street, Alexandria, VA',lat:38.8048,lng:-77.0491,d:['social']},
+{n:'Stabler-Leadbeater Apothecary Museum',a:'105 S Fairfax St, Alexandria, VA',lat:38.8048,lng:-77.0479,d:['sci']},
+{n:'Old House Cosmopolitan',a:'1024 Cameron St, Alexandria, VA',lat:38.8050,lng:-77.047,d:['lang']},
+{n:'Jones Point Park',a:'Jones Point Dr, Alexandria, VA',lat:38.7899,lng:-77.0456,d:['english']},
+{n:"Freedman's Cemetery Memorial",a:'1001 S Washington St, Alexandria, VA',lat:38.8212,lng:-77.0619,d:['english']},
+{n:'Alexandria National Cemetery',a:'1450 Wilkes St, Alexandria, VA',lat:38.8115,lng:-77.0633,d:['social']},
+{n:'Virginia Theological Seminary & VTS Chapel',a:'3737 Seminary Rd, Alexandria, VA',lat:38.8401,lng:-77.1047,d:['english','social','theo']},
+{n:'Beth El Hebrew Congregation',a:'3830 Seminary Rd, Alexandria, VA',lat:38.8398,lng:-77.1041,d:['sci','theo']},
+{n:'AlexRenew Water Recovery Facility',a:'1800 Limerick Street, Alexandria, VA',lat:38.795,lng:-77.09,d:['sci']},
+{n:'Taylor Run Park',a:'Chinquapin Dr, Alexandria, VA',lat:38.813,lng:-77.073,d:['sci']},
+{n:'Building Momentum',a:'5380 Eisenhower Ave, Alexandria, VA',lat:38.8057,lng:-77.084,d:['sci']},
+{n:'Dora Kelley Nature Park',a:'5750 Sanger Ave, Alexandria, VA',lat:38.8295,lng:-77.0771,d:['hw']},
+{n:'Winkler Botanical Preserve',a:'5400 Roanoke Ave, Alexandria, VA',lat:38.7989,lng:-77.0928,d:['hw']},
+{n:'Get Air Trampoline Park',a:'340 S Pickett St, Alexandria, VA',lat:38.8213,lng:-77.0865,d:['sci']},
+{n:"Bob & Edith's Diner",a:'1743 King St, Alexandria, VA',lat:38.8125,lng:-77.089,d:['english','social']},
+{n:'Boulangerie Gustave — Del Ray',a:'2213 Mt Vernon Ave, Alexandria, VA',lat:38.834,lng:-77.0657,d:['lang']},
+{n:'Casa Chirilagua',a:'Arlandria, Alexandria, VA',lat:38.8378,lng:-77.0703,d:['lang']},
+{n:'Del Ray',a:'Alexandria, VA',lat:38.834,lng:-77.065,d:['social']},
+{n:'Food Star Supermarket',a:'206 W Glebe Rd, Alexandria, VA',lat:38.8295,lng:-77.0694,d:['lang']},
+{n:'HomeGoods',a:'3701 Richmond Hwy, Alexandria, VA',lat:38.8212,lng:-77.0807,d:['lang']},
+{n:'Best Way Supermarket',a:'Telegraph Rd, Alexandria, VA',lat:38.7866,lng:-77.0768,d:['lang']},
+{n:'Huntley Meadows Park',a:'3701 Lockheed Blvd, Alexandria, VA',lat:38.763,lng:-77.089,d:['arts','english','sci']},
+{n:'Eden Center',a:'6751-6799 Wilson Blvd, Falls Church, VA',lat:38.8797,lng:-77.1867,d:['social']},
+{n:'Good Fortune Supermarket',a:'6751 Wilson Blvd, Falls Church, VA',lat:38.8797,lng:-77.187,d:['lang']},
+{n:'Happy Lamb Hot Pot',a:'6799 Wilson Blvd, Falls Church, VA',lat:38.8797,lng:-77.1873,d:['lang']},
+{n:'German Gourmet',a:'5838 Columbia Pike, Falls Church, VA',lat:38.8514,lng:-77.1476,d:['lang']},
+{n:"Burlington — Bailey's Crossroads",a:"3524 S Jefferson St, Bailey's Crossroads, VA",lat:38.8479,lng:-77.118,d:['lang']},
+{n:'Tea with Mrs. B',a:'136 W Jefferson St, Falls Church, VA',lat:38.8811,lng:-77.1753,d:['english']},
+{n:'Little Saigon — Falls Church',a:'6218 Wilson Blvd, Falls Church, VA',lat:38.8753,lng:-77.1728,d:['english']},
+{n:'Bowl America Falls Church',a:'140 S Maple Ave, Falls Church, VA',lat:38.8848,lng:-77.1731,d:['sci']},
+{n:'Round House Theatre',a:'4545 East-West Hwy, Bethesda, MD',lat:38.9847,lng:-77.0948,d:['english']},
+{n:'Boulangerie Christophe',a:'1132 Seven Locks Road, Potomac, MD',lat:39.0224,lng:-77.1848,d:['lang']},
+{n:'NSA Cryptologic Museum',a:'8290 Colony Seven Rd, Annapolis Junction, MD',lat:39.1101,lng:-76.7748,d:['math']},
+{n:'Accokeek Foundation / Piscataway Park',a:'3400 Bryan Point Rd, Accokeek, MD',lat:38.675,lng:-77.0003,d:['english','social']},
+{n:'Lucy Burns Museum',a:'9518 Workhouse Way, Lorton, VA',lat:38.7059,lng:-77.2095,d:['social']},
+{n:'Mount Vernon',a:'3200 Mt. Vernon Memorial Hwy, Mount Vernon, VA',lat:38.7088,lng:-77.0864,d:['english','social']},
+{n:'Woodlawn & Pope-Leighey House',a:'9000 Richmond Hwy, Alexandria, VA',lat:38.7295,lng:-77.1074,d:['english','social']},
+{n:'Steven F. Udvar-Hazy Center',a:'14390 Air and Space Museum Pkwy, Chantilly, VA',lat:38.9142,lng:-77.4416,d:['social']},
+{n:'Smith Meadows Farm',a:'568 Smithfield School Rd, Berryville, VA',lat:39.1428,lng:-77.9777,d:['social']},
+{n:'Old Greenbelt Theatre',a:'129 Centerway, Greenbelt, MD',lat:38.9955,lng:-76.8759,d:['social']},
+{n:'CIA Headquarters',a:'Langley, VA (Not Open to Public)',lat:38.9512,lng:-77.1455,d:['social']},
+{n:'Escape Room Herndon',a:'1021 Herndon Pkwy, Herndon, VA',lat:38.9697,lng:-77.3859,d:['math']},
+{n:'Escape Room Live — Alexandria',a:'2001 Mount Vernon Ave, Alexandria, VA',lat:38.834,lng:-77.0638,d:['math']},
+{n:'National Museum of the U.S. Army',a:'1775 Liberty Drive, Fort Belvoir, VA',lat:38.7159,lng:-77.1474,d:['social']},
+{n:'Sky Zone Trampoline Park',a:'5325 Port Royal Rd, Springfield, VA',lat:38.7707,lng:-77.186,d:['sci']},
+{n:'Radius Networks',a:'3299 K St NW, Washington, DC',lat:38.9016,lng:-77.0611,d:['math']},
+{n:'Hillwood Estate',a:'4155 Linnean Ave NW',lat:38.9447,lng:-77.0773,d:['english','lang']},
+];
+
+const map=L.map('map-c',{center:[38.89,-77.04],zoom:11});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; Carto',maxZoom:19}).addTo(map);
+
+function mkIcon(depts){
+  if(depts.length===1){
+    const h=D[depts[0]].h;
+    return L.divIcon({html:`<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 22 30"><path d="M11 0C4.925 0 0 4.925 0 11c0 7.333 11 19 11 19S22 18.333 22 11C22 4.925 17.075 0 11 0z" fill="${h}"/><circle cx="11" cy="11" r="4.5" fill="white" opacity=".9"/></svg>`,iconSize:[22,30],iconAnchor:[11,30],popupAnchor:[0,-32],className:''});
+  }
+  return L.divIcon({html:`<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="11" fill="white" stroke="#2C2C2A" stroke-width="2.5"/><text x="13" y="17.5" font-size="13" font-family="sans-serif" font-weight="700" text-anchor="middle" fill="#2C2C2A">+</text></svg>`,iconSize:[26,26],iconAnchor:[13,13],popupAnchor:[0,-15],className:''});
+}
+
+function mkPopup(loc,idx){
+  const multi=loc.d.length>1;
+  if(!multi){
+    const dept=D[loc.d[0]];
+    return`<div class="pu"><span class="pubadge" style="background:${dept.bg};color:${dept.dk}">${dept.l}</span><div class="putitle">${loc.n}</div><div class="puaddr">${loc.a}</div><div class="puph">Course & description coming soon.</div></div>`;
+  }
+  const tabs=loc.d.map((dk,i)=>`<button class="putb${i===0?' act':''}" style="${i===0?`background:${D[dk].h};border-color:${D[dk].h};color:white`:''}" data-dd="${dk}" onclick="swt('${idx}','${dk}',this)">${D[dk].l}</button>`).join('');
+  const contents=loc.d.map((dk,i)=>{
+    const dept=D[dk];
+    return`<div class="putc${i===0?' show':''}" id="tc-${idx}-${dk}"><span class="pubadge" style="background:${dept.bg};color:${dept.dk}">${dept.l}</span><div class="puph">Course & description coming soon.</div></div>`;
+  }).join('');
+  return`<div class="pu" id="pu-${idx}"><div class="putitle">${loc.n}</div><div class="puaddr">${loc.a}</div><div class="putab-bar" id="tb-${idx}">${tabs}</div>${contents}</div>`;
+}
+
+window.swt=function(idx,dk,btn){
+  const pu=document.getElementById('pu-'+idx);
+  if(!pu)return;
+  pu.querySelectorAll('.putc').forEach(t=>t.classList.remove('show'));
+  const tb=document.getElementById('tb-'+idx);
+  if(tb)tb.querySelectorAll('.putb').forEach(b=>{b.classList.remove('act');b.style.background='white';b.style.borderColor='#ddd';b.style.color='#888';});
+  const tc=document.getElementById('tc-'+idx+'-'+dk);
+  if(tc)tc.classList.add('show');
+  if(btn){btn.classList.add('act');btn.style.background=D[dk].h;btn.style.borderColor=D[dk].h;btn.style.color='white';}
+};
+
+let markers=[],activeDept='all',viewMode='map';
+
+function render(dept){
+  markers.forEach(m=>map.removeLayer(m));
+  markers=[];
+  const filtered=dept==='all'?locs:locs.filter(l=>l.d.includes(dept));
+  filtered.forEach((loc,i)=>{
+    const multi=loc.d.length>1;
+    const m=L.marker([loc.lat,loc.lng],{icon:mkIcon(loc.d),zIndexOffset:multi?600:0})
+      .bindPopup(mkPopup(loc,i),{maxWidth:275})
+      .addTo(map);
+    markers.push(m);
+  });
+  document.getElementById('cnt').textContent=filtered.length+' location'+(filtered.length!==1?'s':'')+' shown';
+}
+
+function renderList(dept){
+  const filtered=dept==='all'?locs:locs.filter(l=>l.d.includes(dept));
+  const html=filtered.map(loc=>{
+    const badges=loc.d.map(dk=>`<span class="lbadge" style="background:${D[dk].bg};color:${D[dk].dk}">${D[dk].l}</span>`).join('');
+    return`<div class="lc">${badges}<div class="ltitle">${loc.n}</div><div class="laddr">${loc.a}</div></div>`;
+  }).join('');
+  document.getElementById('list-c').innerHTML='<div class="cg">'+html+'</div>';
+  document.getElementById('cnt').textContent=filtered.length+' location'+(filtered.length!==1?'s':'')+' shown';
+}
+
+render('all');
+
+document.getElementById('btn-map').addEventListener('click',()=>{
+  viewMode='map';
+  document.getElementById('btn-map').classList.add('act');
+  document.getElementById('btn-list').classList.remove('act');
+  document.getElementById('map-c').style.display='block';
+  document.getElementById('list-c').style.display='none';
+  map.invalidateSize();
+  render(activeDept);
+});
+
+document.getElementById('btn-list').addEventListener('click',()=>{
+  viewMode='list';
+  document.getElementById('btn-list').classList.add('act');
+  document.getElementById('btn-map').classList.remove('act');
+  document.getElementById('map-c').style.display='none';
+  document.getElementById('list-c').style.display='block';
+  renderList(activeDept);
+});
+
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('act'));
+    chip.classList.add('act');
+    activeDept=chip.dataset.d;
+    if(viewMode==='map')render(activeDept);
+    else renderList(activeDept);
+  });
+});
+</script>
