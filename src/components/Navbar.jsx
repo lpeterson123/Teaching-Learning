@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { to: '/teaching-learning', label: 'Teaching & Learning' },
   { to: '/community-equity', label: 'Office of Community and Equity' },
   { to: '/washington-program', label: 'Washington Program' },
+  { to: '/washington-program/map', label: 'Washington Program Map' },
   { to: '/ai', label: 'AI' },
   { to: '/resources', label: 'Resources' },
 ];
