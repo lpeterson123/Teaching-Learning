@@ -4,7 +4,13 @@ import './Navbar.css';
 
 const NAV_LINKS = [
   { to: '/', label: 'Home', end: true },
-  { to: '/teaching-learning', label: 'Teaching & Learning' },
+  {
+    label: 'Teaching & Learning',
+    children: [
+      { to: '/teaching-learning', label: 'Teaching & Learning', end: true },
+      { to: '/teaching-learning/practice-deck', label: 'Practice Deck' },
+    ],
+  },
   { to: '/community-equity', label: 'Office of Community and Equity' },
   {
     label: 'Washington Program',
