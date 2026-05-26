@@ -1,5 +1,5 @@
 export const SERIES_TITLE = 'Mind Over Matter';
-export const SERIES_AUTHORS = 'Luke Peterson & Jamie'; // Add Jamie's last name here
+export const SERIES_AUTHORS = 'Luke Peterson & Jamie Biondi';
 
 // Ordered newest-first — add new issues at the top of this array.
 export const NEWSLETTERS = [
