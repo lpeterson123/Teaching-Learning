@@ -113,7 +113,6 @@ export default function TeachingPracticesDeck() {
   return (
     <div className="tpd-root">
       <div className="tpd-header">
-        <span>{total}-card teaching practices deck</span>
         <span>
           {index + 1} of {total}
         </span>

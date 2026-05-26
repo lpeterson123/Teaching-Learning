@@ -28,7 +28,7 @@
   --tpd-radius-md: 8px;
   --tpd-radius-lg: 14px;
 
-  max-width: 480px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 1rem 0;
   font-family: var(--tpd-font-sans);
@@ -43,7 +43,7 @@
 
 .tpd-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 1.5rem;
   font-size: 13px;
@@ -51,15 +51,10 @@
 }
 
 .tpd-card-container {
-  position: relative;
-  height: 520px;
   margin-bottom: 1.5rem;
-  perspective: 1000px;
 }
 
 .tpd-card {
-  position: absolute;
-  inset: 0;
   background: var(--tpd-bg-primary);
   border: 0.5px solid var(--tpd-border-tertiary);
   border-radius: var(--tpd-radius-lg);
@@ -133,9 +128,6 @@
 .tpd-cat-indigo { background: #e6e8fa; color: #4c3fa5; }
 
 .tpd-card-content {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 8px;
   margin-bottom: 1rem;
 }
 
