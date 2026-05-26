@@ -172,7 +172,7 @@
   margin: 0;
   padding: 0.25rem 0;
   position: absolute;
-  top: calc(100% + 4px);
+  top: 100%;
   left: 0;
   min-width: 200px;
   background: #ffffff;
@@ -191,6 +191,17 @@
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+}
+
+/* Transparent bridge fills the space between the button bottom and the menu
+   border so moving the cursor downward never exits the hover zone. */
+.navbar__dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  height: 8px;
 }
 
 .navbar__dropdown-item {
