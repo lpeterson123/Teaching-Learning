@@ -1,7 +1,41 @@
-.pd-frame-wrap {
-  width: 100%;
-  /* Fill the remaining viewport below the navbar; footer is hidden behind overflow:hidden on body */
+.pd-root {
+  display: flex;
+  flex-direction: column;
   height: calc(100vh - var(--nav-height));
+}
+
+/* Slim toolbar above the iframe */
+.pd-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem 1.5rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.pd-guide-link {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ehs-maroon);
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--ehs-maroon);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.pd-guide-link:hover,
+.pd-guide-link:focus-visible {
+  background-color: var(--ehs-maroon);
+  color: #ffffff;
+}
+
+/* iframe fills remaining space */
+.pd-frame-wrap {
+  flex: 1;
   overflow: hidden;
 }
 
