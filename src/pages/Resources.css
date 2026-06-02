@@ -68,7 +68,6 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 1rem;
-  max-width: 860px;
 }
 
 /* Individual folder card */
