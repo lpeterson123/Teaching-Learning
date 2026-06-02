@@ -21,7 +21,7 @@ const NAV_LINKS = [
   },
   { to: '/ai', label: 'AI' },
   {
-    label: 'PD Resources',
+    label: 'Resources',
     children: [
       { to: '/professional-development', label: 'Main Page', end: true },
       { to: '/resources', label: 'Resources' },
