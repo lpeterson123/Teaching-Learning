@@ -20,7 +20,13 @@ const NAV_LINKS = [
     ],
   },
   { to: '/ai', label: 'AI' },
-  { to: '/resources', label: 'Resources' },
+  {
+    label: 'Professional Development Resources',
+    children: [
+      { to: '/professional-development', label: 'Main Page', end: true },
+      { to: '/resources', label: 'Resources' },
+    ],
+  },
 ];
 
 export default function Navbar() {
