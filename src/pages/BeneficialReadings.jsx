@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './BeneficialReadings.css';
 
-const CSV_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJHeEtuiGSvuPkbRT2C2FzPcMj5NUMP96czJ4EP_G1LXRJVUiwK_rnAcVKDMfFacPFKfZBrIt47G6o/pub?output=csv';
+// CSV served from public/ — upload beneficial-readings.csv to the public folder to populate this page.
+const CSV_URL = `${import.meta.env.BASE_URL}beneficial-readings.csv`;
 
 // RFC-4180 compliant CSV parser — handles quoted fields with commas/newlines.
 function parseCSV(raw) {
@@ -139,8 +139,9 @@ export default function BeneficialReadings() {
           </div>
 
           {status === 'loading' && <p className="br-status">Loading readings…</p>}
-          {status === 'error'   && <p className="br-status br-status--error">Could not load readings. Please try again later.</p>}
-          {status === 'ok' && (
+          {status === 'error'   && <p className="br-status br-status--error">Readings unavailable. Upload <code>beneficial-readings.csv</code> to the public folder to populate this page.</p>}
+          {status === 'ok' && readings.length === 0 && <p className="br-status">No readings found. Upload <code>beneficial-readings.csv</code> to the public folder.</p>}
+          {status === 'ok' && readings.length > 0 && (
             <div className="br-grid" role="list" aria-label="Beneficial readings">
               {readings.map((r) => (
                 <div key={r.id} role="listitem">
