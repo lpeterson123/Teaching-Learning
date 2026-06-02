@@ -21,6 +21,7 @@ export default function ProfessionalDevelopment() {
           href={`${BASE}cultural-competency-guide.pdf`}
           target="_blank"
           rel="noopener noreferrer"
+          download="cultural-competency-guide.pdf"
           className="pd-guide-link"
         >
           Read the Full Guide →
