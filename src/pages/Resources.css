@@ -65,13 +65,15 @@
 /* Folder cards list */
 .res-folders {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 1rem;
-  max-width: 560px;
+  max-width: 860px;
 }
 
 /* Individual folder card */
 .res-folder {
+  flex: 1 1 360px;
   display: flex;
   align-items: center;
   gap: 1.25rem;
