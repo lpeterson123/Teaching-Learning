@@ -15,25 +15,12 @@ export default function ProfessionalDevelopment() {
   }, []);
 
   return (
-    <div className="pd-root">
-      <div className="pd-toolbar">
-        <a
-          href={`${BASE}cultural-competency-guide.pdf`}
-          target="_blank"
-          rel="noopener noreferrer"
-          download="cultural-competency-guide.pdf"
-          className="pd-guide-link"
-        >
-          Read the Full Guide →
-        </a>
-      </div>
-      <div className="pd-frame-wrap">
-        <iframe
-          src={`${BASE}cultural-competency-dashboard.html`}
-          title="Cultural Competency Dashboard"
-          className="pd-frame"
-        />
-      </div>
+    <div className="pd-frame-wrap">
+      <iframe
+        src={`${BASE}cultural-competency-dashboard.html`}
+        title="Cultural Competency Dashboard"
+        className="pd-frame"
+      />
     </div>
   );
 }
