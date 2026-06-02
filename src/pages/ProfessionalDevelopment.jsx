@@ -7,8 +7,11 @@ export default function ProfessionalDevelopment() {
   useEffect(() => {
     const previous = document.title;
     document.title = 'Resources | Episcopal High School';
+    // Prevent the outer page from scrolling — only the iframe content scrolls.
+    document.body.style.overflow = 'hidden';
     return () => {
       document.title = previous;
+      document.body.style.overflow = '';
     };
   }, []);
 
