@@ -9,6 +9,7 @@ import WashingtonProgramMap from './pages/WashingtonProgramMap.jsx';
 import AI from './pages/AI.jsx';
 import Resources from './pages/Resources.jsx';
 import Newsletters from './pages/Newsletters.jsx';
+import BeneficialReadings from './pages/BeneficialReadings.jsx';
 import ProfessionalDevelopment from './pages/ProfessionalDevelopment.jsx';
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/professional-development" element={<ProfessionalDevelopment />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/resources/newsletters" element={<Newsletters />} />
+        <Route path="/resources/beneficial-readings" element={<BeneficialReadings />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

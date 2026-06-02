@@ -1,0 +1,249 @@
+/* Hero — same pattern as other section pages */
+.br-hero {
+  background:
+    linear-gradient(180deg, #ffffff 0%, var(--slate-50) 100%),
+    radial-gradient(ellipse at top, rgba(196, 220, 235, 0.45), transparent 60%);
+  border-bottom: 1px solid var(--color-border);
+  padding: 4rem 0 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.br-hero::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--ehs-maroon) 0 33%,
+    var(--ehs-dark-blue) 33% 66%,
+    var(--ehs-light-blue) 66% 100%
+  );
+}
+
+.br-hero__inner {
+  max-width: 820px;
+  text-align: center;
+}
+
+.br-hero__eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ehs-maroon);
+}
+
+.br-hero__title {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--slate-900);
+  letter-spacing: -0.01em;
+}
+
+.br-hero__subtitle {
+  margin: 0 auto;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1rem, 1.6vw, 1.1rem);
+  color: var(--slate-500);
+}
+
+/* Section */
+.br-section {
+  padding: 2.5rem 0 5rem;
+  background-color: #ffffff;
+}
+
+/* Back link */
+.br-back { margin-bottom: 2rem; }
+
+.br-back__link {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ehs-maroon);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.br-back__link:hover,
+.br-back__link:focus-visible { color: var(--ehs-maroon-dark); }
+
+/* Status */
+.br-status {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--slate-500);
+  text-align: center;
+  padding: 3rem 0;
+}
+.br-status--error { color: #a32d2d; }
+
+/* Grid */
+.br-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Card */
+.br-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow var(--transition-med), transform var(--transition-med);
+}
+
+.br-card:hover,
+.br-card:focus-within {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Cover image area — book-cover aspect ratio */
+.br-card__media {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.br-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Placeholder when no cover photo */
+.br-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: color-mix(in srgb, var(--ehs-light-blue) 30%, #ffffff);
+}
+
+.br-card__placeholder-text {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--slate-700);
+  line-height: 1.35;
+  text-align: center;
+}
+
+/* Card info */
+.br-card__info {
+  padding: 0.875rem 1rem 0.75rem;
+  flex: 1;
+}
+
+.br-card__title {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--slate-900);
+  line-height: 1.3;
+}
+
+.br-card__author {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--slate-500);
+}
+
+.br-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.br-card__date {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: var(--slate-400);
+}
+
+/* Tag pills */
+.br-tag {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.br-tag--blue  { background: #e6f1fb; color: #185fa5; }
+.br-tag--teal  { background: #e1f5ee; color: #0f6e56; }
+.br-tag--amber { background: #faeeda; color: #854f0b; }
+.br-tag--slate { background: var(--slate-100); color: var(--slate-600); }
+
+/* Hover overlay — slides up to reveal description */
+.br-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.93);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 0;
+  transition: opacity var(--transition-med);
+}
+
+.br-card:hover .br-card__overlay,
+.br-card:focus-within .br-card__overlay {
+  opacity: 1;
+}
+
+.br-card__desc {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.92);
+  overflow-y: auto;
+}
+
+.br-card__read-link {
+  display: inline-block;
+  flex-shrink: 0;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ehs-light-blue);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.br-card__read-link:hover,
+.br-card__read-link:focus-visible { color: #ffffff; }
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .br-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .br-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .br-hero { padding: 3rem 0 2.5rem; }
+  .br-grid { grid-template-columns: 1fr; }
+}
