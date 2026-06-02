@@ -30,8 +30,11 @@ function parseCSV(raw) {
 }
 
 function toReadings(rows) {
-  if (rows.length < 2) return [];
-  const headers = rows[0].map((h) => h.trim().toLowerCase());
+  // Find the first row that actually contains headers (skip any leading blank rows).
+  const headerRowIdx = rows.findIndex((r) => r.some((cell) => cell.trim()));
+  if (headerRowIdx === -1 || headerRowIdx >= rows.length - 1) return [];
+
+  const headers = rows[headerRowIdx].map((h) => h.trim().toLowerCase());
   const col = (keyword) => headers.findIndex((h) => h.includes(keyword));
 
   const titleIdx  = col('name');
@@ -43,7 +46,7 @@ function toReadings(rows) {
   const coverIdx  = col('cover');
 
   return rows
-    .slice(1)
+    .slice(headerRowIdx + 1)
     .filter((r) => r[titleIdx]?.trim())
     .map((r, i) => ({
       id: i,
