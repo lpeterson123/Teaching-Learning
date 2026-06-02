@@ -1,5 +1,24 @@
-import Placeholder from '../components/Placeholder.jsx';
+import { useEffect } from 'react';
+import './ProfessionalDevelopment.css';
+
+const BASE = import.meta.env.BASE_URL;
 
 export default function ProfessionalDevelopment() {
-  return <Placeholder title="Professional Development" eyebrow="Professional Development Resources" />;
+  useEffect(() => {
+    const previous = document.title;
+    document.title = 'Resources | Episcopal High School';
+    return () => {
+      document.title = previous;
+    };
+  }, []);
+
+  return (
+    <div className="pd-frame-wrap">
+      <iframe
+        src={`${BASE}cultural-competency-dashboard.html`}
+        title="Cultural Competency Dashboard"
+        className="pd-frame"
+      />
+    </div>
+  );
 }
