@@ -370,7 +370,6 @@ const ALIGNMENTS = [
       {
         id: 'humanities',
         name: 'Humanities',
-        subtitle: 'History, English, Social Studies',
         items: [
           'Design essential questions that probe cultural complexity: "Whose justice?" "Freedom for whom?" "What counts as progress?"',
           'Teach students to ask "Who benefits from this narrative? Whose perspective is centered or marginalized?"',
