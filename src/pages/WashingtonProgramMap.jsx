@@ -147,9 +147,9 @@ function makePopup(loc, idx) {
     const deptCode = loc.d[0];
     const deptData = loc.depts.get(deptCode);
     return `<div class="pu">
-      ${deptTabContent(deptCode, deptData)}
       <div class="putitle">${loc.n}</div>
       <div class="puaddr">${loc.a}</div>
+      ${deptTabContent(deptCode, deptData)}
     </div>`;
   }
 
