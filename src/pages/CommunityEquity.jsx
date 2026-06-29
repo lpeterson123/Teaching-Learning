@@ -159,24 +159,24 @@ function SuggestionsPanel({ suggestions, isOpen, panelId, labelledBy }) {
   );
 }
 
-function CulturalCompetencyTable({ competencies }) {
-  const [openCols, setOpenCols] = useState(() => new Set());
-  const tableId = useId();
+function CulturalCompetencyStack({ competencies }) {
+  const [openCards, setOpenCards] = useState(() => new Set());
+  const stackId = useId();
 
-  const toggleColumn = (id) =>
-    setOpenCols((prev) => {
+  const toggle = (id) =>
+    setOpenCards((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
     });
 
-  const expandAll = () => setOpenCols(new Set(competencies.map((c) => c.id)));
-  const collapseAll = () => setOpenCols(new Set());
-  const allOpen = openCols.size === competencies.length;
+  const expandAll = () => setOpenCards(new Set(competencies.map((c) => c.id)));
+  const collapseAll = () => setOpenCards(new Set());
+  const allOpen = openCards.size === competencies.length;
 
   return (
-    <div className="cc-wrapper">
+    <div className="cc-stack">
       <div className="cc-toolbar">
         <button
           type="button"
@@ -187,91 +187,61 @@ function CulturalCompetencyTable({ competencies }) {
         </button>
       </div>
 
-      <div className="cc-scroll">
-        <table className="cc-table" aria-label="Cultural competencies reference table">
-          <thead>
-            <tr>
-              <th scope="col" className="cc-corner" aria-hidden="true"></th>
-              {competencies.map((c) => (
-                <th key={c.id} scope="col" className="cc-colhead">
-                  <span className="cc-colhead__eyebrow">Competency</span>
-                  <span className="cc-colhead__name">{c.name}</span>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row" className="cc-rowhead">
-                <span className="cc-rowhead__label">
+      <div className="cc-cards">
+        {competencies.map((c) => {
+          const isOpen = openCards.has(c.id);
+          const buttonId = `${stackId}-btn-${c.id}`;
+          const panelId = `${stackId}-panel-${c.id}`;
+          return (
+            <article key={c.id} className="cc-card">
+              <div className="cc-card__header">
+                <span className="cc-card__eyebrow">Competency</span>
+                <h3 className="cc-card__name">{c.name}</h3>
+              </div>
+              <div className="cc-card__body">
+                <p className="cc-card__exceeding-label">
                   What it looks like at the &ldquo;Exceeding&rdquo; level
-                </span>
-              </th>
-              {competencies.map((c) => (
-                <td key={c.id} className="cc-cell cc-cell--exceeding" data-label={c.name}>
-                  <p>{c.exceeding}</p>
-                </td>
-              ))}
-            </tr>
-            <tr>
-              <th scope="row" className="cc-rowhead">
-                <span className="cc-rowhead__label">
-                  Broad Suggestions for All Teachers
-                </span>
-              </th>
-              {competencies.map((c) => {
-                const isOpen = openCols.has(c.id);
-                const buttonId = `${tableId}-btn-${c.id}`;
-                const panelId = `${tableId}-panel-${c.id}`;
-                return (
-                  <td
-                    key={c.id}
-                    className="cc-cell cc-cell--suggestions"
-                    data-label={c.name}
+                </p>
+                <p className="cc-card__exceeding-text">{c.exceeding}</p>
+                <button
+                  type="button"
+                  id={buttonId}
+                  className={`cc-disclosure${isOpen ? ' cc-disclosure--open' : ''}`}
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  onClick={() => toggle(c.id)}
+                >
+                  <span>
+                    {isOpen ? 'Hide' : 'Show'} suggestions{' '}
+                    <span className="cc-disclosure__count">({c.suggestions.length})</span>
+                  </span>
+                  <svg
+                    className="cc-disclosure__icon"
+                    viewBox="0 0 16 16"
+                    width="14"
+                    height="14"
+                    aria-hidden="true"
                   >
-                    <button
-                      type="button"
-                      id={buttonId}
-                      className={`cc-disclosure${isOpen ? ' cc-disclosure--open' : ''}`}
-                      aria-expanded={isOpen}
-                      aria-controls={panelId}
-                      onClick={() => toggleColumn(c.id)}
-                    >
-                      <span>
-                        {isOpen ? 'Hide' : 'Show'} suggestions{' '}
-                        <span className="cc-disclosure__count">
-                          ({c.suggestions.length})
-                        </span>
-                      </span>
-                      <svg
-                        className="cc-disclosure__icon"
-                        viewBox="0 0 16 16"
-                        width="14"
-                        height="14"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M3 6 L8 11 L13 6"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                    <SuggestionsPanel
-                      suggestions={c.suggestions}
-                      isOpen={isOpen}
-                      panelId={panelId}
-                      labelledBy={buttonId}
+                    <path
+                      d="M3 6 L8 11 L13 6"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
-                  </td>
-                );
-              })}
-            </tr>
-          </tbody>
-        </table>
+                  </svg>
+                </button>
+                <SuggestionsPanel
+                  suggestions={c.suggestions}
+                  isOpen={isOpen}
+                  panelId={panelId}
+                  labelledBy={buttonId}
+                />
+              </div>
+            </article>
+          );
+        })}
       </div>
     </div>
   );
@@ -574,7 +544,7 @@ export default function CommunityEquity() {
 
       <section className="ce-section" aria-label="Cultural competencies">
         <div className="container">
-          <CulturalCompetencyTable competencies={COMPETENCIES} />
+          <CulturalCompetencyStack competencies={COMPETENCIES} />
         </div>
       </section>
 
