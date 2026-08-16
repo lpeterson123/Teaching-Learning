@@ -9,6 +9,7 @@ const NAV_LINKS = [
     children: [
       { to: '/teaching-learning', label: 'Teaching & Learning', end: true },
       { to: '/teaching-learning/practice-deck', label: 'Practice Deck' },
+      { to: '/teaching-learning/learning-brain', label: 'Learning & the Brain' },
     ],
   },
   { to: '/community-equity', label: 'Office of Community and Equity' },

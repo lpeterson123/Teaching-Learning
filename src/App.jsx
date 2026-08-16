@@ -11,6 +11,7 @@ import Resources from './pages/Resources.jsx';
 import Newsletters from './pages/Newsletters.jsx';
 import BeneficialReadings from './pages/BeneficialReadings.jsx';
 import ProfessionalDevelopment from './pages/ProfessionalDevelopment.jsx';
+import LearningBrain from './pages/LearningBrain.jsx';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/teaching-learning" element={<TeachingLearning />} />
         <Route path="/teaching-learning/practice-deck" element={<TeachingPracticesDeck />} />
+        <Route path="/teaching-learning/learning-brain" element={<LearningBrain />} />
         <Route path="/community-equity" element={<CommunityEquity />} />
         <Route path="/washington-program" element={<WashingtonProgram />} />
         <Route path="/washington-program/map" element={<WashingtonProgramMap />} />
