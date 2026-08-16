@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Brain Learning Model</title>
+  <style>
+    :root {
+      --canvas: #f5f3ee;
+      --color-background-primary: #ffffff;
+      --color-background-secondary: #f3f0ea;
+      --color-text-primary: #211f1b;
+      --color-text-secondary: #5d574e;
+      --color-text-tertiary: #938c81;
+      --color-border-tertiary: rgba(33,31,27,0.09);
+      --color-border-secondary: rgba(33,31,27,0.18);
+      --border-radius-md: 10px;
+      --radius-lg: 18px;
+      --radius-sm: 8px;
+      --color-background-info: #EAF1F8;
+      --color-text-info: #14539c;
+      --shadow-sm: 0 1px 2px rgba(30,25,18,0.05), 0 1px 3px rgba(30,25,18,0.04);
+      --shadow-md: 0 6px 22px rgba(30,25,18,0.08), 0 2px 6px rgba(30,25,18,0.05);
+      --shadow-glow-focus: 0 0 0 3px rgba(20,83,156,0.28);
+      --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --canvas: #141318;
+        --color-background-primary: #201f26;
+        --color-background-secondary: #26252e;
+        --color-text-primary: #edecef;
+        --color-text-secondary: #aca9b2;
+        --color-text-tertiary: #7d7a84;
+        --color-border-tertiary: rgba(255,255,255,0.09);
+        --color-border-secondary: rgba(255,255,255,0.2);
+        --color-background-info: #12385f;
+        --color-text-info: #9cc4f0;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+        --shadow-md: 0 8px 28px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.35);
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--canvas);
+      color: var(--color-text-primary);
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 40px 6px 56px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .eyebrow {
+      font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--color-text-tertiary); font-weight: 600; margin-bottom: 10px;
+    }
+    h1 {
+      font-family: var(--font-serif); font-size: 32px; font-weight: 600;
+      letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 8px;
+    }
+    .subtitle { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 24px; max-width: 60ch; }
+
+    .mode-toggle {
+      display: flex; gap: 8px; margin-bottom: 24px; align-items: center;
+      flex-wrap: wrap; padding-bottom: 20px;
+      border-bottom: 1px solid var(--color-border-tertiary);
+    }
+    .mode-btn {
+      font-size: 13px; padding: 9px 18px;
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-secondary);
+      border-radius: 999px;
+      cursor: pointer; color: var(--color-text-secondary);
+      font-weight: 600; transition: all 0.18s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .mode-btn:hover { transform: translateY(-1px); color: var(--color-text-primary); }
+    .mode-btn.active {
+      background: var(--color-text-primary);
+      color: var(--canvas);
+      border-color: var(--color-text-primary);
+    }
+    .mode-btn:focus-visible { outline: none; box-shadow: var(--shadow-glow-focus); }
+    .home-btn { margin-left: auto; }
+
+    .brain-container { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+    .brain-panel, .pathway-panel {
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-tertiary);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 22px;
+    }
+    .brain-panel { flex: 1; min-width: 300px; }
+    .pathway-panel { flex: 1.4; min-width: 320px; }
+    .brain-panel svg { display: block; width: 100%; height: auto; margin: 4px 0 8px; overflow: visible; }
+
+    .region-shape { transition: stroke-width 0.2s ease, opacity 0.2s ease, filter 0.2s ease; filter: drop-shadow(0 1px 2px rgba(20,16,10,0.22)); }
+    .region-shape:hover { opacity: 0.92; }
+    .path-line { filter: drop-shadow(0 0 3px rgba(0,0,0,0.18)); }
+
+    .region-btn {
+      padding: 8px 14px; margin: 4px;
+      border-radius: 999px;
+      cursor: pointer; font-size: 12.5px; font-weight: 600;
+      transition: all 0.18s ease; border: 1px solid transparent;
+      box-shadow: var(--shadow-sm);
+    }
+    .region-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .region-btn.active { box-shadow: 0 0 0 2px var(--color-text-primary); }
+    .region-btn:focus-visible { outline: none; box-shadow: var(--shadow-glow-focus); }
+
+    .layer {
+      margin-bottom: 14px; padding: 16px;
+      border-radius: var(--border-radius-md);
+      background: var(--color-background-secondary);
+      border: 1px solid var(--color-border-tertiary);
+      animation: riseIn 0.34s ease both;
+    }
+
+    .layer-label {
+      font-size: 10.5px; color: var(--color-text-tertiary);
+      text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; margin-bottom: 8px;
+    }
+
+    .layer-title { font-size: 15.5px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.01em; }
+    .layer-desc { font-size: 13.5px; color: var(--color-text-secondary); line-height: 1.55; }
+
+    .layer-items { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+    .layer-item {
+      font-size: 12px; padding: 5px 11px; border-radius: 999px;
+      background: var(--color-background-primary);
+      border: 1px solid var(--color-border-tertiary);
+    }
+
+    .tip { position: relative; }
+    .tip::after {
+      content: attr(data-tip);
+      position: absolute; left: 0; bottom: calc(100% + 8px);
+      width: max-content; max-width: 240px;
+      background: var(--color-text-primary); color: var(--color-background-primary);
+      font-size: 11.5px; font-weight: 400; line-height: 1.45; text-align: left;
+      padding: 8px 10px; border-radius: 8px; box-shadow: var(--shadow-md);
+      opacity: 0; transform: translateY(4px); pointer-events: none;
+      transition: opacity .15s ease, transform .15s ease; z-index: 30;
+    }
+    .tip:hover::after, .tip:focus::after, .tip:focus-visible::after { opacity: 1; transform: none; }
+
+    .connector { text-align: center; color: var(--color-text-tertiary); font-size: 16px; margin: -4px 0 2px; opacity: 0.7; }
+
+    .intro-text {
+      font-size: 14.5px; color: var(--color-text-secondary); line-height: 1.7;
+      animation: riseIn 0.34s ease both;
+    }
+    .intro-text strong { color: var(--color-text-primary); font-weight: 600; }
+    .intro-text em { color: var(--color-text-primary); }
+
+    .brain-title { font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.6px; }
+
+    .route-chip {
+      display: inline-block; font-size: 12px; font-weight: 600;
+      padding: 5px 12px; border-radius: 999px; margin-bottom: 12px;
+      animation: riseIn 0.34s ease both;
+    }
+
+    .key-insight {
+      margin-top: 12px; padding: 13px 14px;
+      background: var(--color-background-info);
+      border-radius: var(--border-radius-md);
+      font-size: 13px; color: var(--color-text-info); line-height: 1.55;
+    }
+    .key-insight strong { font-weight: 700; }
+
+    .move-list { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+    .move { font-size:13px; line-height:1.5; }
+    .move.student { border-left:2px solid #BA7517; padding-left:9px; }
+    .move-head { font-weight:600; color:var(--color-text-primary); }
+    .move-ex { color:var(--color-text-secondary); }
+    .tap-hint { text-transform:none; font-weight:400; font-size:10px; color:var(--color-text-tertiary); letter-spacing:0; }
+
+    .search-wrap { margin-bottom: 20px; }
+    .search-label { display:block; font-size:13px; font-weight:600; margin-bottom:7px; color: var(--color-text-secondary); }
+    .search-input {
+      width:100%; padding:11px 14px; font-size:14px; font-family: var(--font-sans);
+      border:1px solid var(--color-border-secondary);
+      border-radius: 999px;
+      background: var(--color-background-primary); color: var(--color-text-primary);
+      transition: box-shadow 0.15s ease;
+    }
+    .search-input:focus { outline:none; box-shadow: var(--shadow-glow-focus); border-color: transparent; }
+    .search-hint { font-size:11px; color: var(--color-text-tertiary); margin-top:6px; }
+    .search-results { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+    .result-btn {
+      text-align:left; padding:10px 12px; border:1px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-md); background: var(--color-background-secondary);
+      cursor:pointer; font-size:13px; color: var(--color-text-primary); line-height:1.4;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .result-btn:hover, .result-btn:focus { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    .result-snippet { display:block; font-size:11px; color: var(--color-text-secondary); margin-top:3px; }
+    .challenge-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+    .challenge-chip {
+      font-size:12px; padding:7px 13px; border-radius:999px;
+      border:1px solid var(--color-border-secondary);
+      background: var(--color-background-primary); color: var(--color-text-primary); cursor:pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .challenge-chip:hover, .challenge-chip:focus { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+
+    footer {
+      margin-top: 36px; padding-top: 18px;
+      border-top: 1px solid var(--color-border-tertiary);
+      font-size: 12px; color: var(--color-text-tertiary);
+    }
+    footer summary { transition: color 0.15s ease; }
+    footer summary:hover { color: var(--color-text-primary); }
+
+    @keyframes riseIn { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="eyebrow">Mind, Brain &amp; Education</div>
+  <h1>Interactive brain learning model</h1>
+  <p class="subtitle">Connecting neuroscience to research-informed teaching practices</p>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="mode-regions" onclick="setMode('regions')">Brain regions</button>
+    <button class="mode-btn" id="mode-pathways" onclick="setMode('pathways')">Neural pathways</button>
+    <button class="mode-btn home-btn" id="mode-home" onclick="goHome()" aria-label="Back to the introduction">⌂ Home</button>
+  </div>
+
+  <div class="brain-container">
+    <div class="brain-panel">
+      <div class="search-wrap">
+        <label class="search-label" for="search-input">Start with your challenge — or search any practice, region or strategy</label>
+        <input id="search-input" class="search-input" type="text" autocomplete="off" placeholder="e.g. “they forget by Friday”, “test anxiety”, “interleaving”" oninput="runSearch(this.value)">
+        <div id="search-status" aria-live="polite" style="position:absolute;left:-9999px;height:1px;overflow:hidden">Showing common challenges</div>
+        <div id="search-results" class="search-results"></div>
+      </div>
+      <div class="brain-title" id="panel-prompt">Select a brain region to explore its learning pathway</div>
+      <svg width="100%" viewBox="0 0 360 320">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </marker>
+          <filter id="brainShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1e1912" flood-opacity="0.16"></feDropShadow>
+          </filter>
+          <radialGradient id="g-pfc" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#D7D3F7"></stop><stop offset="100%" stop-color="#AFA9EC"></stop></radialGradient>
+          <radialGradient id="g-acc" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#E6D2F1"></stop><stop offset="100%" stop-color="#C9A0DC"></stop></radialGradient>
+          <radialGradient id="g-bg" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#F9C9BA"></stop><stop offset="100%" stop-color="#F0997B"></stop></radialGradient>
+          <radialGradient id="g-reward" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#A9E2E7"></stop><stop offset="100%" stop-color="#5BC0C9"></stop></radialGradient>
+          <radialGradient id="g-hpc" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#ABE8D2"></stop><stop offset="100%" stop-color="#5DCAA5"></stop></radialGradient>
+          <radialGradient id="g-amg" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#F8C8D8"></stop><stop offset="100%" stop-color="#ED93B1"></stop></radialGradient>
+          <radialGradient id="g-att" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#BEDAF6"></stop><stop offset="100%" stop-color="#85B7EB"></stop></radialGradient>
+          <radialGradient id="g-cer" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#FDE5B8"></stop><stop offset="100%" stop-color="#FAC775"></stop></radialGradient>
+          <radialGradient id="g-dom" cx="35%" cy="28%" r="80%"><stop offset="0%" stop-color="#F4C2CF"></stop><stop offset="100%" stop-color="#E58BA2"></stop></radialGradient>
+        </defs>
+
+        <!-- Brain outline -->
+        <path d="M90 120
+                 Q50 100, 40 140
+                 Q20 180, 40 220
+                 Q50 260, 90 280
+                 Q130 300, 190 300
+                 Q250 300, 290 280
+                 Q330 260, 340 220
+                 Q360 180, 340 140
+                 Q330 100, 290 80
+                 Q250 60, 190 60
+                 Q130 60, 100 80
+                 Q90 90, 90 120Z" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1.25" filter="url(#brainShadow)"></path>
+
+        <!-- Gyri / sulci texture -->
+        <g fill="none" stroke="var(--color-border-secondary)" stroke-width="1" stroke-linecap="round" opacity="0.13" style="pointer-events:none">
+          <path d="M62 150 Q100 134, 140 150 T 220 150 T 300 152"></path>
+          <path d="M56 190 Q100 176, 145 190 T 230 190 T 312 190"></path>
+          <path d="M66 228 Q108 244, 150 230 T 236 230 T 314 226"></path>
+          <path d="M120 96 Q150 118, 150 160 T 150 250"></path>
+        </g>
+
+        <!-- Pathway connection lines (hidden until a pathway is selected) -->
+        <g id="pathway-lines">
+          <line class="path-line" id="line-p1" x1="70" y1="180" x2="185" y2="240" stroke="#0F6E56" stroke-width="3" stroke-linecap="round" marker-start="url(#arrow)" marker-end="url(#arrow)" style="display:none"></line>
+          <line class="path-line" id="line-p2" x1="235" y1="220" x2="78" y2="178" stroke="#993556" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)" style="display:none"></line>
+          <line class="path-line" id="line-p3" x1="175" y1="180" x2="100" y2="180" stroke="#993C1D" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)" style="display:none"></line>
+          <line class="path-line" id="line-p4a" x1="128" y1="210" x2="120" y2="145" stroke="#6B3FA0" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)" style="display:none"></line>
+          <line class="path-line" id="line-p4b" x1="115" y1="143" x2="82" y2="168" stroke="#6B3FA0" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)" style="display:none"></line>
+          <line class="path-line" id="line-p5" x1="70" y1="180" x2="190" y2="248" stroke="#3B47A0" stroke-width="3" stroke-linecap="round" marker-start="url(#arrow)" marker-end="url(#arrow)" style="display:none"></line>
+          <line class="path-line" id="line-p6" x1="118" y1="128" x2="285" y2="135" stroke="#2C7A72" stroke-width="3" stroke-linecap="round" marker-start="url(#arrow)" marker-end="url(#arrow)" style="display:none"></line>
+        </g>
+
+        <!-- Prefrontal Cortex -->
+        <ellipse class="region-shape" id="pfc-shape" cx="70" cy="180" rx="30" ry="45" fill="url(#g-pfc)" stroke="#534AB7" stroke-width="1" style="cursor:pointer" onclick="handleShape('pfc')"></ellipse>
+        <!-- Anterior Cingulate Cortex -->
+        <ellipse class="region-shape" id="acc-shape" cx="118" cy="128" rx="27" ry="17" fill="url(#g-acc)" stroke="#6B3FA0" stroke-width="1" style="cursor:pointer" onclick="handleShape('acc')"></ellipse>
+        <!-- Basal Ganglia -->
+        <ellipse class="region-shape" id="bg-shape" cx="178" cy="178" rx="30" ry="21" fill="url(#g-bg)" stroke="#993C1D" stroke-width="1" style="cursor:pointer" onclick="handleShape('bg')"></ellipse>
+        <!-- Reward System (VTA / Nucleus accumbens) -->
+        <ellipse class="region-shape" id="reward-shape" cx="128" cy="212" rx="24" ry="15" fill="url(#g-reward)" stroke="#0E6A72" stroke-width="1" style="cursor:pointer" onclick="handleShape('reward')"></ellipse>
+        <!-- Hippocampus -->
+        <ellipse class="region-shape" id="hpc-shape" cx="190" cy="248" rx="38" ry="20" fill="url(#g-hpc)" stroke="#0F6E56" stroke-width="1" style="cursor:pointer" onclick="handleShape('hpc')"></ellipse>
+        <!-- Amygdala -->
+        <ellipse class="region-shape" id="amg-shape" cx="240" cy="218" rx="21" ry="17" fill="url(#g-amg)" stroke="#993556" stroke-width="1" style="cursor:pointer" onclick="handleShape('amg')"></ellipse>
+        <!-- Attention Networks -->
+        <ellipse class="region-shape" id="att-shape" cx="285" cy="135" rx="35" ry="27" fill="url(#g-att)" stroke="#185FA5" stroke-width="1" style="cursor:pointer" onclick="handleShape('att')"></ellipse>
+        <!-- Cerebellum -->
+        <ellipse class="region-shape" id="cer-shape" cx="308" cy="262" rx="27" ry="23" fill="url(#g-cer)" stroke="#854F0B" stroke-width="1" style="cursor:pointer" onclick="handleShape('cer')"></ellipse>
+        <!-- Domain-specific learning (reading & number) -->
+        <ellipse class="region-shape" id="dom-shape" cx="232" cy="168" rx="25" ry="16" fill="url(#g-dom)" stroke="#8E2F47" stroke-width="1" style="cursor:pointer" onclick="handleShape('dom')"></ellipse>
+
+        <!-- Labels -->
+        <g style="pointer-events:none;paint-order:stroke;stroke:#ffffff;stroke-width:2.4px;stroke-linejoin:round;font-weight:600">
+          <text x="70" y="177" text-anchor="middle" style="font-size:9px;fill:#3C3489">Prefrontal</text>
+          <text x="70" y="188" text-anchor="middle" style="font-size:9px;fill:#3C3489">cortex</text>
+          <text x="118" y="131" text-anchor="middle" style="font-size:8.5px;fill:#5A2D87">ACC</text>
+          <text x="178" y="181" text-anchor="middle" style="font-size:8.5px;fill:#712B13">Basal ganglia</text>
+          <text x="128" y="215" text-anchor="middle" style="font-size:8px;fill:#08484E">Reward</text>
+          <text x="190" y="251" text-anchor="middle" style="font-size:9px;fill:#085041">Hippocampus</text>
+          <text x="240" y="221" text-anchor="middle" style="font-size:8px;fill:#72243E">Amygdala</text>
+          <text x="285" y="131" text-anchor="middle" style="font-size:9px;fill:#0C447C">Attention</text>
+          <text x="285" y="142" text-anchor="middle" style="font-size:9px;fill:#0C447C">networks</text>
+          <text x="308" y="265" text-anchor="middle" style="font-size:8px;fill:#633806">Cerebellum</text>
+          <text x="232" y="166" text-anchor="middle" style="font-size:7.5px;fill:#7E2238">Reading</text>
+          <text x="232" y="175" text-anchor="middle" style="font-size:7.5px;fill:#7E2238">&amp; number</text>
+        </g>
+      </svg>
+
+      <div id="region-buttons" style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+        <button class="region-btn" id="btn-pfc" style="background:#EEEDFE;color:#3C3489" onclick="showRegion('pfc')">Prefrontal cortex</button>
+        <button class="region-btn" id="btn-hpc" style="background:#E1F5EE;color:#085041" onclick="showRegion('hpc')">Hippocampus</button>
+        <button class="region-btn" id="btn-bg" style="background:#FAECE7;color:#712B13" onclick="showRegion('bg')">Basal ganglia</button>
+        <button class="region-btn" id="btn-amg" style="background:#FBEAF0;color:#72243E" onclick="showRegion('amg')">Amygdala</button>
+        <button class="region-btn" id="btn-att" style="background:#E6F1FB;color:#0C447C" onclick="showRegion('att')">Attention</button>
+        <button class="region-btn" id="btn-cer" style="background:#FAEEDA;color:#633806" onclick="showRegion('cer')">Cerebellum</button>
+        <button class="region-btn" id="btn-reward" style="background:#DEF3F5;color:#08484E" onclick="showRegion('reward')">Reward system</button>
+        <button class="region-btn" id="btn-acc" style="background:#F0E6F7;color:#5A2D87" onclick="showRegion('acc')">ACC</button>
+        <button class="region-btn" id="btn-dom" style="background:#F7E4E9;color:#7E2238" onclick="showRegion('dom')">Reading &amp; number</button>
+      </div>
+
+      <div id="pathway-buttons" style="display:none;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+        <button class="region-btn" id="btn-p1" style="background:#E1F5EE;color:#085041" onclick="showPathway('p1')">1 · Memory circuit</button>
+        <button class="region-btn" id="btn-p2" style="background:#FBEAF0;color:#72243E" onclick="showPathway('p2')">2 · Regulation circuit</button>
+        <button class="region-btn" id="btn-p3" style="background:#FAECE7;color:#712B13" onclick="showPathway('p3')">3 · Automation circuit</button>
+        <button class="region-btn" id="btn-p4" style="background:#F0E6F7;color:#5A2D87" onclick="showPathway('p4')">4 · Persistence circuit</button>
+        <button class="region-btn" id="btn-p5" style="background:#E9EBF8;color:#33408F" onclick="showPathway('p5')">5 · Default mode network</button>
+        <button class="region-btn" id="btn-p6" style="background:#E1F2F0;color:#1F5F58" onclick="showPathway('p6')">6 · Salience network</button>
+      </div>
+    </div>
+
+    <div class="pathway-panel" id="pathway-content">
+      <div class="intro-text" id="intro-block">
+        <strong>How to use this model</strong><br><br>
+        <strong>Brain regions</strong> view: click any region to see its five-layer learning pathway—from neural system to classroom practice.<br><br>
+        <strong>Neural pathways</strong> view: click any circuit to see how two or more regions communicate, and why that connection matters for learning.<br><br>
+        Each pathway shows the brain system, the cognitive processes it supports, the research-informed practices that connect, specific teacher moves, and student self-regulation strategies—plus the <strong>research base</strong>, a <strong>developmental note</strong>, and a <strong>myth to retire</strong>.<br><br>
+        <em>The goal: Teachers understand just enough neuroscience to know why practices work—and how to adapt them.</em><br><br>
+        <span style="font-size:12px"><strong>A note on evidence:</strong> the neuroscience here <em>corroborates and explains</em> practices proven in classrooms and behavioral studies—it doesn't replace that evidence. Use the brain as a way to understand and remember why these moves work.</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <details>
+      <summary style="cursor:pointer;font-weight:500;color:var(--color-text-secondary)">Key references &amp; further reading</summary>
+      <div style="margin-top:10px;font-size:12px;line-height:1.7;color:var(--color-text-tertiary)">
+        Each node uses the <strong>dual-anchor principle</strong>: one mechanism citation (how the brain does it) and one classroom citation (whether it works with students).
+        <br><br>
+        <strong>Mechanism (cognitive science &amp; neuroscience):</strong> Cowan, Baddeley (working memory) · Sweller (cognitive load) · Squire, Kandel, Tulving, Ebbinghaus (memory) · Anderson, Graybiel/Knowlton (procedural learning) · Posner &amp; Petersen, Kahneman (attention) · LeDoux, Phelps, Arnsten (emotion &amp; stress) · Gross, Lieberman (regulation) · Schultz, Berridge (dopamine) · Shenhav, Botvinick &amp; Cohen (expected value of control) · Schmahmann, Sokolov (cerebellum — emerging) · Dehaene, Wolf, Ansari (reading &amp; number).
+        <br><br>
+        <strong>Classroom &amp; instruction:</strong> Roediger &amp; Karpicke (testing effect) · Cepeda, Pashler (spacing) · Bjork, Rohrer (interleaving / desirable difficulties) · Ericsson (deliberate practice) · Mayer, Paivio (multimedia / dual coding) · Rosenshine (principles of instruction) · Wiliam &amp; Black (formative assessment) · Bloom (mastery) · Hattie, Nuthall (effectiveness) · Goswami (science of reading) · Willingham (knowledge &amp; thinking) · Dunlosky, Deans for Impact, EEF (syntheses) · Wilson et al. (the 85% rule).
+        <br><br>
+        <strong>Motivation &amp; self-regulation:</strong> Deci &amp; Ryan (self-determination) · Bandura (self-efficacy) · Eccles &amp; Wigfield (expectancy-value) · Flavell (metacognition) · Zimmerman (self-regulated learning) · Dweck (mindset — modest effects: Sisk 2018, Yeager 2019) · Duckworth (grit — contested) · Immordino-Yang, Pekrun (emotions in learning) · CASEL / Durlak (SEL).
+        <br><br>
+        <strong>Translation &amp; skeptic layer</strong> — behind the “myths to retire,” evidence tags, and “corroborates, not proves” framing: Tokuhama-Espinosa &amp; Fischer (Mind, Brain &amp; Education) · Bruer (“a bridge too far”) · Howard-Jones, Dekker (neuromyths) · Kirschner (against learning styles / minimal guidance) · the Learning Scientists, Agarwal, Furst, Hendrick (classroom translation).
+        <br><br>
+        <em>The regions shown are simplified maps of <strong>distributed systems</strong>—attention, reward and memory are networks, not single spots. The neuroscience corroborates and explains practices proven in classrooms; it does not replace that evidence.</em>
+      </div>
+    </details>
+    <div style="margin-top:14px">Interactive Brain Learning Model — A framework for connecting cognitive science to classroom practice</div>
+  </footer>
+
+  <script>
+    const regions = {
+      pfc: {
+        name: "Prefrontal cortex", color: "#EEEDFE", borderColor: "#534AB7", textColor: "#3C3489",
+        description: "The brain's CEO. Sits behind your forehead and handles working memory, planning, decision-making, and impulse control. Limited capacity—holds only about 4 items of novel information at once.",
+        insight: "This is why cognitive load theory matters. When working memory is overwhelmed, learning stops. Teachers who understand this design instruction that respects these limits.",
+        processes: [
+          { name: "Working memory", desc: "Temporary holding and manipulation of information" },
+          { name: "Executive function", desc: "Planning, organizing, prioritizing tasks" },
+          { name: "Inhibition", desc: "Suppressing distractions and irrelevant responses" }
+        ],
+        practices: ["Cognitive load theory", "Metacognition", "Scaffolding"],
+        teacherMoves: ["Chunk complex material", "Use worked examples", "Activate prior knowledge before new material", "Think-alouds to model thinking", "Remove extraneous information", "Provide graphic organizers"],
+        studentMoves: ["Plan before starting tasks", "Monitor comprehension", "Break problems into steps", "Ask 'what strategy should I use?'", "Recognize when confused"]
+      },
+      hpc: {
+        name: "Hippocampus", color: "#E1F5EE", borderColor: "#0F6E56", textColor: "#085041",
+        description: "The brain's memory hub. This seahorse-shaped structure creates temporary memory traces and gradually transfers them to long-term storage through consolidation—a process heavily dependent on sleep and spaced repetition.",
+        insight: "This explains why cramming fails and spacing works. Memories need time and repeated retrieval to consolidate. Each retrieval episode strengthens the trace.",
+        processes: [
+          { name: "Encoding", desc: "Initial registration of new information" },
+          { name: "Consolidation", desc: "Stabilizing memories over hours to weeks" },
+          { name: "Retrieval", desc: "Reactivating stored patterns (which strengthens them)" }
+        ],
+        practices: ["Spacing", "Retrieval practice", "Interleaving"],
+        teacherMoves: ["Spiral curriculum design", "Daily low-stakes retrieval quizzes", "Activate prior knowledge so new facts have a schema to attach to", "Return to past material regularly", "Space practice across days/weeks", "Use retrieval before re-teaching"],
+        studentMoves: ["Self-test instead of re-read", "Space study sessions", "Use flashcards with increasing intervals", "Sleep before exams", "Quiz yourself on old material"]
+      },
+      bg: {
+        name: "Basal ganglia", color: "#FAECE7", borderColor: "#993C1D", textColor: "#712B13",
+        description: "The brain's habit center. Deep structures that automate repeated behaviors, recognize patterns, and build procedural skills. Once something becomes automatic here, it frees up prefrontal resources for higher-level thinking.",
+        insight: "This is why interleaving builds flexible skills. Blocked practice creates rigid routines; interleaved practice forces pattern recognition and discrimination—engaging basal ganglia in a way that builds adaptable expertise.",
+        processes: [
+          { name: "Habit formation", desc: "Automating repeated sequences" },
+          { name: "Procedural learning", desc: "Building skill routines" },
+          { name: "Pattern recognition", desc: "Detecting regularities across varied examples" }
+        ],
+        practices: ["Interleaving", "Deliberate practice", "Automaticity building"],
+        teacherMoves: ["Mix problem types in practice sets", "Vary examples and contexts", "Build foundational fluency", "Contrast similar concepts", "Use varied practice before tests"],
+        studentMoves: ["Practice different problem types together", "Notice what makes problems different", "Build fluency on basics", "Don't just repeat—vary", "Ask 'what type of problem is this?'"]
+      },
+      amg: {
+        name: "Amygdala", color: "#FBEAF0", borderColor: "#993556", textColor: "#72243E",
+        description: "The brain's alarm and significance detector—it flags what matters and what threatens. It tags experiences with emotional significance, which affects how strongly memories form. Moderate arousal can aid memory while excessive stress impairs it—an effect that is task- and timing-dependent, not a simple rule.",
+        insight: "This is why feedback culture matters so much. High-stakes environments trigger stress responses that literally impair memory formation. Low-stakes practice with normalised errors keeps the amygdala calm and the hippocampus functional.",
+        processes: [
+          { name: "Emotional tagging", desc: "Marking experiences as significant" },
+          { name: "Threat detection", desc: "Fast, low-resolution scanning for danger" },
+          { name: "Motivational salience", desc: "Directing attention to what matters" }
+        ],
+        practices: ["Feedback", "Classroom climate", "Error normalisation"],
+        teacherMoves: ["Use low-stakes formative assessment", "Normalize mistakes as learning", "Give timely, specific feedback", "Create psychological safety", "Separate practice from grading"],
+        studentMoves: ["Reframe errors as information", "Seek feedback proactively", "Manage test anxiety", "Celebrate growth, not just performance", "Use mistakes to guide study"]
+      },
+      att: {
+        name: "Attention networks", color: "#E6F1FB", borderColor: "#185FA5", textColor: "#0C447C",
+        description: "The brain's spotlight system—a set of networks that decide what gets processed. Attention is the gateway: what you don't attend to is never encoded, so it can't be learned.",
+        insight: "This underpins cognitive load theory from a different angle. Dual coding works because visual and verbal channels have partly separate processing resources. Extraneous load fails because it competes for the same limited spotlight.",
+        processes: [
+          { name: "Alerting", desc: "Reaching and holding a state of readiness to respond" },
+          { name: "Orienting", desc: "Selecting and shifting attention to the relevant information" },
+          { name: "Executive attention", desc: "Resolving conflict and directing focus on purpose" }
+        ],
+        practices: ["Cognitive load theory", "Dual coding", "Signaling"],
+        teacherMoves: ["Reduce visual clutter", "Use signaling to direct attention", "Pair words with visuals", "Activate prior knowledge before presenting new material", "Chunk lessons with breaks", "Eliminate split attention"],
+        studentMoves: ["Remove distractions when studying", "Use visual notes and diagrams", "Take strategic breaks", "Single-task during learning", "Notice when attention drifts"]
+      },
+      cer: {
+        name: "Cerebellum", color: "#FAEEDA", borderColor: "#854F0B", textColor: "#633806",
+        description: "The brain's precision tuner. Best known for coordinating movement, it sharpens skills through practice and feedback, building mental templates for timing and sequencing. Growing evidence suggests it tunes thinking skills this way too—not just physical ones.",
+        insight: "This is why deliberate practice requires feedback loops. The cerebellum adjusts based on error signals—without feedback, there's no calibration. This applies to cognitive skills (problem-solving procedures) not just motor skills.",
+        processes: [
+          { name: "Skill automaticity", desc: "Making complex sequences effortless" },
+          { name: "Timing and sequencing", desc: "Precise coordination of steps" },
+          { name: "Error-based prediction", desc: "Building internal models and calibrating to feedback" }
+        ],
+        practices: ["Deliberate practice", "Feedback loops", "Procedural fluency"],
+        teacherMoves: ["Provide immediate corrective feedback", "Model expert procedures", "Break skills into component parts", "Use repeated practice with variation", "Gradually remove scaffolds"],
+        studentMoves: ["Practice with feedback, not just repetition", "Focus on weak components", "Use self-correction strategies", "Build speed through accuracy first", "Seek expert models to emulate"]
+      },
+      reward: {
+        name: "Reward system (VTA & nucleus accumbens)", color: "#DEF3F5", borderColor: "#0E6A72", textColor: "#08484E",
+        description: "The brain's motivation engine. A midbrain network that releases dopamine not only when a goal is reached, but in the anticipation of success. Dopamine is a pursuit and prediction signal—not simply a 'pleasure chemical.'",
+        insight: "This is why 'low-floor, high-ceiling' tasks work. If a student believes a task is impossible, the reward system won't fire and the engine never starts. Calibrating tasks to roughly an 85% success rate keeps the prediction signal alive.",
+        processes: [
+          { name: "Incentive salience", desc: "The 'wanting'—the drive to begin a task" },
+          { name: "Reward prediction", desc: "Estimating whether effort is likely to pay off" },
+          { name: "Reinforcement learning", desc: "Using past successes to shape future behavior" }
+        ],
+        practices: ["Goal setting", "Formative feedback loops", "Progress visibility"],
+        teacherMoves: ["Break large projects into 'micro-wins'", "Use progress trackers to make growth visible", "Calibrate difficulty to ~85% success", "Celebrate effort and 'aha!' moments over final grades"],
+        studentMoves: ["Set a '5-minute goal' to lower the barrier to starting", "Track personal success streaks", "Notice early wins as evidence effort pays off"]
+      },
+      acc: {
+        name: "Anterior cingulate cortex (ACC)", color: "#F0E6F7", borderColor: "#6B3FA0", textColor: "#5A2D87",
+        description: "The brain's effort monitor and gear-shifter. Sits between the emotional and cognitive centers and runs a cost-benefit calculation: it detects conflict and errors, then decides whether to invest more effort or switch strategies.",
+        insight: "This is the seat of metacognition and persistence. Per the 'expected value of control' model, the ACC weighs the predicted payoff of a task against its effort cost. 'Mental sweat' is the ACC working—not a sign to stop.",
+        processes: [
+          { name: "Conflict monitoring", desc: "Noticing when ideas or strategies clash" },
+          { name: "Error detection", desc: "The 'oops' signal that triggers self-correction" },
+          { name: "Effort-to-reward calculation", desc: "Deciding whether a hard problem is worth the cost" }
+        ],
+        practices: ["Metacognition", "Error normalization", "Desirable difficulties"],
+        teacherMoves: ["Model 'strategy switching' when a first attempt fails", "Give wait time so students detect their own errors", "Name the cost honestly—'this will feel hard, and that's the right signal'", "Normalize frustration as productive struggle"],
+        studentMoves: ["Ask 'is this strategy working, or do I need another?'", "Recognize 'mental sweat' as a sign of growth", "Slow down when the 'error alarm' goes off"]
+      },
+      dom: {
+        name: "Domain-specific learning (reading & number)", color: "#F7E4E9", borderColor: "#8E2F47", textColor: "#7E2238",
+        description: "The brain's reading-and-number builder. Unlike speech, reading and math aren't natural—the brain repurposes circuits originally built for recognizing objects and quantities. Because these systems are built, not inherited, both must be explicitly taught.",
+        insight: "This is why “thinking skills” can't be taught in a vacuum: reading and math run on domain-specific circuits and a base of knowledge. Systematic, explicit instruction builds the circuit; broad background knowledge powers comprehension.",
+        processes: [
+          { name: "Decoding & word recognition", desc: "Mapping symbols to sounds and meaning" },
+          { name: "Phonological awareness", desc: "Hearing and manipulating the sounds in words" },
+          { name: "Number sense", desc: "Representing, comparing and operating on quantities" }
+        ],
+        practices: ["Systematic phonics", "Background knowledge", "Concrete–representational–abstract"],
+        teacherMoves: ["Teach phonics systematically and explicitly", "Build broad background knowledge to power comprehension", "Use concrete → representational → abstract sequences in math", "Develop fluency in decoding and number facts", "Make the structure of texts and problems explicit"],
+        studentMoves: ["Read widely to build knowledge and vocabulary", "Practice decoding and number facts to fluency", "Connect new texts and problems to what you already know"]
+      }
+    };
+
+    const pathways = {
+      p1: {
+        name: "The Memory Circuit", route: "Prefrontal cortex ⇄ Hippocampus",
+        regions: ["pfc", "hpc"], lines: ["line-p1"],
+        color: "#E1F5EE", borderColor: "#0F6E56", textColor: "#085041",
+        system: "The \"Memory Highway.\" A bidirectional connection between the prefrontal cortex (the thinking space) and the hippocampus (the storage unit).",
+        insight: "Information isn't simply \"stored\"—it must be shuttled from working memory to long-term storage via consolidation. If the PFC is overloaded, the shuttle breaks down and encoding fails.",
+        processes: [
+          { name: "Active encoding", desc: "Registering new information for storage" },
+          { name: "Schema integration", desc: "Connecting new ideas to existing knowledge" },
+          { name: "Retrieval-induced strengthening", desc: "Each act of recall reinforces the trace" }
+        ],
+        practices: ["Spaced repetition", "Dual coding", "Retrieval practice"],
+        teacherMoves: ["Chunk information to avoid 'traffic jams'", "Use low-stakes quizzes to pull info back across the bridge", "Activate prior knowledge before new material"],
+        studentMoves: ["Notice when 'my brain feels full' (overload)", "Switch to a retrieval strategy instead of re-reading", "Protect sleep so consolidation can finish the job"]
+      },
+      p2: {
+        name: "The Regulation Circuit", route: "Amygdala → Prefrontal cortex",
+        regions: ["amg", "pfc"], lines: ["line-p2"],
+        color: "#FBEAF0", borderColor: "#993556", textColor: "#72243E",
+        system: "The \"Regulatory Loop.\" The pathway that lets the emotional center (amygdala) communicate with the logical center (PFC). The connection is asymmetric—alarm signals reach the PFC faster than top-down control reaches back down.",
+        insight: "High-stress signals from the amygdala can physically \"mute\" the PFC's executive functions. A student in a fight-or-flight state literally cannot access their problem-solving skills until the circuit comes back online.",
+        processes: [
+          { name: "Emotional regulation", desc: "Down-regulating affect to free up thinking" },
+          { name: "Top-down inhibition", desc: "The PFC dampening the amygdala's alarm" },
+          { name: "Stress-response management", desc: "Returning the system to a learning-ready state" }
+        ],
+        practices: ["Psychological safety", "Error normalization", "Social-emotional learning"],
+        teacherMoves: ["Establish predictable routines to lower the ambient threat signal", "Co-regulate (and de-escalate) before re-teaching content", "Use brief affect labeling—'sounds like that felt frustrating'", "Protect recovery time after a tough moment"],
+        studentMoves: ["Use a 'mindful pause' to re-engage the logical brain", "Name the feeling to take the edge off it", "Recognize that recovery takes minutes, not seconds"]
+      },
+      p3: {
+        name: "The Automation Circuit", route: "Basal ganglia → Prefrontal cortex",
+        regions: ["bg", "pfc"], lines: ["line-p3"],
+        color: "#FAECE7", borderColor: "#993C1D", textColor: "#712B13",
+        system: "The \"Automation Bridge.\" The neural connection that offloads repeated tasks from the PFC to the habit center (basal ganglia), with cerebellar support refining the sequence.",
+        insight: "Fluency creates brain-room. When the basal ganglia masters a procedure—basic decoding, arithmetic facts—the PFC is freed up to focus on deep comprehension. The bottleneck in 'slow' reasoning is often unautomated fluency, not reasoning ability.",
+        processes: [
+          { name: "Skill acquisition", desc: "Building reliable procedural routines" },
+          { name: "Procedural automaticity", desc: "Running a skill without conscious effort" },
+          { name: "Cognitive load reduction", desc: "Freeing working memory for higher-order work" }
+        ],
+        practices: ["Overlearning", "Fluency building", "Deliberate practice"],
+        teacherMoves: ["Decide deliberately what should be automated (and what shouldn't)", "Drill foundational skills until they're 'invisible'", "Vary the context so the skill stays flexible", "Catch errors early—un-automating a wrong procedure is costly"],
+        studentMoves: ["Recognize 'effortful thought' vs. 'autopilot' tasks", "Build accuracy before speed", "Keep retrieving automated skills so they don't decay"]
+      },
+      p4: {
+        name: "The Persistence Circuit", route: "Reward system → ACC → Prefrontal cortex",
+        regions: ["reward", "acc", "pfc"], lines: ["line-p4a", "line-p4b"],
+        color: "#F0E6F7", borderColor: "#6B3FA0", textColor: "#5A2D87",
+        system: "The \"Persistence Engine.\" A circuit where the reward system supplies the dopamine the ACC needs to judge whether a task is worth the effort, and the PFC decides whether to keep going.",
+        insight: "Dopamine is the fuel for grit. When students experience 'micro-wins,' this loop signals that the mental sweat is paying off—so they stay on task longer. Persistence isn't a fixed trait; it's the output of a running cost-benefit computation that context can change.",
+        processes: [
+          { name: "Effort-for-reward calculation", desc: "Weighing predicted payoff against cost" },
+          { name: "Sustained attention", desc: "Holding focus across the hard middle of a task" },
+          { name: "Motivation maintenance", desc: "Keeping the prediction signal alive over time" }
+        ],
+        practices: ["Growth mindset", "Goal orientation", "Immediate feedback"],
+        teacherMoves: ["Design tasks with early success points", "Make progress visible at short intervals", "Calibrate difficulty to ~85% success", "Build a year-long 'prediction record' that effort pays off in this room"],
+        studentMoves: ["Set a '5-minute timer' to get over the hurdle of starting", "Track personal 'streaks' of success", "Read the effort cost as a signal to push, not quit"]
+      },
+      p5: {
+        name: "The Default Mode Network", route: "The brain's ‘offline’ network — rest, reflection, integration",
+        regions: ["pfc", "hpc"], lines: ["line-p5"],
+        color: "#E9EBF8", borderColor: "#3B47A0", textColor: "#33408F",
+        system: "The brain's ‘offline’ integration network — medial prefrontal cortex, posterior cingulate/precuneus, and angular gyrus. It becomes more active during rest, reflection, and mind-wandering, and quiets when attention turns outward.",
+        insight: "Not-doing is also learning. The brain consolidates and connects ideas during rest and reflection—so filling every minute starves the process that makes learning stick. Mind-wandering is the brain's default, which is why sustained focus is effortful and breaks help.",
+        processes: [
+          { name: "Internal reflection", desc: "Connecting material to yourself and prior experience" },
+          { name: "Memory integration", desc: "Weaving new learning into existing knowledge, much of it offline" },
+          { name: "Mind-wandering & simulation", desc: "Spontaneous thought, imagining, rehearsing the future" }
+        ],
+        practices: ["Spacing & rest", "Elaboration", "Reflection"],
+        teacherMoves: ["Build in genuine pauses and brain breaks—don't fill every minute", "Use reflection prompts that connect new learning to what students know", "Protect downtime and sleep so consolidation can run", "Allow incubation time on hard problems"],
+        studentMoves: ["Take real breaks (not phone-scrolling) to let ideas settle", "Self-explain and reflect after studying", "Protect sleep—consolidation happens while you rest"]
+      },
+      p6: {
+        name: "The Salience Network", route: "Anterior insula ⇄ dorsal ACC",
+        regions: ["acc", "att"], lines: ["line-p6"],
+        color: "#E1F2F0", borderColor: "#2C7A72", textColor: "#1F5F58",
+        system: "The brain's switchboard—anchored by the anterior insula and dorsal anterior cingulate. It detects what is most relevant right now (novel, important, or emotionally charged) and switches control between inward focus (the default mode) and outward, task-focused attention.",
+        insight: "Attention isn't just ‘paying’ attention—it's the salience network deciding what's worth it and flipping the switch. Make material relevant, novel, or emotionally resonant and you win that switch; teach students to notice their own ‘this matters’ and ‘I'm lost’ signals.",
+        processes: [
+          { name: "Salience detection", desc: "Flagging the most relevant thing, inside or outside" },
+          { name: "Network switching", desc: "Toggling between inward (default-mode) and task focus" },
+          { name: "Interoception", desc: "Sensing internal states like ‘felt effort’" }
+        ],
+        practices: ["Signaling", "Relevance & novelty", "Interoceptive awareness"],
+        teacherMoves: ["Signal what matters explicitly—'this is the key idea'", "Use novelty, relevance and emotional hooks, then transition into focused work", "Avoid 'seductive details'—vivid but irrelevant extras that hijack attention", "Help students name their internal state—'locked in' vs. 'lost'"],
+        studentMoves: ["Notice the 'this matters' and 'I'm lost' signals—and act on them", "Re-orient when you catch your focus drifting", "Treat your felt sense of effort as information, not a stop sign"]
+      }
+    };
+
+    const tierStyles = {
+      strong:      { label: "Strong",      bg: "#E3F3EA", color: "#1B6B41", dot: "#1B7A4B" },
+      conditional: { label: "Conditional", bg: "#FBF0D9", color: "#8A5D00", dot: "#C28A1A" },
+      promising:   { label: "Promising",   bg: "#E9ECF0", color: "#4A5A6A", dot: "#7A8A9A" }
+    };
+    const evidenceTier = {
+      "Cognitive load theory": "strong", "Metacognition": "strong", "Scaffolding": "strong",
+      "Spacing": "strong", "Spaced repetition": "strong", "Retrieval practice": "strong",
+      "Interleaving": "conditional", "Deliberate practice": "strong", "Automaticity building": "strong",
+      "Feedback": "strong", "Formative feedback loops": "strong", "Immediate feedback": "strong",
+      "Feedback loops": "strong", "Classroom climate": "promising", "Error normalisation": "promising",
+      "Error normalization": "promising", "Dual coding": "strong", "Signaling": "strong",
+      "Procedural fluency": "strong", "Overlearning": "conditional", "Fluency building": "strong",
+      "Goal setting": "strong", "Progress visibility": "promising", "Desirable difficulties": "strong",
+      "Psychological safety": "promising", "Social-emotional learning": "promising",
+      "Growth mindset": "promising", "Goal orientation": "promising",
+      "Systematic phonics": "strong", "Background knowledge": "strong", "Concrete–representational–abstract": "conditional",
+      "Spacing & rest": "strong", "Elaboration": "strong", "Reflection": "promising",
+      "Relevance & novelty": "promising", "Interoceptive awareness": "promising"
+    };
+
+    // One-line plain-language definitions, shown on hover over each Layer 3 practice
+    const practiceDefs = {
+      "Cognitive load theory": "Designing lessons around working memory's tight limits so it isn't overwhelmed.",
+      "Metacognition": "Teaching students to plan, monitor, and judge their own learning.",
+      "Scaffolding": "Temporary support that's gradually removed as students gain independence.",
+      "Spacing": "Spreading study across time instead of cramming it together.",
+      "Spaced repetition": "Revisiting material at growing intervals to build lasting memory.",
+      "Retrieval practice": "Recalling information from memory (e.g., a quiz) to strengthen it.",
+      "Interleaving": "Mixing problem types so students learn to tell them apart.",
+      "Deliberate practice": "Focused, feedback-rich practice aimed at specific weak points.",
+      "Automaticity building": "Practicing the basics until they run without conscious effort.",
+      "Feedback": "Specific information that helps a student close the gap to the goal.",
+      "Formative feedback loops": "Ongoing checks and responses that adjust learning in progress.",
+      "Immediate feedback": "Responsive feedback given while the student is still invested.",
+      "Feedback loops": "Repeated cycles of attempt, feedback, and correction.",
+      "Classroom climate": "The emotional safety and tone that make effortful thinking possible.",
+      "Error normalisation": "Treating mistakes as normal, useful information rather than failures.",
+      "Error normalization": "Treating mistakes as normal, useful information rather than failures.",
+      "Dual coding": "Pairing words with visuals so both channels support understanding.",
+      "Signaling": "Cueing what matters most so attention lands in the right place.",
+      "Procedural fluency": "Smooth, accurate execution of a skill's steps.",
+      "Overlearning": "Practicing past first success so a skill becomes durable.",
+      "Fluency building": "Making foundational skills fast and automatic.",
+      "Goal setting": "Naming clear, reachable targets that guide and motivate effort.",
+      "Progress visibility": "Making growth visible so effort feels worthwhile.",
+      "Desirable difficulties": "Making learning productively harder so it sticks better.",
+      "Psychological safety": "A climate where students can risk being wrong without fear.",
+      "Social-emotional learning": "Building the emotional and relational skills that support learning.",
+      "Growth mindset": "Believing ability can grow with effort and good strategies.",
+      "Goal orientation": "Focusing on mastering the learning, not just performing.",
+      "Systematic phonics": "Teaching letter–sound patterns in a planned, explicit sequence.",
+      "Background knowledge": "The prior knowledge that makes comprehension and thinking possible.",
+      "Concrete–representational–abstract": "Moving from objects, to pictures, to symbols in math.",
+      "Spacing & rest": "Building in gaps and downtime so memory can consolidate.",
+      "Elaboration": "Explaining and connecting ideas to deepen and link them.",
+      "Reflection": "Pausing to make sense of and connect what was learned.",
+      "Relevance & novelty": "Making material feel relevant or new so attention engages.",
+      "Interoceptive awareness": "Noticing your internal signals of effort, focus, or confusion."
+    };
+
+    const meta = {
+      pfc: {
+        cites: "Mechanism: Cowan, Baddeley (working memory). Classroom: Sweller (cognitive load), Rosenshine (small steps & worked examples), Bloom (mastery).",
+        dev: "The PFC matures last—into the mid-20s. Working-memory and impulse-control limits are real constraints, not choices, especially in younger and adolescent students.",
+        myth: "“We only use 10% of our brain.” False—and working-memory limits are genuine constraints, not untapped capacity."
+      },
+      hpc: {
+        cites: "Mechanism: Squire & Kandel (consolidation), Tulving (encoding). Classroom: Roediger & Karpicke (testing effect), Cepeda (spacing), Dunlosky.",
+        dev: "Hippocampal memory systems mature into adolescence; younger children's episodic detail is fragile. Lean on retrieval and spacing rather than “remember when we…”.",
+        myth: "“Memory works like a video recording.” No—memories are reconstructed (and can be distorted) each time they're retrieved."
+      },
+      bg: {
+        cites: "Mechanism: Anderson (ACT-R), Graybiel/Knowlton (habit learning). Classroom: Bjork & Rohrer (interleaving), Ericsson (deliberate practice).",
+        dev: "Procedural learning is robust early—why phonics and number facts automate well in elementary years. Errors automate too, so catch them early.",
+        myth: "“Drill and kill is always harmful.” Mindless drill is; deliberate, feedback-rich practice is essential. And practice makes permanent—including errors."
+      },
+      amg: {
+        cites: "Mechanism: LeDoux, Phelps (emotion & memory), Arnsten (stress & PFC). Classroom: Wiliam & Black (feedback), Immordino-Yang & Pekrun (emotions in learning), CASEL (SEL).",
+        dev: "In adolescence the amygdala matures earlier than the PFC, so the regulation system is structurally imbalanced for years. Treat dysregulation as developmentally normal, not defiance.",
+        myth: "“Amygdala hijack / lizard brain” as literal truth. It's a useful metaphor—the amygdala is a salience detector, not the seat of all emotion."
+      },
+      att: {
+        cites: "Mechanism: Posner & Petersen (attention networks), Kahneman. Classroom: Mayer (multimedia), Paivio (dual coding).",
+        dev: "Sustained attention and executive control develop gradually through childhood and adolescence; younger students need shorter focus blocks and clearer signaling.",
+        myth: "“Learning styles”—matching teaching to a visual/auditory/kinesthetic preference. Repeatedly debunked. Dual coding (words + visuals for everyone) is the evidence-based cousin, not the same thing."
+      },
+      cer: {
+        cites: "Mechanism: Schmahmann, Sokolov (internal models—emerging). Classroom: Ericsson (deliberate practice with feedback).", maturity: "Emerging evidence",
+        dev: "Cerebellar fine-tuning of skills strengthens with practice across development; its cognitive contributions are an active, still-emerging research area.",
+        myth: "“The cerebellum is just for movement.” Outdated—it also tunes timing, prediction, and cognitive sequencing (evidence still emerging)."
+      },
+      reward: {
+        cites: "Mechanism: Schultz (reward-prediction error), Berridge (incentive salience). Classroom: Deci & Ryan (self-determination), Bandura (self-efficacy), Eccles & Wigfield (expectancy-value).",
+        dev: "Adolescent reward systems are highly responsive—well-designed “micro-wins” are especially motivating, but so are short-term rewards that compete with long-term goals.",
+        myth: "“Dopamine = pleasure.” No—it's a pursuit and prediction signal. And extrinsic rewards can sometimes crowd out intrinsic motivation."
+      },
+      acc: {
+        cites: "Mechanism: Shenhav, Botvinick & Cohen (expected value of control). Classroom: Flavell (metacognition), Zimmerman (self-regulated learning), Dunlosky.",
+        dev: "The capacity to override the effort-cost signal matures late, with the PFC. Younger students need more external structure to persist; strategy-switching can be taught explicitly.",
+        myth: "“Grit is a fixed trait you either have or don't.” No—persistence is a modifiable state of this circuit, shaped by context."
+      },
+      p1: {
+        cites: "Mechanism: Cowan, Squire, Tse et al. (schema). Classroom: Roediger & Karpicke (retrieval), Willingham, Piaget (schema).",
+        dev: "Working-memory capacity expands through childhood and unevenly across a class—the same task imposes very different loads on different students.",
+        myth: "“Some people are left-brained, some right-brained.” A myth—memory and learning are whole-brain, networked processes."
+      },
+      p2: {
+        cites: "Mechanism: Arnsten (stress & PFC), Gross (reappraisal), Lieberman (affect labeling). Classroom: Immordino-Yang, psychological safety / SEL.",
+        dev: "The amygdala-before-PFC maturation gap peaks in middle school. Co-regulation is the whole game in early years; reappraisal can be taught explicitly by high school.",
+        myth: "“Calm down” fixes dysregulation. Suppression is costly and rebounds; the PFC needs minutes to come back online."
+      },
+      p3: {
+        cites: "Mechanism: Anderson (skill acquisition), Sweller (load reduction). Classroom: Ericsson (deliberate practice), fluency research.",
+        dev: "Foundational fluencies (decoding, math facts) should automate in elementary years; by high school, study and note-taking routines should be automatic—and often aren't.",
+        myth: "“The 10,000-hour rule.” Ericsson disputed this popularization—it's the quality and feedback of practice, not raw hours."
+      },
+      p4: {
+        cites: "Mechanism: Schultz (dopamine), Shenhav (expected value of control). Classroom: Deci & Ryan, Bandura; Dweck (modest effects—Sisk, Yeager), Duckworth (caveated).",
+        dev: "Persistence depends on a PFC that can override the cost signal, which matures into the mid-20s. Build an “effort pays off here” prediction record over time rather than expecting grit on demand.",
+        myth: "“Rewards always undermine motivation.” The evidence is more nuanced; well-designed progress feedback supports the circuit."
+      },
+      dom: {
+        cites: "Mechanism: Dehaene (neuronal recycling), Wolf (reading circuit), Ansari (number). Classroom: Goswami (phonological awareness), Willingham (domain knowledge), the science of reading.",
+        dev: "Reading and number circuits are built, not inherited—their windows are widest in the early years, but explicit instruction reshapes them at any age.",
+        myth: "“Children learn to read naturally, the way they learn to speak.” No—speech is biologically primary; reading must be explicitly taught and built."
+      },
+      p5: {
+        cites: "Mechanism: Raichle (default mode), Buckner & Andrews-Hanna (DMN function), Christoff (mind-wandering). Classroom: Immordino-Yang (rest & reflection), Dunlosky (elaboration, distributed practice).",
+        dev: "DMN connectivity matures across childhood and adolescence; younger students' networks are less differentiated and deliberate reflection develops with the PFC—so model reflection explicitly.",
+        myth: "“The brain is off—or wasting time—during rest and daydreaming.” The opposite: the DMN is highly active at rest, doing integration you can't see."
+      },
+      p6: {
+        cites: "Mechanism: Menon (triple-network model), Seeley (salience network), Sridharan (insula switching), Craig (interoception). Classroom: Mayer (signaling), Posner & Petersen (attention), Flavell (metacognition).",
+        dev: "The insula's switching efficiency develops through adolescence; younger students are more captured by novelty and less able to override it—plan for that.",
+        myth: "“Focus is pure willpower.” No—what wins attention is salience; relevance and novelty do much of the work the will alone can't."
+      }
+    };
+
+    const moveEx = {
+      pfc: {
+        t: ["Teach a multi-step process one step at a time, then combine.","Show one fully solved problem before assigning similar ones.","Open with 'what do you already know about…?' for 90 seconds.","Narrate your reasoning out loud as you solve a problem on the board.","Strip slides to the essential — cut decorative images and side-notes.","Give a partly-filled diagram or table students complete as they learn."],
+        s: ["Spend 30 seconds listing the steps before you begin.","Pause each section and ask 'could I explain this to someone?'","Rewrite a big task as a short checklist of smaller parts.","Name the approach before diving in, not mid-struggle.","Flag the exact sentence where you got lost, and ask there."]
+      },
+      hpc: {
+        t: ["Re-teach September's key ideas inside October's new unit.","Start class with 3 ungraded questions on yesterday's content.","Connect the new term to one students already own.","Drop last month's topics into this week's warm-ups.","Revisit each idea after a day, then a week, then a month.","Have students try to recall it first, then fill the gaps."],
+        s: ["Close the book and write what you remember, then check.","Three short sittings across the week, not one long cram.","Review missed cards sooner, mastered cards later.","Protect a full night's sleep — that's when memories consolidate.","Mix last unit's questions into tonight's review."]
+      },
+      bg: {
+        t: ["Interleave 3 problem types instead of 10 of the same.","Show the concept in two or three different settings.","Drill core facts/skills to automatic before layering complexity.","Put easily-confused ideas side by side: 'how do these differ?'","Practice mixed questions, like the test will be, not blocked sets."],
+        s: ["Shuffle your practice instead of doing one type in a row.","Before solving, ask 'what kind of problem is this?'","Make the basics fast and automatic so harder steps feel lighter.","Change the numbers, context, or order when you practice.","Sort the problem before choosing a method."]
+      },
+      amg: {
+        t: ["Quiz to inform, not to grade — call it practice.","Display a 'best mistake of the day' and unpack it together.","Comment on the move, not the person, while it still matters.","Meet wrong answers with curiosity — 'walk me through your thinking.'","Let students practice without a score attached."],
+        s: ["Treat a wrong answer as data about what to fix next.","Ask 'where exactly did this go wrong?' before moving on.","Name the nerves, take two slow breaths, start with an easy question.","Track what you can do now that you couldn't last month.","Study the questions you missed, not the ones you aced."]
+      },
+      att: {
+        t: ["One idea per slide — cut decorative backgrounds and extra text.","Point, highlight, or say 'this is the key idea.'","Put the diagram next to the explanation, not on a separate slide.","Surface what they know so new info has a hook to land on.","Teach in ~10–15 minute blocks with a quick reset between.","Don't make students read a slide while you talk over it."],
+        s: ["Phone in another room, one tab open.","Sketch the idea — don't just copy sentences.","Work in focused blocks, then a real break — not a scroll.","One subject at a time; no lyrics while reading.","When your mind wanders, re-read the last line and continue."]
+      },
+      cer: {
+        t: ["Correct the error in the moment, while the attempt is fresh.","Demonstrate the full skill at expert pace before students try.","Isolate and practice the hard sub-step on its own.","Practice the skill across slightly different cases.","Fade prompts and supports as accuracy grows."],
+        s: ["Check each attempt against a model or answer key.","Spend most time on the part you get wrong, not what you've mastered.","Compare your work to an exemplar and mark the gap.","Get it right, then get it fast — not the reverse.","Study a strong example before producing your own."]
+      },
+      reward: {
+        t: ["Set checkpoints every lesson, not just a final deadline.","A visible checklist or bar students update as they go.","Tasks students get mostly right — challenging, not crushing.","Name the breakthrough, not just the final score."],
+        s: ["Commit to just five minutes to beat the cost of starting.","Keep a visible streak of days you practiced.","Mark the first small success as proof the work pays off."]
+      },
+      acc: {
+        t: ["Verbalize 'that didn't work — let's try another way.'","Pause several seconds before stepping in to correct.","'This part will feel hard, and that's the right signal.'","Frame the stuck feeling as the brain working, not failing."],
+        s: ["Check your approach at the halfway point, not just the end.","Read effort as learning happening, not a stop sign.","When something feels wrong, pause and find where."]
+      },
+      dom: {
+        t: ["Teach letter-sound patterns in a planned sequence, not incidentally.","Pre-teach the topic knowledge a text quietly assumes.","Start with objects, then drawings, then symbols.","Practice to automatic recall so meaning gets the attention.","Show the parts: claim/evidence, or known/unknown/operation."],
+        s: ["Read across many topics, not just one favorite genre.","Drill the basics so reading and calculating feel effortless.","Ask 'what does this remind me of?' before starting."]
+      },
+      p1: {
+        t: ["Present a few items at a time, not the whole list at once.","Quick ungraded recall to move learning toward storage.","Open with what they know to give new facts a hook."],
+        s: ["When it won't go in, stop adding and start retrieving.","Close the page and recall before re-opening it.","Sleep on it — literally — before the test."]
+      },
+      p2: {
+        t: ["Same opening and transitions daily to lower the threat signal.","Calm first, content second — don't teach into a meltdown.","'Sounds like that felt frustrating' — then move on.","Give a few minutes before expecting full focus again."],
+        s: ["Two slow breaths before responding when upset.","Silently label it — 'I'm anxious' — to soften it.","Give yourself a moment; don't expect instant calm."]
+      },
+      p3: {
+        t: ["Pick the few facts/skills worth making automatic.","Practice basics to the point they need no thought.","Apply the automated skill in new problem types.","Fix a wrong procedure fast, before it sets."],
+        s: ["Notice which steps you can do without thinking.","Get it right first; speed comes with reps.","Revisit basics occasionally so they stay sharp."]
+      },
+      p4: {
+        t: ["Put an achievable win in the first few minutes.","Show movement every lesson, not just at the end.","Tune tasks so students mostly succeed while stretching.","Make effort visibly lead to success, repeatedly, in your room."],
+        s: ["Promise yourself just five minutes to get started.","Keep a visible record of wins to stay motivated.","Treat 'this is hard' as normal, not a stop sign."]
+      },
+      p5: {
+        t: ["Give a 60-second silent pause after a big idea—no task attached.","'How does this connect to what you already know, or to your life?'","Don't assign the test for tomorrow—give a night for it to settle.","Pose a hard problem, then move on and return to it later."],
+        s: ["Step away and let your mind wander—ideas settle offline.","After studying, close the book and explain it to yourself.","Sleep is study time—your brain consolidates while you rest."]
+      },
+      p6: {
+        t: ["Point, bold it, or say 'this is the one thing to remember.'","Open with a surprising hook, then channel it into the task.","Cut the fun-but-irrelevant story that pulls focus from the point.","Ask 'are you locked in or lost right now?'"],
+        s: ["When something clicks or confuses you, flag it and act.","Catch the drift, re-read the last line, and continue.","Effort means you're working, not that you should stop."]
+      }
+    };
+
+    let mode = "regions";
+
+    function setMode(m) {
+      mode = m;
+      document.getElementById("mode-regions").classList.toggle("active", m === "regions");
+      document.getElementById("mode-pathways").classList.toggle("active", m === "pathways");
+      document.getElementById("region-buttons").style.display = (m === "regions") ? "flex" : "none";
+      document.getElementById("pathway-buttons").style.display = (m === "pathways") ? "flex" : "none";
+      document.getElementById("panel-prompt").textContent =
+        (m === "regions") ? "Select a brain region to explore its learning pathway"
+                          : "Select a neural pathway to see how regions connect";
+      resetVisuals();
+      document.getElementById("pathway-content").innerHTML = (m === "regions")
+        ? introRegions() : introPathways();
+    }
+
+    function resetVisuals() {
+      document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('ellipse[id$="-shape"]').forEach(e => { e.style.strokeWidth = '1'; e.style.opacity = '1'; e.style.filter = ''; });
+      document.querySelectorAll('.path-line').forEach(l => l.style.display = 'none');
+    }
+
+    function introRegions() {
+      return `<div class="intro-text"><strong>Brain regions view</strong><br><br>Click any region—on the brain or in the list—to see its five-layer learning pathway, from neural system down to student self-regulation strategies.</div>`;
+    }
+    function introPathways() {
+      return `<div class="intro-text"><strong>Neural pathways view</strong><br><br>Learning is a networked process: regions must \"fire and wire\" together. Click any circuit to see how two or more regions communicate—and why that connection matters in the classroom. The highlighted arrows show the direction of the signal.</div>`;
+    }
+
+    function introHome() {
+      return `<div class="intro-text" id="intro-block">
+        <strong>How to use this model</strong><br><br>
+        <strong>Brain regions</strong> view: click any region to see its five-layer learning pathway—from neural system to classroom practice.<br><br>
+        <strong>Neural pathways</strong> view: click any circuit to see how two or more regions communicate, and why that connection matters for learning.<br><br>
+        Each pathway shows the brain system, the cognitive processes it supports, the research-informed practices that connect, specific teacher moves, and student self-regulation strategies—plus the <strong>research base</strong>, a <strong>developmental note</strong>, and a <strong>myth to retire</strong>.<br><br>
+        <em>The goal: Teachers understand just enough neuroscience to know why practices work—and how to adapt them.</em><br><br>
+        <span style="font-size:12px"><strong>A note on evidence:</strong> the neuroscience here <em>corroborates and explains</em> practices proven in classrooms and behavioral studies—it doesn't replace that evidence. Use the brain as a way to understand and remember why these moves work.</span>
+      </div>`;
+    }
+
+    function goHome() {
+      mode = "regions";
+      document.getElementById("mode-regions").classList.add("active");
+      document.getElementById("mode-pathways").classList.remove("active");
+      document.getElementById("region-buttons").style.display = "flex";
+      document.getElementById("pathway-buttons").style.display = "none";
+      document.getElementById("panel-prompt").textContent = "Select a brain region to explore its learning pathway";
+      resetVisuals();
+      const si = document.getElementById("search-input");
+      if (si) si.value = "";
+      if (typeof renderChallenges === "function") renderChallenges();
+      document.getElementById("pathway-content").innerHTML = introHome();
+    }
+
+    function handleShape(id) {
+      if (mode === "regions") { showRegion(id); }
+      // in pathways mode, shapes are non-interactive; pathways chosen via buttons
+    }
+
+    function practiceChip(name, r) {
+      const def = practiceDefs[name] || "";
+      return `<span class="layer-item tip" data-tip="${def}" tabindex="0" style="background:${r.color};color:${r.textColor};border-color:${r.borderColor};cursor:default">${name}</span>`;
+    }
+
+    function evidenceLegend() {
+      return `<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:10.5px;color:var(--color-text-tertiary)">
+        ${Object.values(tierStyles).map(t => `<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:${t.dot};display:inline-block"></span>${t.label}</span>`).join('')}
+        <span style="font-style:italic">— strength of the research behind each practice</span>
+      </div>`;
+    }
+
+    function metaBlocks(id, r) {
+      const m = meta[id]; if (!m) return '';
+      const cites = m.cites ? `
+        <div class="layer" style="padding:10px 14px">
+          <div class="layer-label">Research base</div>
+          <div class="layer-desc" style="font-size:12.5px">${m.cites}</div>
+        </div>` : '';
+      const dev = m.dev ? `
+        <div class="layer" style="background:#FAEEDA;border:0.5px solid #BA7517;padding:12px 14px">
+          <div class="layer-label" style="color:#854F0B">Developmental note</div>
+          <div class="layer-desc" style="color:#633806;font-size:13px">${m.dev}</div>
+        </div>` : '';
+      const myth = m.myth ? `
+        <div class="layer" style="background:#FBEAF0;border:0.5px solid #C24D74;padding:12px 14px">
+          <div class="layer-label" style="color:#993556">Myth to retire</div>
+          <div class="layer-desc" style="color:#72243E;font-size:13px">${m.myth}</div>
+        </div>` : '';
+      return cites + dev + myth;
+    }
+
+    function moveItem(m, ex, kind) {
+      const cls = kind === 'student' ? 'move student' : 'move';
+      const exHtml = ex ? `<span class="move-ex"> — ${ex}</span>` : '';
+      return `<div class="${cls}"><span class="move-head">${m}</span>${exHtml}</div>`;
+    }
+
+    function layerBlocks(r, id) {
+      const m = (meta[id] || {});
+      const maturityBadge = m.maturity
+        ? `<span style="display:inline-block;margin-left:8px;font-size:10px;font-weight:600;background:#E9ECF0;color:#4A5A6A;border-radius:8px;padding:2px 7px;vertical-align:middle">${m.maturity}</span>`
+        : '';
+      return `
+        <div class="layer" style="background:${r.color};border:0.5px solid ${r.borderColor}">
+          <div class="layer-label" style="color:${r.textColor}">Layer 1: Brain system</div>
+          <div class="layer-title" style="color:${r.textColor}">${r.name}${maturityBadge}</div>
+          <div class="layer-desc" style="color:${r.textColor}">${r.description || r.system}</div>
+          <div class="key-insight" style="background:${r.color};border:0.5px solid ${r.borderColor}">
+            <strong style="color:${r.textColor}">Key insight:</strong> <span style="color:${r.textColor}">${r.insight}</span>
+          </div>
+        </div>
+        <div class="connector">↓</div>
+        <div class="layer">
+          <div class="layer-label">Layer 2: Cognitive processes</div>
+          ${r.processes.map(p => `<div style="margin-bottom:8px"><span class="layer-title" style="font-size:14px">${p.name}</span><span class="layer-desc" style="margin-left:8px">${p.desc}</span></div>`).join('')}
+        </div>
+        <div class="connector">↓</div>
+        <div class="layer">
+          <div class="layer-label">Layer 3: Research-informed practices</div>
+          <div class="layer-items">
+            ${r.practices.map(p => practiceChip(p, r)).join('')}
+          </div>
+        </div>
+        <div class="connector">↓</div>
+        <div class="layer">
+          <div class="layer-label">Layer 4: Teacher moves</div>
+          <div class="move-list">
+            ${r.teacherMoves.map((m,i) => moveItem(m, (moveEx[id] && moveEx[id].t[i]) || '', 'teacher')).join('')}
+          </div>
+        </div>
+        <div class="connector">↓</div>
+        <div class="layer">
+          <div class="layer-label">Layer 5: Student self-regulation</div>
+          <div class="move-list">
+            ${r.studentMoves.map((m,i) => moveItem(m, (moveEx[id] && moveEx[id].s[i]) || '', 'student')).join('')}
+          </div>
+        </div>
+        ${metaBlocks(id, r)}`;
+    }
+
+    function scrollPanelTop() {
+      const panel = document.getElementById('pathway-content');
+      if (panel && panel.scrollIntoView) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showRegion(id) {
+      resetVisuals();
+      const r = regions[id];
+      document.getElementById('btn-' + id).classList.add('active');
+      const el = document.getElementById(id + '-shape');
+      el.style.strokeWidth = '2.5';
+      el.style.filter = 'drop-shadow(0 0 8px ' + r.borderColor + 'AA)';
+      document.getElementById('pathway-content').innerHTML = layerBlocks(r, id);
+      scrollPanelTop();
+    }
+
+    function showPathway(id) {
+      resetVisuals();
+      const p = pathways[id];
+      document.getElementById('btn-' + id).classList.add('active');
+      // dim all, highlight involved regions, show lines
+      document.querySelectorAll('ellipse[id$="-shape"]').forEach(e => e.style.opacity = '0.3');
+      p.regions.forEach(rid => {
+        const el = document.getElementById(rid + '-shape');
+        el.style.opacity = '1';
+        el.style.strokeWidth = '2.5';
+        el.style.filter = 'drop-shadow(0 0 8px ' + (regions[rid] ? regions[rid].borderColor : '#333') + 'AA)';
+      });
+      p.lines.forEach(lid => document.getElementById(lid).style.display = 'block');
+
+      const header = `<div class="route-chip" style="background:${p.color};color:${p.textColor};border:0.5px solid ${p.borderColor}">${p.route}</div>`;
+      document.getElementById('pathway-content').innerHTML = header + layerBlocks(p, id);
+      scrollPanelTop();
+    }
+
+    // ---- Search & "Start with your challenge" (problem-first entry) ----
+    const keywords = {
+      pfc: ["working memory","overload","too much at once","overwhelmed","planning","impulse control","distracted by steps","cognitive load","forgets instructions"],
+      hpc: ["forgetting","forget","cram","cramming","can't remember","retention","memorize","studying","test prep","review old material"],
+      bg: ["practice","fluency","automatic","habits","procedure","drill","math facts","mixing problems","interleaving","rote"],
+      amg: ["anxiety","stress","test nerves","shuts down","behavior","emotional","fear of failure","afraid of mistakes","safe classroom","scared to be wrong"],
+      att: ["distracted","focus","attention","can't concentrate","off task","busy slides","clutter","multitasking","zoning out"],
+      cer: ["skill","timing","feedback","precision","coordination","fine-tuning","correction"],
+      reward: ["motivation","won't start","getting started","engagement","boredom","bored","rewards","incentives","procrastination"],
+      acc: ["gives up","won't try","persistence","grit","effort","quitting","frustration","strategy switching","metacognition","mental effort"],
+      dom: ["reading","phonics","literacy","decoding","math","numeracy","number sense","background knowledge","vocabulary","comprehension","science of reading"],
+      p1: ["memory","forgetting","encoding","retrieval","schema","prior knowledge","long-term memory","overload"],
+      p2: ["stress","emotion","regulation","meltdown","calm down","dysregulation","self-control","de-escalation","behavior"],
+      p3: ["automaticity","fluency","cognitive load","free up working memory","overlearning","slow at reasoning"],
+      p4: ["motivation","persistence","grit","gives up","won't try","effort","reward","streaks","micro-wins","mindset"],
+      p5: ["rest","break","brain break","mind-wandering","daydreaming","reflection","consolidation","sleep","incubation","downtime","integration"],
+      p6: ["salience","attention","focus","switching","relevance","novelty","distraction","engagement","interoception","what matters","signaling"]
+    };
+    const challenges = [
+      { label: "They forget by Friday", id: "hpc" },
+      { label: "They won't get started", id: "reward" },
+      { label: "They give up when it's hard", id: "p4" },
+      { label: "They shut down after feedback", id: "amg" },
+      { label: "They can't focus", id: "att" },
+      { label: "They're overwhelmed", id: "pfc" },
+      { label: "Learning to read or do math", id: "dom" }
+    ];
+    const nodeOf = id => regions[id] || pathways[id];
+    function fieldText(n) {
+      return [n.name, n.description || '', n.system || '', n.insight || '',
+        (n.processes || []).map(p => p.name + ' ' + p.desc).join(' '),
+        (n.practices || []).join(' '),
+        (n.teacherMoves || []).join(' '),
+        (n.studentMoves || []).join(' ')].join(' ');
+    }
+    const searchIndex = {};
+    Object.keys(regions).concat(Object.keys(pathways)).forEach(id => {
+      const n = nodeOf(id), m = meta[id] || {};
+      searchIndex[id] = (fieldText(n) + ' ' + (m.cites || '') + ' ' + (m.dev || '') + ' ' + (m.myth || '') + ' ' + (keywords[id] || []).join(' ')).toLowerCase();
+    });
+
+    function showNode(id) {
+      if (pathways[id]) { setMode('pathways'); showPathway(id); }
+      else { setMode('regions'); showRegion(id); }
+    }
+
+    function renderChallenges() {
+      document.getElementById('search-status').textContent = 'Showing common challenges';
+      document.getElementById('search-results').innerHTML =
+        `<div class="search-hint" style="margin-bottom:2px">Common challenges — tap to jump to the brain system behind it:</div>
+         <div class="challenge-row">${challenges.map(c => `<button class="challenge-chip" onclick="showNode('${c.id}')">${c.label}</button>`).join('')}</div>`;
+    }
+
+    function runSearch(raw) {
+      const q = (raw || '').trim().toLowerCase();
+      const results = document.getElementById('search-results');
+      const status = document.getElementById('search-status');
+      if (!q) { renderChallenges(); return; }
+      const findIn = (arr, label) => {
+        const hit = (arr || []).find(x => (typeof x === 'string' ? x : x.name + ' ' + x.desc).toLowerCase().includes(q));
+        return hit ? label + ': “' + (typeof hit === 'string' ? hit : hit.name) + '”' : '';
+      };
+      const scored = [];
+      Object.keys(searchIndex).forEach(id => {
+        const n = nodeOf(id);
+        let score = 0, snippet = '';
+        if (n.name.toLowerCase().includes(q)) { score = 100; snippet = 'Brain system'; }
+        else {
+          const kw = (keywords[id] || []).find(k => k.includes(q) || q.includes(k));
+          if (kw) { score = 80; snippet = 'Topic: ' + kw; }
+          else {
+            snippet = findIn(n.practices, 'Practice') || findIn(n.teacherMoves, 'Teacher move') || findIn(n.studentMoves, 'Student strategy') || findIn(n.processes, 'Process');
+            if (snippet) score = 60;
+            else if (searchIndex[id].includes(q)) { score = 30; snippet = 'Mentioned in this pathway'; }
+          }
+        }
+        if (score > 0) scored.push({ id, score, snippet, name: n.name, dot: n.borderColor, kind: pathways[id] ? 'Pathway' : 'Region' });
+      });
+      scored.sort((a, b) => b.score - a.score);
+      if (!scored.length) {
+        results.innerHTML = `<div class="search-hint">No matches. Try a topic like “feedback”, “motivation”, “anxiety”, or “reading”.</div>`;
+        status.textContent = 'No matches';
+        return;
+      }
+      status.textContent = scored.length + ' result' + (scored.length > 1 ? 's' : '');
+      results.innerHTML = scored.map(s =>
+        `<button class="result-btn" onclick="showNode('${s.id}')">
+           <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${s.dot};margin-right:7px;vertical-align:middle"></span>
+           <strong>${s.name}</strong> <span style="color:var(--color-text-tertiary);font-size:11px">· ${s.kind}</span>
+           <span class="result-snippet">${s.snippet}</span>
+         </button>`).join('');
+    }
+
+    renderChallenges();
+  </script>
+</body></html>
