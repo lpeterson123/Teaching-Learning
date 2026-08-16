@@ -49,7 +49,7 @@
       color: var(--color-text-primary);
       max-width: 1140px;
       margin: 0 auto;
-      padding: 40px 6px 56px;
+      padding: 40px 6px 16px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
@@ -946,8 +946,7 @@
     }
 
     function scrollPanelTop() {
-      const panel = document.getElementById('pathway-content');
-      if (panel && panel.scrollIntoView) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function showRegion(id) {
