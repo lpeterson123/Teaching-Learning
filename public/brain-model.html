@@ -96,7 +96,7 @@
       padding: 22px;
     }
     .brain-panel { flex: 1; min-width: 300px; }
-    .pathway-panel { flex: 1.4; min-width: 320px; }
+    .pathway-panel { flex: 1.4; min-width: 320px; min-height: calc(100vh - 200px); }
     .brain-panel svg { display: block; width: 100%; height: auto; margin: 4px 0 8px; overflow: visible; }
 
     .region-shape { transition: stroke-width 0.2s ease, opacity 0.2s ease, filter 0.2s ease; filter: drop-shadow(0 1px 2px rgba(20,16,10,0.22)); }
@@ -946,7 +946,10 @@
     }
 
     function scrollPanelTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      requestAnimationFrame(() => {
+        const panel = document.getElementById('pathway-content');
+        if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     }
 
     function showRegion(id) {
