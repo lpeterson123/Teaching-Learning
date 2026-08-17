@@ -949,8 +949,9 @@
       requestAnimationFrame(() => {
         const panel = document.getElementById('pathway-content');
         if (!panel) return;
-        const firstLayer = panel.querySelector('.layer');
-        (firstLayer || panel).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        panel.scrollTop = 0;
+        const y = panel.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: Math.max(0, y - 8), behavior: 'smooth' });
       });
     }
 
