@@ -948,7 +948,9 @@
     function scrollPanelTop() {
       requestAnimationFrame(() => {
         const panel = document.getElementById('pathway-content');
-        if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (!panel) return;
+        const firstLayer = panel.querySelector('.layer');
+        (firstLayer || panel).scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
 
