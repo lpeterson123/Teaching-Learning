@@ -26,7 +26,6 @@ const NAV_LINKS = [
     children: [
       { to: '/professional-development', label: 'Main Page', end: true },
       { to: '/resources', label: 'Resources' },
-      { to: '/resources/practice-deck', label: 'Practice Deck' },
     ],
   },
 ];
