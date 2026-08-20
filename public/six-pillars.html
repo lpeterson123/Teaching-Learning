@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Six Pillars — EHS Teaching &amp; Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon:#6d1a3a;      --maroon-dark:#4a1029;   --maroon-tint:#f4e8ec;
+    --steel:#3d6b8c;       --steel-dark:#2c4f68;    --steel-tint:#e9f1f5;
+    --ochre:#b8863f;       --ochre-dark:#8a6428;    --ochre-tint:#faf0dc;
+    --terra:#a8583f;       --terra-dark:#8a4530;    --terra-tint:#f7e9e3;
+    --teal:#2f6b5e;        --teal-dark:#204a3f;     --teal-tint:#e8f2ef;
+    --char:#52525a;        --char-dark:#38383e;     --char-tint:#eeeeef;
+    --navy:#1b2540;
+    --bg:#faf9f6; --card:#ffffff; --border:#e7e2d9; --text:#2a2a2e; --muted:#6b6b70;
+    --display:'Playfair Display', Georgia, serif;
+    --body:'Source Serif 4', Georgia, serif;
+    --ui:'Inter', -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--text); font-family:var(--body);
+    font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- sticky nav ---------- */
+  .nav{
+    position:sticky; top:0; z-index:50; background:rgba(250,249,246,0.94);
+    backdrop-filter:blur(6px); border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:1080px; margin:0 auto; padding:0 28px; display:flex; gap:4px;
+    overflow-x:auto; scrollbar-width:none;
+  }
+  .nav-inner::-webkit-scrollbar{display:none;}
+  .nav a{
+    font-family:var(--ui); font-size:12.5px; font-weight:600; letter-spacing:.04em;
+    text-transform:uppercase; white-space:nowrap; padding:16px 12px; text-decoration:none;
+    color:var(--muted); border-bottom:2px solid transparent; transition:.2s;
+  }
+  .nav a:hover{color:var(--navy); border-bottom-color:var(--border);}
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 40px; text-align:center;}
+  .eyebrow{
+    font-family:var(--ui); font-size:12.5px; font-weight:700; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--maroon); margin:0 0 18px;
+  }
+  h1.title{
+    font-family:var(--display); font-weight:800; font-size:44px; line-height:1.15;
+    color:var(--navy); margin:0 0 22px; max-width:780px; margin-left:auto; margin-right:auto;
+  }
+  .rule{
+    width:220px; height:4px; margin:0 auto 30px; border-radius:2px;
+    background:linear-gradient(90deg, var(--maroon), var(--steel), var(--ochre), var(--terra), var(--teal), var(--char));
+  }
+  blockquote.lead{
+    font-family:var(--body); font-style:italic; font-size:19px; color:#40404a;
+    max-width:660px; margin:0 auto 26px; line-height:1.65;
+  }
+  blockquote.lead:before{content:'"'; } blockquote.lead:after{content:'"';}
+  .hero-sub{max-width:700px; margin:0 auto; color:var(--muted); font-size:16.5px;}
+  .hero-sub strong{color:var(--text);}
+
+  /* ---------- section shell ---------- */
+  section{padding:56px 0;}
+  section.alt{background:#f4f2ec;}
+  h2.section-title{
+    font-family:var(--display); font-weight:700; font-size:30px; color:var(--navy);
+    margin:0 0 8px; text-align:center;
+  }
+  p.section-sub{
+    text-align:center; color:var(--muted); max-width:640px; margin:0 auto 40px; font-size:16px;
+  }
+
+  /* ---------- moment cards ---------- */
+  .moments{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:980px; margin:0 auto;}
+  .moment{
+    background:var(--card); border:1px solid var(--border); border-radius:8px; padding:20px;
+    cursor:pointer; transition:.2s; text-align:left;
+  }
+  .moment:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(27,37,64,.08); border-color:var(--accent);}
+  .moment .m-when{font-family:var(--ui); font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px;}
+  .moment .m-pillar{font-family:var(--display); font-weight:700; font-size:17px; color:var(--accent); margin-bottom:6px;}
+  .moment .m-q{font-size:14px; color:#4a4a50; line-height:1.5; margin:0;}
+
+  /* ---------- pillar list ---------- */
+  .pillar-controls{text-align:center; margin:4px 0 28px;}
+  .pillar-controls button{
+    font-family:var(--ui); font-size:12.5px; font-weight:600; letter-spacing:.03em;
+    background:none; border:1px solid var(--border); color:var(--muted); padding:7px 16px;
+    border-radius:20px; cursor:pointer; margin:0 4px;
+  }
+  .pillar-controls button:hover{border-color:var(--navy); color:var(--navy);}
+
+  .pillar{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    margin-bottom:16px; overflow:hidden; scroll-margin-top:70px;
+  }
+  .pillar-header{
+    width:100%; display:flex; align-items:center; gap:18px; padding:22px 26px;
+    background:var(--tint); border:none; cursor:pointer; text-align:left; border-left:6px solid var(--accent);
+  }
+  .pillar-num{
+    font-family:var(--display); font-weight:800; font-size:22px; color:#fff; background:var(--accent);
+    width:42px; height:42px; min-width:42px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  }
+  .pillar-title{flex:1;}
+  .pillar-name{display:block; font-family:var(--display); font-weight:700; font-size:20px; color:var(--navy);}
+  .pillar-teaser{display:block; font-size:14.5px; color:var(--muted); margin-top:3px;}
+  .chevron{font-size:20px; color:var(--accent); transition:transform .3s;}
+  .pillar.open .chevron{transform:rotate(180deg);}
+
+  .pillar-body-wrap{display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s ease;}
+  .pillar.open .pillar-body-wrap{grid-template-rows:1fr;}
+  .pillar-body{overflow:hidden; min-height:0;}
+  .pillar-body-inner{padding:28px 26px 32px;}
+
+  .def-box{
+    background:var(--tint); border-radius:8px; padding:18px 20px; margin-bottom:20px;
+    font-family:var(--body); font-weight:600; font-size:16.5px; color:var(--navy); line-height:1.55;
+  }
+  .def-box .label{display:block; font-family:var(--ui); font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+
+  .pillar-body-inner h4{
+    font-family:var(--ui); font-size:12.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--accent); margin:26px 0 12px;
+  }
+  .pillar-body-inner h4:first-of-type{margin-top:0;}
+  .pillar-body-inner p{margin:0 0 12px; font-size:15.5px; color:#3a3a40;}
+
+  .load-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:6px;}
+  .load-card{border:1px solid var(--border); border-radius:8px; padding:14px 16px;}
+  .load-card .lt{font-family:var(--ui); font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--navy);}
+  .load-card .ls{font-family:var(--ui); font-size:11px; color:var(--accent); font-weight:600; margin-bottom:6px; display:block;}
+  .load-card p{font-size:13.8px; margin:0; color:#4a4a50;}
+
+  ul.bullets{margin:0 0 6px; padding-left:20px;}
+  ul.bullets li{margin-bottom:9px; font-size:15px; color:#3a3a40;}
+  ul.bullets li strong{color:var(--navy);}
+
+  table.classroom{width:100%; border-collapse:collapse; margin-bottom:6px; font-size:14.3px;}
+  table.classroom th{
+    font-family:var(--ui); font-size:11.5px; text-transform:uppercase; letter-spacing:.03em;
+    background:var(--accent); color:#fff; text-align:left; padding:10px 12px; font-weight:600;
+  }
+  table.classroom th:first-child{border-radius:6px 0 0 0;}
+  table.classroom th:last-child{border-radius:0 6px 0 0;}
+  table.classroom td{padding:12px; border-bottom:1px solid var(--border); vertical-align:top; color:#3a3a40;}
+  table.classroom tr:last-child td{border-bottom:none;}
+  table.classroom td:first-child{font-weight:600; color:var(--navy); white-space:nowrap;}
+
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px;}
+  .tag{
+    font-family:var(--ui); font-size:12px; font-weight:600; padding:5px 12px; border-radius:20px;
+    background:var(--tint); color:var(--accent); border:1px solid var(--border);
+  }
+  .tag.brain{background:#fff;}
+
+  details.deeper{margin-top:20px; border-top:1px solid var(--border); padding-top:14px;}
+  details.deeper summary{
+    cursor:pointer; font-family:var(--ui); font-weight:600; font-size:13px; color:var(--accent);
+    list-style:none;
+  }
+  details.deeper summary::-webkit-details-marker{display:none;}
+  details.deeper summary:before{content:'+ '; font-weight:700;}
+  details.deeper[open] summary:before{content:'– '; font-weight:700;}
+  details.deeper .deeper-body{padding:12px 0 4px; font-size:14px; color:var(--muted); line-height:1.6;}
+
+  /* per-pillar accent classes */
+  .p-cogload{--accent:var(--steel-dark); --tint:var(--steel-tint);}
+  .p-retrieval{--accent:var(--maroon); --tint:var(--maroon-tint);}
+  .p-spacing{--accent:var(--ochre-dark); --tint:var(--ochre-tint);}
+  .p-interleave{--accent:var(--terra-dark); --tint:var(--terra-tint);}
+  .p-feedback{--accent:var(--teal-dark); --tint:var(--teal-tint);}
+  .p-metacog{--accent:var(--char-dark); --tint:var(--char-tint);}
+
+  footer{padding:40px 0 60px; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); font-family:var(--ui);}
+
+  @media (max-width:760px){
+    h1.title{font-size:32px;}
+    .moments{grid-template-columns:1fr 1fr;}
+    .load-grid{grid-template-columns:1fr;}
+    table.classroom{font-size:13px;}
+  }
+  @media (max-width:520px){
+    .moments{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#pillar-cogload">1 · Cognitive Load</a>
+    <a href="#pillar-retrieval">2 · Retrieval</a>
+    <a href="#pillar-spacing">3 · Spacing</a>
+    <a href="#pillar-interleave">4 · Interleaving</a>
+    <a href="#pillar-feedback">5 · Feedback</a>
+    <a href="#pillar-metacog">6 · Metacognition</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Teaching &amp; Learning · EHS Faculty Reference</p>
+    <h1 class="title">The Six Pillars of Research-Informed Teaching and Learning</h1>
+    <div class="rule"></div>
+    <p class="hero-sub">The six pillars — <strong>Managing Cognitive Load, Retrieval Practice, Spacing, Interleaving, Feedback,</strong> and <strong>Metacognition</strong> — are not six separate rules to comply with. They are one integrated system, and they enter your planning at different moments.</p>
+  </div>
+</header>
+
+<section class="alt">
+  <div class="wrap">
+    <h2 class="section-title">Six Moments, Six Pillars</h2>
+    <p class="section-sub">Each pillar enters your planning at a different moment. Tap a moment to jump to that pillar.</p>
+    <div class="moments">
+      <button class="moment" style="--accent:#2c4f68" onclick="jumpToPillar('pillar-cogload')">
+        <span class="m-when">When you are…</span>
+        <span class="m-pillar">Designing a lesson or slide deck</span>
+        <p class="m-q">Is the material clear, chunked, and free of clutter?</p>
+      </button>
+      <button class="moment" style="--accent:#6d1a3a" onclick="jumpToPillar('pillar-retrieval')">
+        <span class="m-when">When you are…</span>
+        <span class="m-pillar">Opening or closing a class</span>
+        <p class="m-q">Are students getting information <em>out</em> of their brains?</p>
+      </button>
+      <button class="moment" style="--accent:#8a6428" onclick="jumpToPillar('pillar-spacing')">
+        <span class="m-when">When you are…</span>
+        <span class="m-pillar">Sequencing a unit or semester</span>
+        <p class="m-q"><em>When</em> do we come back to this?</p>
+      </button>
+      <button class="moment" style="--accent:#8a4530" onclick="jumpToPillar('pillar-interleave')">
+        <span class="m-when">When you are…</span>
+        <span class="m-pillar">Building a problem set or review</span>
+        <p class="m-q">In <em>what order and mixture</em> do we come back to it?</p>
+      </button>
+      <button class="moment" style="--accent:#204a3f" onclick="jumpToPillar('pillar-feedback')">
+        <span class="m-when">When you are…</span>
+        <span class="m-pillar">Responding to student work</span>
+        <p class="m-q">Does the student know what to do next, and do they have time to do it?</p>
+      </button>
+      <button class="moment" style="--accent:#38383e" onclick="jumpToPillar('pillar-metacog')">
+        <span class="m-when">When you are…</span>
+        <span class="m-pillar">All of the above</span>
+        <p class="m-q">Do students understand what they are doing, and why?</p>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="pillars">
+  <div class="wrap">
+    <div class="pillar-controls">
+      <button onclick="setAllPillars(true)">Expand all</button>
+      <button onclick="setAllPillars(false)">Collapse all</button>
+    </div>
+
+    <!-- PILLAR 1 -->
+    <div class="pillar p-cogload" id="pillar-cogload">
+      <button class="pillar-header" onclick="togglePillar(this)">
+        <span class="pillar-num">1</span>
+        <span class="pillar-title">
+          <span class="pillar-name">Managing Cognitive Load</span>
+          <span class="pillar-teaser">The precondition — nothing else works if working memory is swamped.</span>
+        </span>
+        <span class="chevron">⌄</span>
+      </button>
+      <div class="pillar-body-wrap"><div class="pillar-body"><div class="pillar-body-inner">
+        <div class="def-box"><span class="label">The definition</span>Cognitive load is the total mental effort a task demands of working memory. Because working memory is small and fixed, our job is to cut the load that's wasted, manage the load that's necessary, and protect the load that actually builds understanding.</div>
+        <p>Working memory is the mental workbench where all new learning is assembled, and it holds roughly four items of genuinely novel information at once. Everything a student learns has to pass through it. When it's full, learning stops.</p>
+
+        <h4>Three kinds of load</h4>
+        <div class="load-grid">
+          <div class="load-card"><span class="ls">The bad — reduce it</span><div class="lt">Extraneous</div><p>Load from poorly designed instruction — clutter that doesn't help the learner reach the goal. Confusing slides, text read aloud verbatim, a diagram split across two pages.</p></div>
+          <div class="load-card"><span class="ls">The necessary — manage it</span><div class="lt">Intrinsic</div><p>The inherent difficulty of the material — how many pieces have to be held in mind at once. Manage it through sequencing and chunking.</p></div>
+          <div class="load-card"><span class="ls">The good — optimize it</span><div class="lt">Germane</div><p>Effort that builds a durable mental framework: comparing concepts, solving a problem after instruction, explaining an idea in one's own words.</p></div>
+        </div>
+
+        <h4>What it is not</h4>
+        <ul class="bullets">
+          <li><strong>Not "make it easier."</strong> We're cutting wasted effort, not rigor — intrinsic difficulty is the curriculum.</li>
+          <li><strong>Not "always tell, never let them struggle."</strong> Productive struggle is essential; the point is minimizing <em>unsupported</em> struggle.</li>
+          <li><strong>Not permanent scaffolding.</strong></li>
+        </ul>
+
+        <h4>In the classroom</h4>
+        <table class="classroom">
+          <tr><th>Principle</th><th>The move</th><th>Why it works</th></tr>
+          <tr><td>Coherence</td><td>Prune and simplify materials — cut decorative visuals, redundant text, audio, or video.</td><td>Keeps working memory from being spent on irrelevant detail.</td></tr>
+          <tr><td>Modality</td><td>Pair a visual with a <em>spoken</em> explanation, not an image plus a wall of text.</td><td>Distributes load across visual and auditory channels instead of one.</td></tr>
+          <tr><td>Segmenting</td><td>Break lessons into small chunks; pause for a knowledge check after each.</td><td>Reduces interacting elements in play at any one moment.</td></tr>
+          <tr><td>Worked examples</td><td>Fully solved example → partially completed problem → novel problem.</td><td>Gives novices a schema to follow, freeing capacity for <em>why</em> it works.</td></tr>
+        </table>
+
+        <h4>Five tips from Dr. Jared Cooney Horvath</h4>
+        <ul class="bullets">
+          <li><strong>Stop popcorn reading.</strong> Students focused on sounding right aren't thinking about the text.</li>
+          <li><strong>Filter notes for meaning.</strong> Move students toward notes on connections, not transcription — handwriting helps because it's slower.</li>
+          <li><strong>Use images one at a time.</strong> Point to parts of a chart, or build it piece by piece, rather than showing the whole gist at once.</li>
+          <li><strong>Reset attention cheaply.</strong> Say a student's name, or shift modality — listening to writing.</li>
+          <li><strong>Print anything over three pages.</strong> The physical page uses spatial memory to aid retrieval.</li>
+        </ul>
+
+        <div class="tag-row">
+          <span class="tag">Domain III · Instructional Clarity</span>
+          <span class="tag">Domain I · Learning Environment</span>
+          <span class="tag brain">Brain: Prefrontal cortex, attention networks</span>
+        </div>
+        <details class="deeper"><summary>Go deeper — key sources</summary><div class="deeper-body">Sweller (1988), the founding paper of Cognitive Load Theory; Mayer's <em>Multimedia Learning</em> for the modality principle; NSW CESE's <em>Cognitive Load Theory in Practice</em> is the most accessible starting point.</div></details>
+      </div></div></div>
+    </div>
+
+    <!-- PILLAR 2 -->
+    <div class="pillar p-retrieval" id="pillar-retrieval">
+      <button class="pillar-header" onclick="togglePillar(this)">
+        <span class="pillar-num">2</span>
+        <span class="pillar-title">
+          <span class="pillar-name">Retrieval Practice</span>
+          <span class="pillar-teaser">The engine — our most-used, best-supported pillar.</span>
+        </span>
+        <span class="chevron">⌄</span>
+      </button>
+      <div class="pillar-body-wrap"><div class="pillar-body"><div class="pillar-body-inner">
+        <div class="def-box"><span class="label">The definition</span>Retrieval practice is the act of pulling information out of memory rather than putting it back in — and it is a learning event, not just an assessment.</div>
+        <p>When a student retrieves something, they don't read it off a shelf — they <em>reconstruct</em> it, and that effortful reconstruction strengthens both the memory and the routes back to it. This is the testing effect, and it's the answer to the Ebbinghaus forgetting curve.</p>
+
+        <h4>Four things retrieval does</h4>
+        <ul class="bullets">
+          <li><strong>It improves retention</strong> — shifting effort from passive review to active reconstruction.</li>
+          <li><strong>It improves transfer</strong> — retrieving in varied contexts builds the ability to apply knowledge to novel problems.</li>
+          <li><strong>It diagnoses gaps</strong> — giving student and teacher immediate, low-stakes information on what's actually known.</li>
+          <li><strong>It's hard, and that's the point</strong> — struggling to recall beats re-reading, re-noting, or listening again.</li>
+        </ul>
+
+        <h4>What it is not</h4>
+        <ul class="bullets">
+          <li><strong>Not high-stakes testing.</strong> The benefit comes from frequent, low- or no-stakes retrieval students aren't afraid of.</li>
+          <li><strong>Not a grading tool.</strong> When retrieval is used as practice, don't attach a meaningful score — reframe it explicitly as practice, not judgment.</li>
+          <li><strong>Not re-reading, highlighting, or re-copying notes.</strong> Among the weakest strategies available, though they feel like the strongest.</li>
+        </ul>
+
+        <h4>In the classroom</h4>
+        <table class="classroom">
+          <tr><th>Routine</th><th>The move</th><th>What it does</th></tr>
+          <tr><td>Brain Dump</td><td>"Write everything you can remember about ___." Three minutes, no notes, ungraded.</td><td>Activates prior knowledge; prepares the brain to connect new information.</td></tr>
+          <tr><td>Quiz &amp; Correct</td><td>Students answer, then immediately check notes or an answer key and self-correct.</td><td>Immediate reinforcement plus corrective feedback.</td></tr>
+          <tr><td>Question Generation</td><td>Students write three questions the material should be able to answer, instead of answering yours.</td><td>Forces students to identify what matters; boosts metacognition.</td></tr>
+          <tr><td>Concept Mapping</td><td>Revisit a concept from three weeks ago and integrate it with the current topic.</td><td>Spaced, interleaved retrieval that strengthens connections.</td></tr>
+        </table>
+
+        <div class="tag-row">
+          <span class="tag">Domain IV · Practice &amp; Memory Consolidation</span>
+          <span class="tag">Domain V · when used diagnostically</span>
+          <span class="tag brain">Brain: Hippocampus</span>
+        </div>
+        <details class="deeper"><summary>Go deeper — key sources</summary><div class="deeper-body">Roediger &amp; Karpicke (2006), "Test-Enhanced Learning," the classic demonstration; Agarwal &amp; Bain, <em>Powerful Teaching</em> (2019), the most classroom-ready treatment; Dr. Pooja Agarwal's free guide at retrievalpractice.org.</div></details>
+      </div></div></div>
+    </div>
+
+    <!-- PILLAR 3 -->
+    <div class="pillar p-spacing" id="pillar-spacing">
+      <button class="pillar-header" onclick="togglePillar(this)">
+        <span class="pillar-num">3</span>
+        <span class="pillar-title">
+          <span class="pillar-name">Spacing</span>
+          <span class="pillar-teaser">The when — one of the oldest, most reliable findings in psychology.</span>
+        </span>
+        <span class="chevron">⌄</span>
+      </button>
+      <div class="pillar-body-wrap"><div class="pillar-body"><div class="pillar-body-inner">
+        <div class="def-box"><span class="label">The definition</span>Spacing means distributing learning over time rather than massing it into a single block — returning to material after enough delay that recalling it takes real effort.</div>
+        <p>Its opposite is massed practice — cramming. Cramming works briefly and creates an illusion of mastery: the information sits in working memory, feels completely available, and was never encoded into long-term storage. It will get a student through Monday's quiz. It will not survive the final.</p>
+
+        <h4>Key concept: desirable difficulty</h4>
+        <p>What spacing introduces is <strong>desirable difficulty</strong> — the slight struggle of recalling something just as it begins to fade. That struggle is not a design flaw; it's the mechanism.</p>
+
+        <h4>Why it's genuinely hard for students</h4>
+        <ul class="bullets">
+          <li><strong>It requires organization</strong> — from us in sequencing lessons and units, from them in building a study plan.</li>
+          <li><strong>It feels frustrating and slow</strong> — precisely because it depends on some forgetting having occurred.</li>
+          <li><strong>Students won't choose it on their own.</strong> Without incentive, they need to be coached into it — just as we were.</li>
+        </ul>
+
+        <div class="tag-row">
+          <span class="tag">Domain IV · Practice &amp; Memory Consolidation</span>
+          <span class="tag">Domain III · Curriculum Sequencing</span>
+          <span class="tag brain">Brain: Hippocampus — consolidation depends on time, repetition, and sleep</span>
+        </div>
+        <details class="deeper"><summary>Go deeper — key sources</summary><div class="deeper-body">Ebbinghaus (1885) on the forgetting curve; Cepeda et al. (2006), the definitive meta-analysis of distributed practice; Kang (2016), a favorite here for focusing on using the time we already have rather than adding time; The Learning Scientists' one-page Spaced Practice guide.</div></details>
+      </div></div></div>
+    </div>
+
+    <!-- PILLAR 4 -->
+    <div class="pillar p-interleave" id="pillar-interleave">
+      <button class="pillar-header" onclick="togglePillar(this)">
+        <span class="pillar-num">4</span>
+        <span class="pillar-title">
+          <span class="pillar-name">Interleaving</span>
+          <span class="pillar-teaser">The order — what and alongside what.</span>
+        </span>
+        <span class="chevron">⌄</span>
+      </button>
+      <div class="pillar-body-wrap"><div class="pillar-body"><div class="pillar-body-inner">
+        <div class="def-box"><span class="label">The definition</span>Interleaving means mixing different topics, problem types, or skills together within a single practice session, so students must work out <em>which</em> approach a problem calls for.</div>
+        <p>Its opposite is blocked practice — a whole session devoted to one skill. Blocked practice works for short-term acquisition, but students never practice the actual skill of <em>deciding</em>: cumulative assessments and real-world problems don't arrive with labels. The gain from interleaving is <strong>discrimination</strong> — the ability to look at an unlabeled problem and select the right tool.</p>
+        <p><strong>Interleaving frequently produces worse performance during practice and better performance on a later test.</strong> Tell students it will feel harder — that's the mechanism, not a failure.</p>
+
+        <h4>What it is not</h4>
+        <ul class="bullets">
+          <li><strong>Not random variety.</strong> Interleave <em>related, confusable</em> material — similar statistical tests, parallel grammar forms, mass versus weight.</li>
+          <li><strong>Not for first acquisition.</strong> Students need some initial blocked practice to grasp a procedure before mixing helps. Block to acquire; interleave to consolidate and discriminate.</li>
+        </ul>
+
+        <h4>In the classroom</h4>
+        <ul class="bullets">
+          <li><strong>Mix the practice set</strong> — three problem types in rotation rather than ten of the same.</li>
+          <li><strong>Make reviews cumulative and mixed,</strong> not organized by unit.</li>
+          <li><strong>Design in a spiral</strong> — across an activity, a lesson, a unit, or a student's four years here.</li>
+          <li><strong>Name the difficulty.</strong> Tell students it will feel harder and they'll slip more in practice.</li>
+        </ul>
+
+        <div class="tag-row">
+          <span class="tag">Domain IV · Practice &amp; Memory Consolidation</span>
+          <span class="tag">Domain III · Curriculum Maps</span>
+          <span class="tag brain">Brain: Basal ganglia — builds adaptable expertise vs. rigid routines</span>
+        </div>
+        <details class="deeper"><summary>Go deeper — key sources</summary><div class="deeper-body">Rohrer (2012), "Interleaving Helps Students Distinguish among Similar Concepts" — shared at our January 5 PD Day; Sana &amp; Yan (2022), set in high-school science classrooms; Brunmair &amp; Richter (2019), the meta-analysis on when interleaving helps most and when it doesn't.</div></details>
+      </div></div></div>
+    </div>
+
+    <!-- PILLAR 5 -->
+    <div class="pillar p-feedback" id="pillar-feedback">
+      <button class="pillar-header" onclick="togglePillar(this)">
+        <span class="pillar-num">5</span>
+        <span class="pillar-title">
+          <span class="pillar-name">Feedback</span>
+          <span class="pillar-teaser">The loop — it only counts if the student acts on it.</span>
+        </span>
+        <span class="chevron">⌄</span>
+      </button>
+      <div class="pillar-body-wrap"><div class="pillar-body"><div class="pillar-body-inner">
+        <div class="def-box"><span class="label">The definition</span>Feedback is information that tells a learner where they are, where they're going, and what to do next — and it only counts as feedback if the student acts on it.</div>
+        <p><strong>Task and process, not the person.</strong> "Here's what this paragraph needs, and here's the approach that will get it there" — not comments about the student. <strong>The loop has to close:</strong> feedback is finished only when the student has responded and you've verified the response. If there's no time built in to act on a comment, the comment was for you, not for them.</p>
+
+        <h4>What it is not</h4>
+        <ul class="bullets">
+          <li><strong>Not more comments.</strong> Volume isn't the goal; uptake is.</li>
+          <li><strong>Not one-directional.</strong> If it doesn't change what the student does next, it isn't finished.</li>
+          <li><strong>Not only the teacher's job.</strong> Structured self-assessment and peer feedback both count.</li>
+        </ul>
+
+        <h4>In the classroom</h4>
+        <ul class="bullets">
+          <li><strong>Star and wish</strong> — one specific thing done well, one specific, actionable next step.</li>
+          <li><strong>Anchor it to success criteria</strong> — share the rubric first, so feedback points at a target students already see.</li>
+          <li><strong>Close the loop in class</strong> — feedback → revise → verify, with response time built into the period.</li>
+          <li><strong>Whole-class feedback</strong> — address a common error once, to everyone.</li>
+          <li><strong>Use "wise feedback."</strong> Pair high standards with explicit assurance: <em>"I'm giving you this critique because the standard is high and I'm confident you can reach it."</em></li>
+          <li><strong>Normalize error</strong> — meet a wrong answer with "walk me through your thinking."</li>
+        </ul>
+
+        <div class="tag-row">
+          <span class="tag">Domain V · Assessment &amp; Feedback</span>
+          <span class="tag">Domain I · Psychological Safety</span>
+          <span class="tag brain">Brain: Amygdala, cerebellum</span>
+        </div>
+        <details class="deeper"><summary>Go deeper — key sources</summary><div class="deeper-body">Hattie &amp; Timperley (2007), "The Power of Feedback," the standard synthesis; Dylan Wiliam, <em>Embedded Formative Assessment</em> (2011), the most practical treatment.</div></details>
+      </div></div></div>
+    </div>
+
+    <!-- PILLAR 6 -->
+    <div class="pillar p-metacog" id="pillar-metacog">
+      <button class="pillar-header" onclick="togglePillar(this)">
+        <span class="pillar-num">6</span>
+        <span class="pillar-title">
+          <span class="pillar-name">Metacognition</span>
+          <span class="pillar-teaser">The throughline — teaches students how to learn, not just what.</span>
+        </span>
+        <span class="chevron">⌄</span>
+      </button>
+      <div class="pillar-body-wrap"><div class="pillar-body"><div class="pillar-body-inner">
+        <div class="def-box"><span class="label">The definition</span>Metacognition is thinking about one's own thinking: monitoring what you actually understand, then acting on that judgment to change what you do next.</div>
+        <p>Two parts, both required: <strong>monitoring</strong> (judging your own understanding) and <strong>control</strong> (acting on that judgment). The problem this pillar solves is <strong>calibration</strong> — students are routinely poor judges of what they know, and the weakest students tend to be the most overconfident. Left alone, they trust what feels easy over what's effective.</p>
+
+        <h4>What it is not</h4>
+        <ul class="bullets">
+          <li><strong>Not vague reflection journaling.</strong> It matters only when it changes what a student does next.</li>
+          <li><strong>Not innate or fixed.</strong> It's teachable and worth explicit instruction, inside your subject, on real work.</li>
+          <li><strong>Not "any questions?"</strong> Everyone nods. Use a quick retrieval that reveals the truth instead.</li>
+        </ul>
+
+        <h4>In the classroom</h4>
+        <ul class="bullets">
+          <li><strong>Predict &amp; Reflect</strong> — students predict their quiz score, then reflect on why it differed afterward.</li>
+          <li><strong>Knowledge Surveys</strong> — before a unit, students rate confidence in each objective to prioritize study.</li>
+          <li><strong>Retrieval Diagnosis</strong> — low-stakes brain dumps show students exactly what they actually know.</li>
+        </ul>
+        <p><strong>Judgments of Learning:</strong> alongside an assessment, ask for a quick, ungraded confidence rating on each response. Paired with feedback, this sharpens a student's metacognitive awareness enough to target future study with real precision.</p>
+
+        <h4>Metacognitive prompt bank — final five minutes of a block</h4>
+        <table class="classroom">
+          <tr><th>Prompt</th><th>Question for students</th><th>Goal</th></tr>
+          <tr><td>Strategy Check</td><td>"Which specific tool from our mental toolbox did we use today to solve X?"</td><td>Develops discrimination and strategy selection.</td></tr>
+          <tr><td>Muddiest Point</td><td>"What's the one concept from today that still feels fuzzy or disconnected?"</td><td>Diagnoses gaps for both student and teacher.</td></tr>
+          <tr><td>Connection Building</td><td>"How does today's topic integrate with what we learned three weeks ago?"</td><td>Strengthens organization of knowledge.</td></tr>
+          <tr><td>Calibration</td><td>"On a scale of 1–5, how confident are you that you could explain this to a peer right now?"</td><td>Increases awareness of one's own learning.</td></tr>
+        </table>
+
+        <div class="tag-row">
+          <span class="tag">Domain V · Self-Assessment</span>
+          <span class="tag">Domain III · Self-Regulation</span>
+          <span class="tag">Domain I · Modeling Metacognitive Talk</span>
+          <span class="tag brain">Brain: Anterior cingulate cortex — the effort monitor</span>
+        </div>
+        <details class="deeper"><summary>Go deeper — key sources</summary><div class="deeper-body">Flavell (1979), the paper that put metacognition on the map; Dunlosky &amp; Metcalfe, <em>Metacognition</em>; Agarwal's Metacognition Guide; Carnegie Mellon's Eberly Center on exam wrappers.</div></details>
+      </div></div></div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>EHS Teaching &amp; Learning · adapted from "The Six Pillars of Research-Informed Teaching and Learning at EHS"</p>
+  </div>
+</footer>
+
+<script>
+  function togglePillar(btn){
+    btn.closest('.pillar').classList.toggle('open');
+  }
+  function jumpToPillar(id){
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.add('open');
+    setTimeout(()=> el.scrollIntoView({behavior:'smooth', block:'start'}), 30);
+  }
+  function setAllPillars(open){
+    document.querySelectorAll('.pillar').forEach(p=>{
+      if(open) p.classList.add('open'); else p.classList.remove('open');
+    });
+  }
+</script>
+
+</body>
+</html>
