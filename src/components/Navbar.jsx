@@ -8,8 +8,8 @@ const NAV_LINKS = [
     label: 'Teaching & Learning',
     children: [
       { to: '/teaching-learning', label: 'Teaching & Learning', end: true },
-      { to: '/teaching-learning/learning-brain', label: 'Learning & the Brain' },
       { to: '/teaching-learning/six-pillars', label: 'Six Teaching Pillars' },
+      { to: '/teaching-learning/learning-brain', label: 'Learning & the Brain' },
     ],
   },
   { to: '/community-equity', label: 'Office of Community and Equity' },
