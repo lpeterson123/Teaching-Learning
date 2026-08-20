@@ -8,8 +8,8 @@ const NAV_LINKS = [
     label: 'Teaching & Learning',
     children: [
       { to: '/teaching-learning', label: 'Teaching & Learning', end: true },
-      { to: '/teaching-learning/practice-deck', label: 'Practice Deck' },
       { to: '/teaching-learning/learning-brain', label: 'Learning & the Brain' },
+      { to: '/teaching-learning/six-pillars', label: 'Six Teaching Pillars' },
     ],
   },
   { to: '/community-equity', label: 'Office of Community and Equity' },
@@ -26,6 +26,7 @@ const NAV_LINKS = [
     children: [
       { to: '/professional-development', label: 'Main Page', end: true },
       { to: '/resources', label: 'Resources' },
+      { to: '/resources/practice-deck', label: 'Practice Deck' },
     ],
   },
 ];

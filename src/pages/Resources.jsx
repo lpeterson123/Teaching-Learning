@@ -43,6 +43,22 @@ export default function Resources() {
               <span className="res-folder__arrow" aria-hidden="true">→</span>
             </Link>
 
+            <Link to="/resources/practice-deck" className="res-folder">
+              <div className="res-folder__icon" aria-hidden="true">
+                <svg viewBox="0 0 40 32" width="40" height="32" fill="none">
+                  <rect x="0" y="6" width="40" height="26" rx="3" fill="currentColor" opacity="0.15" />
+                  <rect x="0" y="6" width="40" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" />
+                  <path d="M0 11 Q20 4 40 11" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                  <rect x="0" y="2" width="16" height="6" rx="2" fill="currentColor" opacity="0.5" />
+                </svg>
+              </div>
+              <div className="res-folder__body">
+                <h2 className="res-folder__title">Practice Deck</h2>
+                <p className="res-folder__meta">54 research-informed teaching strategies</p>
+              </div>
+              <span className="res-folder__arrow" aria-hidden="true">→</span>
+            </Link>
+
             <Link to="/resources/beneficial-readings" className="res-folder">
               <div className="res-folder__icon" aria-hidden="true">
                 <svg viewBox="0 0 40 32" width="40" height="32" fill="none">

@@ -12,6 +12,7 @@ import Newsletters from './pages/Newsletters.jsx';
 import BeneficialReadings from './pages/BeneficialReadings.jsx';
 import ProfessionalDevelopment from './pages/ProfessionalDevelopment.jsx';
 import LearningBrain from './pages/LearningBrain.jsx';
+import SixPillars from './pages/SixPillars.jsx';
 
 export default function App() {
   return (
@@ -19,14 +20,15 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/teaching-learning" element={<TeachingLearning />} />
-        <Route path="/teaching-learning/practice-deck" element={<TeachingPracticesDeck />} />
         <Route path="/teaching-learning/learning-brain" element={<LearningBrain />} />
+        <Route path="/teaching-learning/six-pillars" element={<SixPillars />} />
         <Route path="/community-equity" element={<CommunityEquity />} />
         <Route path="/washington-program" element={<WashingtonProgram />} />
         <Route path="/washington-program/map" element={<WashingtonProgramMap />} />
         <Route path="/ai" element={<AI />} />
         <Route path="/professional-development" element={<ProfessionalDevelopment />} />
         <Route path="/resources" element={<Resources />} />
+        <Route path="/resources/practice-deck" element={<TeachingPracticesDeck />} />
         <Route path="/resources/newsletters" element={<Newsletters />} />
         <Route path="/resources/beneficial-readings" element={<BeneficialReadings />} />
         <Route path="*" element={<Navigate to="/" replace />} />
